@@ -14,6 +14,10 @@ class Barbeiros extends Model
         return $this->hasMany(BarbeiroWorkingHours::class, "barbeiro_id");
     }
 
+    public function specificDates() {
+        return $this->hasMany(SpecificDate::class, "barbeiro_id");
+    }
+
     public function agendamentos(){
        return  $this->hasMany(Agendamento::class,"barbeiro_id");
     }

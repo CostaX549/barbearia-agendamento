@@ -1,4 +1,4 @@
-<div>
+{{-- <div>
 
         @can('pagar',auth()->user())
         <div class="mt-3" x-data x-init="
@@ -188,4 +188,153 @@ return diasDaSemanaMapping[nomeDia.toLowerCase()];
 
 </script>
 @endscript
-@endcan
+@endcan --}}
+
+
+<div class="mb-24 md:mb-0">
+    <x-modal.card title="Adicionar corte" blur wire:model="corteModal" x-on:corte-salvo.window="close">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <x-input label="Nome"  wire:model="cortename" placeholder="Nome do corte" />
+          <x-inputs.currency label="Preço" prefix="R$" thousands="." decimal="," wire:model="currency" />
+   
+          <div class="col-span-1 sm:col-span-2">
+              <x-input label="Descrição" wire:model="cortedescricao" placeholder="Descrição do corte" />
+          </div>
+   
+       
+      </div>
+   
+      <x-slot name="footer">
+          <div class="flex justify-between gap-x-4">
+     
+   
+              <div class="flex">
+                  <x-button flat label="Cancelar" x-on:click="close" />
+                  <x-button wire:click="criarCorte({{ $barbeiro }})" spinner primary label="Criar"  />
+              </div>
+          </div>
+      </x-slot>
+  </x-modal.card>
+    <form wire:submit="editarBarbeiro({{ $barbeiro->id }})">
+  
+    <div
+      class="block h-full rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+  
+   
+      <label for="arquivo" class="cursor-pointer">
+      <div class="flex justify-center relative text-blue-500">
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-12">
+    
+          <span class="material-symbols-outlined">
+            edit
+            </span>
+       
+        </div>
+    
+            <!-- Imagem com opacidade -->
+
+            @if(!$foto)
+
+       
+                  <div class="flex justify-center -mt-[75px]">
+                    <img src="{{ asset('storage/' . $barbeiro->avatar)}}"
+                        class="mx-auto rounded-full shadow-lg dark:shadow-black/20 w-[150px] h-[150px] object-cover opacity-50" alt="Avatar" />
+                      </div>
+  
+          @else
+          <div class="flex justify-center -mt-[75px]">
+            <!-- Imagem com opacidade -->
+            <img src="{{ $foto->temporaryUrl()}}"
+                class="mx-auto rounded-full shadow-lg dark:shadow-black/20 w-[150px] h-[150px] object-cover" alt="Avatar" />
+          </div>
+        @endif
+        <input type="file" wire:model="foto" id="arquivo" class="sr-only">
+    </div>
+  </label>
+
+
+
+  <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com --> 
+
+      <div class="p-6">
+        
+        <x-input
+        label="Nome"
+        placeholder="Nome"
+        wire:model="name"
+        description="Inform your full name"
+   
+        class="mb-3 sm:text-xl"
+    />
+
+    <ul class="mb-6">
+      <li
+        class="w-full border-b-2 border-neutral-100 border-opacity-100 py-4 dark:border-opacity-50">
+     Cortes
+      </li>
+      @foreach($barbeiro->cortes as $corte)
+      <li
+        class="w-full border-b-2 border-neutral-100 border-opacity-100 py-4 dark:border-opacity-50">
+    {{ $corte->nome }} -
+   R${{ $corte->preco }}
+      </li>
+  
+  @endforeach
+  <button
+  type="button"
+  x-on:click="$openModal('corteModal')"
+  class="inline-block rounded bg-primary px-6 mt-5 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
+  
+  >
+  
+Adicionar corte
+</button>
+
+
+    </ul>
+        
+        <ul class="">
+     
+          <div  class="flex flex-col gap-4">
+            @foreach($this->allDaysOfWeek as $index => $day)
+            <x-checkbox md id="right-label" label="{{ $day }}"   wire:model="dias.{{ $day }}"  wire:click="toggleCheckbox('{{ $day }}')"/>
+            <x-time-picker
+            
+            wire:model.blur="horariosIniciais.{{ $day }}"
+            label="Horário Inicial"
+            
+            placeholder="22:30"
+            format="24"
+            class="mb-3"
+            />
+            
+            <x-time-picker
+            
+            wire:model.blur="horariosFinais.{{ $day }}"
+            label="Horário Final"
+            
+            placeholder="22:30"
+            format="24"
+            class="mb-3"
+            />
+            @endforeach
+
+            <x-time-picker
+            
+            wire:model="interval"
+            label="Intervalo dos agendamentos"
+            
+            placeholder="22:30"
+            format="24"
+            class="mb-3"
+            />
+
+            <x-button  class="mb-3" black label="Editar" spinner="editarBarbeiro" wire:click="editarBarbeiro({{ $barbeiro->id }})" />
+      
+            </div>
+          </form>
+ 
+        </ul>
+      </div>
+    </div>
+  </div>

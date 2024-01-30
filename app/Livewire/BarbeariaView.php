@@ -13,7 +13,7 @@ use Livewire\WithFileUploads;
 use App\Models\Cortes;
 use Carbon\Carbon;
 use App\Livewire\Auth;
-
+use App\Models\Avaliacao;
 use Illuminate\Support\Facades\App;
 use DateTime;
 class BarbeariaView extends Component
@@ -23,6 +23,7 @@ class BarbeariaView extends Component
  
     public $payment;
     public $galeriaModal;
+  
     public $fotos = [];
     public $descricao = [];
     #[Validate('required')]
@@ -47,6 +48,11 @@ public array $cortes = [];
           $this->barbearia = Barbearia::where('slug', $slug)->firstOrFail();
        
         
+    }
+#[Computed]
+
+    public function avaliacao() {
+      return  auth()->user()->avaliacoes->where('barbearia_id', $this->barbearia->id)->pluck('qtd')->first();
     }
 
     
@@ -79,6 +85,26 @@ public array $cortes = [];
         $this->dayOfWeek = ucfirst($translatedDayOfWeek);
     }
 
+    #[On('avaliar')]
+    public function avaliar($valor, $id){
+
+          $existsAvaliacao = Avaliacao::where("barbearia_id",$id)->where("user_id",auth()->user()->id)->first();
+
+        if(!$existsAvaliacao){
+          $avaliacao = new Avaliacao;
+          
+          $avaliacao->qtd = $valor;
+          $avaliacao->user_id = auth()->user()->id;
+          $avaliacao->barbearia_id = $id;
+
+          $avaliacao->save();
+          $this->dispatch('avaliacao-salva');
+        }else{
+             $existsAvaliacao->qtd = $valor;
+
+             $existsAvaliacao->save();
+        }
+    }
     
 #[On('transactionEmit')]
     public function AgendarHorario()
@@ -166,10 +192,7 @@ public array $cortes = [];
       
         $this->barbearia->save();
     }
-    #[Computed]
-    public function barbeiros() {
-        return $this->barbearia->barbeiros;
-    }
+  
 
     private function convertTimeToMinutes($time)
     {

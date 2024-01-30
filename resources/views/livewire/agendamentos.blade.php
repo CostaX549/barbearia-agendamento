@@ -3,47 +3,16 @@
 <div>
 
     
-    <ul
-      class="mb-5 flex list-none flex-row flex-wrap border-b-0 pl-0"
-      role="tablist"
-      id="myTab"
-      data-te-nav-ref>
-      <li role="presentation" class="flex-auto text-center"
-           wire:ignore.self
-      >
-        <a
-          wire:ignore.self
-          href="#tabs-home01"
-          class="my-2 block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-black data-[te-nav-active]:text-black"
-          data-te-toggle="pill"
-          data-te-target="#tabs-home01"
-          data-te-nav-active
-          role="tab"
-          aria-controls="tabs-home01"
-          aria-selected="true"
-          >Minha Agenda</a
-        >
-      </li>
- 
-      
-    </ul>
+  
     
   
     <div class="mb-6">
-      <div
-        class="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
-        id="tabs-home01"
-        role="tabpanel"
-        aria-labelledby="tabs-home-tab01"
-        data-te-tab-active
-        wire:ignore.self
-        >
-       
+    
         <div class="grid  grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-5 ">
           
-          <x-modal.card title="Editar Agendamento" blur wire:model="agendamentoModal" x-on:agendamento-editado.window="close" x-on:close="$wire.limpar()">
+          <x-modal.card title="Editar Agendamento" blur  wire:model="agendamentoModal" x-on:abrir-modal.window="open" x-on:agendamento-editado.window="close" x-on:close="$wire.limpar()">
             @if($selectedAgendamento)
-            <div class="flex flex-col gap-4">
+            <div class="flex flex-col gap-4 mb-3">
            
               @foreach($selectedAgendamento->barbeiro->cortes as $corte)
               <x-checkbox
@@ -58,88 +27,16 @@
               />
            
               @endforeach
-            
-          
-              <div x-data="bob" x-init="initDatePicker($refs.datepicker2, '{{ $selectedAgendamento->id }}', {{ json_encode($selectedAgendamento->barbeiro->workingHours()->pluck('day_of_week')->toArray()) }}, '{{ $this->date}}' )" >
-                <div class="mb-4">
-                    <x-input type="text" x-ref="datepicker2" wire:model="date" label="Data" placeholder="Selecione uma data"  />
-                </div>
             </div>
-          </div>
-            
-            @script
-            <script>
-                Alpine.data('bob', () => ({
-                    date: '',
-                    
-            
-                    initDatePicker(datepickerRef, agendamentoId, dias, start_date) {
-
-                      
-                        var diasDaSemanaMapping = {
-                            'domingo': 0,
-                            'segunda': 1,
-                            'terça': 2,
-                            'quarta': 3,
-                            'quinta': 4,
-                            'sexta': 5,
-                            'sábado': 6
-                        };
-            
-                        var enableDays = dias.map(function(nomeDia) {
-                            return diasDaSemanaMapping[nomeDia.toLowerCase()];
-                        });
-                        
+  
+    
           
-            
-                        var workingHours = {!! json_encode(
-                            $selectedAgendamento->barbeiro->workingHours()->get()->map(function($workingHour) {
-                                return [
-                                    'day' => $workingHour->dia_numero,
-                                    'minTime' => $workingHour->start_hour,
-                                    'maxTime' => $workingHour->end_hour,
-                                ];
-                            })
-                        ) !!};
-            
-                        flatpickr(datepickerRef, {
-                            enableTime: true,
-                            dateFormat: 'd/m/Y H:i',
-                            inline: true,
-                            locale: 'pt',
-                        
-                            defaultDate: start_date,
-                            minDate: 'today',
-                            enable: [function (date) {
-                                return enableDays.includes(date.getDay());
-                            }],
-                            onChange: function (selectedDates, dateStr, instance) {
-                                var selectedDate = selectedDates[0];
-                                var dayOfWeek = selectedDate.getDay();
-            
-                                var selectedWorkingHours = workingHours.find(function (hour) {
-                                    return hour.day === dayOfWeek;
-                                });
-            
-                                if (selectedWorkingHours) {
-                                    instance.set('minTime', selectedWorkingHours.minTime);
-                                    instance.set('maxTime', selectedWorkingHours.maxTime);
-                                } else {
-                                    instance.set('minTime', null);
-                                    instance.set('maxTime', null);
-                                } 
-                            }
-                        });
-                    }
-                }));
-            </script>
-            @endscript
-          
+            <livewire:date-picker  wire:model="date"  :selectedAgendamento="$selectedAgendamento" />
              
                
                   <x-slot name="footer">
                       <div class="flex justify-between gap-x-4">
-                          <x-button flat negative label="Deletar" wire:click="delete({{ $selectedAgendamento->id }})" />
+                          <x-button flat negative label="Deletar" spinner="delete({{ $selectedAgendamento->id }})" wire:click="delete({{ $selectedAgendamento->id }})" />
                
                           <div class="flex">
                               <x-button flat label="Cancelar" x-on:click="close" />
@@ -151,11 +48,12 @@
               </x-modal.card>
         
         
-      @foreach(auth()->user()->eventos as $agendamento )
+      @foreach($this->agendamentos as $agendamento )
       
  
    
       <div
+   
       class="mx-auto mb-8 sm:mb-0  block rounded-lg max-w-[450px] bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]" >
       <div
         class="  relative   overflow-hidden bg-cover bg-no-repeat"
@@ -216,7 +114,7 @@
     
     
         
-      </div>
+
    
  
     </div>

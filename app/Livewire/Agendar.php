@@ -18,17 +18,15 @@ class Agendar extends Component
     public function mount($slug) {
         $this->barbearia = Barbearia::where('slug', $slug)->firstOrFail();
 
-        foreach($this->barbearia->barbeiros as $barbeiro) {
-            foreach($barbeiro->agendamentos as $agendamento) {
-                $this->simpleModal[$agendamento->id] = null;
-            }
-        }
+      
 }
 
 #[Computed]
 public function agendamentos()
 {
     $barbeiros = $this->barbearia->barbeiros;
+
+    
 
  return  \App\Models\Agendamento::query()
         ->whereIn('barbeiro_id', $barbeiros->pluck('id')) 
@@ -62,7 +60,7 @@ public function EventoConcluido($id){
        $evento->status = 1;
 
        $evento->save();
-
+       
 
 }
     public function render()
@@ -70,6 +68,6 @@ public function EventoConcluido($id){
         
         return view('livewire.agendar')->layout('components.layouts.barbearia', [
             'barbearia' => $this->barbearia,
-        ]);;
+        ]);
     }
 }

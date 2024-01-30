@@ -3,30 +3,41 @@
 namespace App\Livewire;
 
 use App\Models\Barbearia;
-
+use App\Models\Agendamento;
 use Asantibanez\LivewireCharts\Facades\LivewireCharts;
 use Asantibanez\LivewireCharts\Models\RadarChartModel;
 use Asantibanez\LivewireCharts\Models\TreeMapChartModel;
 use Livewire\Component;
-
+use Carbon\Carbon;
+use App\Models\User;
+use App\Models\Plan;
 class Gerenciar extends Component
 {
-    public $types = ['food', 'shopping', 'entertainment', 'travel', 'other'];
+
 
     public $colors = [
-        'food' => '#f6ad55',
-        'shopping' => '#fc8181',
-        'entertainment' => '#90cdf4',
-        'travel' => '#66DA26',
-        'other' => '#cbd5e0',
+        'janeiro' => '#000000',
+        'fevereiro' => '#fc8181',
+        'março' => '#90cdf4',
+        'abril' => '#66DA26',
+        'maio' => '#cbd5e0',
+        'junho' => '#f6ad55',
+        'julho' => '#fc8181',
+        'agosto' => '#90cdf4',
+        'setembro' => '#66DA26',
+        'outubro' => '#cbd5e0',
+        'novembro' => '#cbd5e0',
+        'dezembro' => '#cbd5e0',
     ];
 
     public $firstRun = true;
 
     public $barbearia;
-
+    public $agendamentos;
     public $showDataLabels = false;
-
+     public $agendamentosPorMes;
+     public $type;
+          public $anosDesdeCriacao = [];
     protected $listeners = [
         'onPointClick' => 'handleOnPointClick',
         'onSliceClick' => 'handleOnSliceClick',
@@ -35,8 +46,24 @@ class Gerenciar extends Component
     ];
 
     public function mount($slug) {
-              $this->barbearia = Barbearia::where('slug', $slug)->firstOrFail();
+        $this->barbearia = Barbearia::where('slug', $slug)->firstOrFail();
+        $this->type = Carbon::now()->year;
+    
+        // Carrega os relacionamentos
+        $anoCriacao = $this->barbearia->created_at->year;
+
+            $anoAtual = Carbon::now()->year;
+
+           
+    for ($ano = $anoCriacao; $ano <= $anoAtual; $ano++) {
+        $this->anosDesdeCriacao[] = $ano;
     }
+    
+        // Você pode retornar $agendamentosPorMes ou fazer qualquer outra coisa com ele
+        
+    }
+
+
 
     public function handleOnPointClick($point)
     {
@@ -59,14 +86,33 @@ class Gerenciar extends Component
     }
 
     public function render()
-    {
-        $expenses = [
-            ['type' => 'food', 'amount' => 500],
-            ['type' => 'shopping', 'amount' => 300],
-            ['type' => 'entertainment', 'amount' => 200],
-            ['type' => 'travel', 'amount' => 100],
-            ['type' => 'other', 'amount' => 50],
-        ];
+
+    {  
+        $anoAtual = $this->type;
+    
+       
+        $agendamentosPorMes = [];
+    
+        for ($mes = 1; $mes <= 12; $mes++) {
+            // Filtra os agendamentos pelo mês e ano
+            $agendamentosDoMes = $this->barbearia->barbeiros->flatMap(function ($barbeiro) use ($mes, $anoAtual) {
+                return $barbeiro->agendamentos->filter(function ($agendamento) use ($mes, $anoAtual) {
+                    $start_date = Carbon::parse($agendamento->start_date);
+                    return $start_date->format('m') == $mes && $start_date->format('Y') == $anoAtual;
+                });
+            });
+    
+            // Armazena o número de agendamentos para o mês atual
+            $agendamentosPorMes[$mes] = $agendamentosDoMes->count();
+        }
+                   
+        $expenses = [];
+       // Agora você precisa adicionar cada mês com o número correto de agendamentos
+       for ($mes = 1; $mes <= 12; $mes++) {
+        $nomeMes = Carbon::createFromDate(null, $mes, 1)->locale('pt_BR')->isoFormat('MMMM');
+        $expenses[] = ['type' => $nomeMes, 'amount' => $agendamentosPorMes[$mes]];
+    }
+   
     
         $columnChartModel = collect($expenses)
             ->groupBy('type')
@@ -77,11 +123,11 @@ class Gerenciar extends Component
                 return $columnChartModel->addColumn($type, $value, $this->colors[$type]);
             }, LivewireCharts::columnChartModel()
                 ->setTitle('Expenses by Type')
-                ->setAnimated($this->firstRun)
+                ->setAnimated($this->type)
                 ->withOnColumnClickEventName('onColumnClick')
-                ->setLegendVisibility(false)
+                ->setLegendVisibility(true)
                 ->setDataLabelsEnabled($this->showDataLabels)
-                ->setColors(['#b01a1b', '#d41b2c', '#ec3c3b', '#f66665'])
+               
                 ->setColumnWidth(90)
                 ->withGrid()
             );
@@ -94,13 +140,13 @@ class Gerenciar extends Component
     
                 return $pieChartModel->addSlice($type, $value, $this->colors[$type]);
             }, LivewireCharts::pieChartModel()
-                ->setAnimated($this->firstRun)
+                ->setAnimated($this->type)
                 ->setType('donut')
                 ->withOnSliceClickEvent('onSliceClick')
                 ->legendPositionBottom()
                 ->legendHorizontallyAlignedCenter()
                 ->setDataLabelsEnabled($this->showDataLabels)
-                ->setColors(['#b01a1b', '#d41b2c', '#ec3c3b', '#f66665'])
+                
             );
     
             $lineChartModel = collect($expenses)->reduce(function ($lineChartModel, $data, $index) {
@@ -116,7 +162,7 @@ class Gerenciar extends Component
             
                 return $lineChartModel->addPoint($index, $data['amount'], ['id' => $index]);
             }, LivewireCharts::lineChartModel()
-                ->setAnimated($this->firstRun)
+                ->setAnimated($this->type)
                 ->withOnPointClickEvent('onPointClick')
                 ->setSmoothCurve()
                 ->setXAxisVisible(true)
@@ -128,7 +174,7 @@ class Gerenciar extends Component
             ->reduce(function ($areaChartModel, $data, $index) {
                 return $areaChartModel->addPoint($index, $data['amount'], ['id' => $index]);
             }, LivewireCharts::areaChartModel()
-                ->setAnimated($this->firstRun)
+                ->setAnimated($this->type)
                 ->setColor('#f6ad55')
                 ->withOnPointClickEvent('onAreaPointClick')
                 ->setDataLabelsEnabled($this->showDataLabels)
@@ -141,7 +187,7 @@ class Gerenciar extends Component
             return $multiLineChartModel
                 ->addSeriesPoint($data['type'], $index, $data['amount'], ['id' => $index]);
         }, LivewireCharts::multiLineChartModel()
-            ->setAnimated($this->firstRun)
+            ->setAnimated($this->type)
             ->withOnPointClickEvent('onPointClick')
             ->setSmoothCurve()
             ->multiLine()
@@ -158,7 +204,7 @@ class Gerenciar extends Component
                 return $multiColumnChartModel
                     ->addSeriesColumn($type, 1, collect($data)->sum('amount'));
             }, LivewireCharts::multiColumnChartModel()
-                ->setAnimated($this->firstRun)
+                ->setAnimated($this->type)
                 ->setDataLabelsEnabled($this->showDataLabels)
                 ->withOnColumnClickEventName('onColumnClick')
                 ->setTitle('Revenue per Year (K)')
@@ -182,7 +228,7 @@ class Gerenciar extends Component
                 return $chartModel->addBlock($type, $value)->addColor($this->colors[$type]);
             }, LivewireCharts::treeMapChartModel()
                 ->setTitle('Expenses Weight')
-                ->setAnimated($this->firstRun)
+                ->setAnimated($this->type)
                 ->setDistributed(true)
                 ->withOnBlockClickEvent('onBlockClick')
             );

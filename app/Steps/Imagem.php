@@ -7,8 +7,9 @@ use Illuminate\Validation\Rule;
 use App\Models\Barbearia;
 use App\Models\Barbeiros;
 use Carbon\Carbon;  
-
+use Illuminate\Support\Facades\Http;
 use App\Models\BarbeiroWorkingHours;
+use App\Models\Plan;
 
 class Imagem extends Step
 {
@@ -39,40 +40,55 @@ class Imagem extends Step
      */
     public function save($state)
     {
-
- 
-      $barbearia = new Barbearia;
-      $barbearia->nome = $state['name'];
-      $barbearia->cep = $state['cep'];
-      $path = $state['imagem']->store('uploads', 'public');
-      $barbearia->imagem =  $path;
-      $barbearia->rua = $state['rua'];
-      $barbearia->cidade = $state['cidade'];
-      $barbearia->estado = $state['estado'];
-      $barbearia->complemento = $state['complemento'];
-      $barbearia->owner_id = auth()->user()->id;
-      $barbearia->slug = $state['slug'];
-      $barbearia->cpf = $state['cpf'];
-      $barbearia->save();
-
-      $barbeiro = new Barbeiros;
-      $barbeiro->name = auth()->user()->name;
-      $barbeiro->avatar = 'teste';
-      $barbeiro->barbearia_id = $barbearia->id;
-      $barbeiro->save();
-
-      foreach ($state['dias'] as $index => $dia) {
+  
+        $barbearia = new Barbearia;
+        $barbearia->nome = $state['name'];
+        $barbearia->cep = $state['cep'];
+        $path = $state['imagem']->store('uploads', 'public');
+        $barbearia->imagem =  $path;
+        $barbearia->rua = $state['rua'];
+        $barbearia->cidade = $state['cidade'];
+        $barbearia->estado = $state['estado'];
+        $barbearia->complemento = $state['complemento'];
+        $barbearia->owner_id = auth()->user()->id;
+        $barbearia->slug = $state['slug'];
+        $barbearia->cpf = $state['cpf'];
+        $barbearia->save();
+        
+        $barbeiro = new Barbeiros;
+        $barbeiro->name = auth()->user()->name;
+        $barbeiro->avatar = 'teste';
+        $barbeiro->barbearia_id = $barbearia->id;
+        $barbeiro->save();
+        
+        foreach ($state['dias'] as $index => $dia) {
+        
+        
+          BarbeiroWorkingHours::create([
+              'barbeiro_id' => $barbeiro->id,
+              'day_of_week' => $dia,
+              'start_hour' => $state['horariosIniciais'][$index],
+              'end_hour' => $state['horariosFinais'][$index],
+          ]);
+        }
+      
+        
    
-     
-        BarbeiroWorkingHours::create([
-            'barbeiro_id' => $barbeiro->id,
-            'day_of_week' => $dia,
-            'start_hour' => $state['horariosIniciais'][$index],
-            'end_hour' => $state['horariosFinais'][$index],
-        ]);
-    }
+
+    $plan =  Plan::where('user_id', auth()->user()->id)->first();
+    
+
+
+        $plan->inscrito = 0;
+        $plan->save();
+
+
+
+
 
  
+      
+   
 
     }
 

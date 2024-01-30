@@ -27,4 +27,9 @@ public function barbeiros() {
     public function caixas(){
           return $this->hasMany(Barbearia::class,"barbeiro_id");
     }
+
+    public function avaliacoes(){
+       return  $this->hasMany(Avaliacao::class,"barbearia_id");
+}
+    
 }

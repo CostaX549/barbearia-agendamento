@@ -17,8 +17,9 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\MercadoPago;
 use App\Http\Controllers\Webhooks;
+use App\Livewire\Calendario;
 use App\Livewire\Subscribe;
-
+use App\Livewire\Deletar;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,7 +32,7 @@ use App\Livewire\Subscribe;
 */
 
 
-Route::post('/webhooks',[Webhooks::class, 'webhook']);
+Route::post('/webhooks',[Webhooks::class, 'webhook'])->name('webhook');
 Route::put('/cancelpause/{id}',[MercadoPago::class,'uptade']);
 Route::get("/planos",[MercadoPago::class,'assinaturas']);
 Route::post('/criar-cliente', [MercadoPago::class, 'criarCliente']);
@@ -85,10 +86,13 @@ Route::get('/auth/{provider}/callback', function(string $provider) {
 });
 Route::get('/sucesso', [OrderController::class, 'index'])->name('checkout.success');
 Route::view('/dashboard', 'dashboard')->name('dashboard');
-Route::get('/gerenciar/{slug}/agendamentos',Agendar::class)->name('barbearia.agendamentos');
-
-Route::get('/gerenciar/{slug}',Gerenciar::class)->name('gerenciar');
-Route::get('/gerenciar/{slug}/horarios', Horarios::class)->name('horarios');
+Route::prefix('gerenciar/{slug}')->group(function () {
+    Route::get('/', Gerenciar::class)->name('gerenciar');
+    Route::get('/agendamentos', Agendar::class)->name('barbearia.agendamentos');
+    Route::get('/horarios', Horarios::class)->name('horarios');
+    Route::get('/horarios/calendario/{id}', Calendario::class)->name('barbeiro.calendario'); 
+    Route::get('/deletar',Deletar::class)->name('deletar');
+});
 Route::get('meus-agendamentos', Agendamentos::class)->name('agendamentos');
 Route::get('landing', LandingPage::class)->name('landing');
 Route::middleware([
@@ -103,6 +107,8 @@ Route::middleware([
 
 
 Route::get('/{slug}',BarbeariaView::class);
+
+
 
 Route::post('/processar-pagamento/{orderId}/{barbeiroId}',[OrderController::class,'webhook']);
 

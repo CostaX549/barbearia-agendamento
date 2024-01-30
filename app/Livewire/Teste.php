@@ -2,33 +2,29 @@
 
 namespace App\Livewire;
 
+use App\Models\Agendamento;
+use App\Models\Avaliacao;
 use Livewire\Component;
 use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\{Validate, On};
+use Livewire\Attributes\{Validate, On, Url};
 use App\Models\Barbearia;
+use App\Models\Plan;
 use WireUi\Traits\Actions;
-use App\Models\Barbeiros;
-use Imagine\Gd\Imagine;
-use Imagine\Image\Box;
-use Illuminate\Http\Request;
-use PayPal\Rest\ApiContext;
-use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Api\Plan;
-use PayPal\Common\PayPalModel;
-use PayPal\Api\Currency;
-use PayPal\Api\ChargeModel;
-use PayPal\Api\MerchantPreferences;
-use PayPal\Api\PaymentDefinition;
-use MercadoPago\Exceptions\MpApiException;
+
+
+use Carbon\Carbon;
 class Teste extends Component
 
 {
    use Actions;
       use WithFileUploads;
     public $apiContext;
+    #[Url]
+    public $search;
+    public $contagem;
    #[Validate('required|string')]
     public  string $cep = '';
     #[Validate('required|string')]
@@ -41,7 +37,9 @@ class Teste extends Component
     public  string $cidade = '';
     #[Validate('required|string|unique:barbearias')]
     public string $slug = '';
-public $plan;
+
+public $compartilharModal;
+public $selectedBarbearia;
     public $preferencia;
     public $subscriptionModal;
     #[Validate('required|image')]
@@ -51,124 +49,128 @@ public $plan;
 
     #[Validate('required|string')]
     public string $complemento = '';
-
-    private function createPreapprovalRequest(): array
-    {
-        $valor = 15;
-        $frequency = 1; 
-        $frequencyType = 'months'; 
     
-        switch ($this->preferencia) {
-            case 'mensal':
-                $valor = 15;
-                break;
-            case 'anual':
-                $valor = 180;
-                $frequency = 12; // set to 12 months for annual
-                break;
-            case 'semestral':
-                $valor = 90;
-                $frequency = 6; // set to 6 months for semi-annual
-                break;
-        
-            default:
-       
-                break;
-        }
-    
-        $backUrls = [
-            'success' => route('dashboard'),
-            'failure' => route('home'),
-        ];
-    
+    public $barbearia;
+    public $estrela;
+    #[Computed]
+    #[On('agendamento-editado')]
+    public function notificationsNearEvents() {
         $user = auth()->user();
-    
-        $accessToken = 'TEST-4528145694266395-011813-76b485df71f80a98e8d91e4c222c02bc-1644184890';
-        $createPlanUrl = 'https://api.mercadopago.com/preapproval_plan';
-    
-        $planData = [
-            'reason' => 'Barbearia',
-            'description' => 'Assinatura Mensal',
-            'external_reference' => $user->id,
-            'auto_recurring' => [
-                'frequency' => $frequency,
-                'frequency_type' => $frequencyType,
-                'transaction_amount' => $valor,
-                'currency_id' => 'BRL',
-                'free_trial' => [
-                    'frequency' => 1,
-                    'frequency_type' => 'months',
-                ],
-            ],
-            'application_fee' => 0.99,
-            'payer_email' => $user->email,
-            'back_url' => 'https://mercadopago.com.br',
-            'payment_methods_allowed' => [
-                'payment_types' => [
-                    [
-                        'id' => 'credit_card',
-                    ],
-                ],
-                'payment_methods' => [
-                    [
-                        'id' => 'pix',
-                    ],
-                ],
-            ],
-        ];
-    
-        $planResponse = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $accessToken,
-            'Content-Type' => 'application/json',
-        ])->post($createPlanUrl, $planData);
-    
-        $jsonPlanResponse = $planResponse->json();
-    
-        return $jsonPlanResponse;
+        
+        $eventos = $user->eventos->filter(function ($evento) {
+            
+            return now()->diffInMinutes($evento->start_date) <= 60;
+        });
+  
+        return $eventos;
     }
+  /*   #[Computed]
+    #[On('avaliacao-salva')]
+     public function notificationsEvents() {
+       
+        $eventos = auth()->user()->eventos->where('start_date','>',Carbon::now());
     
+   
+    
+       return  $eventos;
+     }
+ */
+  
+
+#[Computed]
+#[On('avaliacao-salva')]
+ public function notifications() {
+    $barbearia = auth()->user()->eventos
+    ->where('status', 1)
+    ->pluck('barbeiro.barbearia')
+    ->unique();
+    $eventos = auth()->user()->eventos->where('start_date','>',Carbon::now());
+
+$barbeariasAvaliadas = \App\Models\Avaliacao::where('user_id', auth()->user()->id)
+    ->pluck('barbearia_id');
+
+   return  $barbearia->whereNotIn('id', $barbeariasAvaliadas->toArray());
+ }
+
+ public function mount()
+ {
+    $contagemEventos = $this->notificationsNearEvents->count();
+     foreach ($this->notificationsNearEvents as $event) {
+         if ($event->read === 1) {
+             $contagemEventos = 0; 
+         }
+     }
+         
+
+        
+     $this->contagem = $this->notifications->count() + $contagemEventos;
+ }
+
+ public function clicar() {
+    $existingPlano = Plan::where('user_id', auth()->user()->id)->first();
+    $existingPlano->inscrito = 0;
+    $existingPlano->save();
+ }
+
+public function contar() {
+    foreach($this->notificationsNearEvents as $event) {
+        $event->read = 1;
+        $event->save();
+    }
+}
+
+
+#[On('avaliar')]
+    public function avaliar($valor, $id){
+
+        $existsAvaliacao = Avaliacao::where("barbearia_id",$id)->where("user_id",auth()->user()->id)->first();
+
+        if(!$existsAvaliacao){
+          $avaliacao = new Avaliacao;
+          
+          $avaliacao->qtd = $valor;
+          $avaliacao->user_id = auth()->user()->id;
+          $avaliacao->barbearia_id = $id;
+
+          $avaliacao->save();
+          $this->dispatch('avaliacao-salva');
+        }else{
+             $existsAvaliacao->qtd = $valor;
+
+             $existsAvaliacao->save();
+        }
+    }
+ 
  
     
-
-  
-
-   public function pagar(){
-
-  
-       
-    
-        // Retrieve information about the user (use your own function)
-        $user = auth()->user();
-    
-       
-    
+    public function compartilhar($barbeariaId) {
         
-        $jsonPlanResponse = $this->createPreapprovalRequest();
-       
-         $user = User::findOrFail(auth()->user()->id);
+        $this->selectedBarbearia = Barbearia::findOrFail($barbeariaId);
+    }
+
+    public function compartilharRede() {
+        
+    }
+    #[Computed]
+    public function barbeariasordenadas() {
+        return Barbearia::where('nome', 'like', '%' . $this->search . '%')
+            ->get()
+            ->sortByDesc(function ($barbearia) {
+                return $barbearia->barbeiros->pluck('agendamentos')->flatten()->count();
+            });
+    }
+
+
     
-         
-        try {
-           if($user->plans()->count()==0){
-            return redirect($jsonPlanResponse['init_point']);
-           } else{
-             return redirect('/home');
-           }
-            
-        }
-        catch (MPApiException $error) {
-    
-            
-            return null;
-        }
-    
-    
-    
-                 
-   }
+    #[Computed]
+    #[On('assinatura-salva')]
+    public function plan() {
+        return Plan::where('user_id', auth()->user()->id)->first();
+    }
+ 
   
 
-   
+
 
 
  
@@ -179,9 +181,14 @@ public $plan;
      public function barbearias() {
         return Barbearia::latest()->get();
      }
+ 
+  
     public function render()
     {
-      
+   
+ 
         return view('livewire.teste');
     }
+
+
 }

@@ -73,4 +73,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Plan::class);
     }
+
+    public function avaliacoes(){
+        return   $this->hasMany(Avaliacao::class,"user_id");
+    }
 }

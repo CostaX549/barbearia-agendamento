@@ -16,6 +16,6 @@ class SubscribedPolicy
     }
 
     public function inscrito(User $user, Plan $plan) {
-        return $user->id === $plan->user_id || $user->subscribed();
+        return $user->id === $plan->user_id && $plan->inscrito === 1;
     }
 }

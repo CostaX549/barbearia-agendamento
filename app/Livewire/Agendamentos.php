@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Agendamento;
-use Livewire\Attributes\{On, Computed};
+use Livewire\Attributes\{On, Computed, Validate};
 use Carbon\Carbon;
 
 class Agendamentos extends Component
@@ -14,8 +14,13 @@ class Agendamentos extends Component
     public $date;
 public $agendamentoModal;
 public ?Agendamento $selectedAgendamento = null;
+#[Validate(['cortes.*' => 'required'])]
 public $cortes = [];
 public $options = [];
+public $barbeiroSelecionado;
+public $formattedDates;
+
+
 
 
 public function mount() {
@@ -39,14 +44,18 @@ public function mount() {
     }
 
     public function delete($id) {
+  
+
         $agendamento = Agendamento::findOrFail($id);
         $agendamento->delete();
-        $this->redirect('/meus-agendamentos', navigate:true);
-
+        
+        $this->dispatch('refresh');
+      
     }
 
     public function editar($id)
     {
+       
         $evento = Agendamento::findOrFail($id);
     
         
@@ -60,7 +69,7 @@ public function mount() {
         }
     
        
-        $endDateTime = Carbon::createFromFormat('d/m/Y H:i',$this->date);
+        $endDateTime = Carbon::createFromFormat('d-m-Y H:i',$this->date);
     
         $intervalInMinutesTotal  = 0;
         foreach ($evento->cortes as $corte) {
@@ -70,7 +79,7 @@ public function mount() {
          
         
          
-        $evento->start_date = Carbon::createFromFormat('d/m/Y H:i',$this->date);
+        $evento->start_date = Carbon::createFromFormat('d-m-Y H:i',$this->date);
         $endDateTime = $evento->start_date->clone()->addMinutes($intervalInMinutesTotal);
         $evento->end_date = $endDateTime;
     
@@ -85,18 +94,22 @@ public function mount() {
 
    
         
-        $this->agendamentoModal = true;
-
+    
+        $this->dispatch('abrir-modal');
         
         $this->selectedAgendamento = Agendamento::findOrFail($agendamentoId);
+
+    
    
-        $this->date = \Carbon\Carbon::parse($this->selectedAgendamento->start_date)->format('d/m/Y H:i');
+        $this->date = \Carbon\Carbon::parse($this->selectedAgendamento->start_date)->format('d-m-Y H:i');
     
        
             $this->cortes[$agendamentoId] = $this->selectedAgendamento->cortes->pluck("id")->toArray();
     
       
-   
+           
+        
+         
 
     }
 
@@ -112,8 +125,9 @@ public function mount() {
         return $hours * 60 + $minutes + $seconds / 60;
     }
     #[Computed]
+    #[On('refresh')]
     public function agendamentos() {
-        return auth()->user()->eventos->where('status_paid', '1')->get();
+        return auth()->user()->eventos;
     }
 #[On('agendamento-edit-canceled')]
   public function disableEditing() {

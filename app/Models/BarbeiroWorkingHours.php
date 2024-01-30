@@ -17,6 +17,7 @@ class BarbeiroWorkingHours extends Model
 
     protected $casts = [
         'intervals' => 'array',
+        'specific_dates'=>'array'
     ];
     
     use HasFactory;
