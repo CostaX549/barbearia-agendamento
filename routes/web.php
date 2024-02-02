@@ -86,6 +86,7 @@ Route::get('/auth/{provider}/callback', function(string $provider) {
 });
 Route::get('/sucesso', [OrderController::class, 'index'])->name('checkout.success');
 Route::view('/dashboard', 'dashboard')->name('dashboard');
+Route::post('/process-payment',[MercadoPago::class, 'pagar'])->name('process.payment');
 Route::prefix('gerenciar/{slug}')->group(function () {
     Route::get('/', Gerenciar::class)->name('gerenciar');
     Route::get('/agendamentos', Agendar::class)->name('barbearia.agendamentos');

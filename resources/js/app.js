@@ -109,6 +109,8 @@ document.getElementById('botaoAvaliar').addEventListener('click', (e) => {
 
 
 });
+
+
 });
 
 

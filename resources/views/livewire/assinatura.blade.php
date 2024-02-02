@@ -59,11 +59,11 @@
                     <strong>Recomendado</strong>
                   </p>
                   <h3 class="mb-6 text-3xl">
-                    @if($existingPlano->inscrito === 0)
+   {{--                  @if($existingPlano->inscrito === 0)
                     <strong>R${{ $existingPlano->price + 15 }} </strong>
                     @else 
                     <strong>R${{ $existingPlano->price  }} </strong>
-@endif
+@endif --}}
                     <small class="text-base text-neutral-500 dark:text-neutral-300">/mês</small>
                   </h3>
                   

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Auth;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Preference\PreferenceClient;
 use MercadoPago\Client\PreApprovalPlan\PreApprovalPlanClient;
+use MercadoPago\Client\Customer\CustomerClient;
+use MercadoPago\Client\Customer\CustomerCardClient;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Http;
 use MercadoPago\Client\CardToken\CardTokenClient;
@@ -232,7 +234,87 @@ public function index()
     }
 } */
 
+public function pagar(Request $request) {
+    $accessToken = 'TEST-3045657775074783-011813-d80b74d2be425de8d9abc56e759d6f7b-1642165427';
 
+
+    MercadoPagoConfig::setAccessToken($accessToken);
+
+
+  
+
+ 
+  
+
+
+  
+
+
+    $client = new PreApprovalPlanClient();
+    $planData = [
+        'reason' => 'Barbearia John',
+        'description' => 'Assinatura Mensal',
+        'external_reference' => auth()->user()->id,
+        'auto_recurring' => [
+            'frequency' => 1,
+            'frequency_type' => 'months',
+            'transaction_amount' => 15,
+            'currency_id' => 'BRL',
+            'free_trial' => [
+                'frequency' => 1,
+                'frequency_type' => 'months',
+            ],
+        ],
+
+    
+        'application_fee' => 0.99,
+   
+        'back_url' => 'https://mercadopago.com.br',
+    
+    ];
+    $responsePlan = $client->create($planData);
+
+    
+   
+      
+        
+    $curl = curl_init();
+
+// Defina as opções da solicitação cURL
+curl_setopt_array($curl, array(
+    CURLOPT_URL => 'https://api.mercadopago.com/preapproval',
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => '',
+    CURLOPT_MAXREDIRS => 10,
+    CURLOPT_TIMEOUT => 0,
+    CURLOPT_FOLLOWLOCATION => true,
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => 'POST',
+    CURLOPT_POSTFIELDS =>'{
+        "preapproval_plan_id": "'.$responsePlan->id.'",
+        "reason": "'.$responsePlan->reason.'",
+        "external_reference": "YG-1234",
+        "payer_email": "'.$request->input('email').'",
+        "card_token_id": "'.$request->input('token').'",
+        "back_url": "https://www.mercadopago.com.br",
+        "status": "authorized"
+    }',
+    CURLOPT_HTTPHEADER => array(
+        'Content-Type: application/json',
+        'Authorization: Bearer '.$accessToken
+    ),
+));
+
+$response = curl_exec($curl);
+curl_close($curl);
+$obj = json_decode($response);
+dd($obj);
+
+      
+    
+        
+    
+}
  public function createPreapprovalRequest(): array
 {
  

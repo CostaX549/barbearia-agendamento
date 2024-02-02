@@ -60,7 +60,7 @@ class Horario extends Step
     /*
      * Step Validation
      */
-    public function validate()
+/*     public function validate()
     {
         return [
             [
@@ -78,7 +78,7 @@ class Horario extends Step
                
             ],
         ];
-    }
+    } */
 
     /*
      * Step Title

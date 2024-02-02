@@ -37,7 +37,7 @@ use Actions;
     {
         $existingPlano = Plan::where('user_id', auth()->user()->id)->first();
 
-        $accessToken = 'TEST-4528145694266395-011813-76b485df71f80a98e8d91e4c222c02bc-1644184890';
+        $accessToken = 'APP_USR-3045657775074783-011813-596cca2fb4fa464e0da2cd74abe69972-1642165427';
 if($this->isStripeButtonClicked) {
     $this->redirect('subscription-checkout');
 } else {
@@ -46,6 +46,7 @@ if($this->isStripeButtonClicked) {
         $user = auth()->user();
 
         $jsonPlanResponse = $this->createPreapprovalRequest();
+
   if($existingPlano){
         $jsonPlanResponse = $this->createPreapprovalRequest();
         $planoResponse = $jsonPlanResponse['planoResponse'];
@@ -60,7 +61,8 @@ if($this->isStripeButtonClicked) {
             $this->dispatch('close-modal');
             
         }          
-        else {
+        else { 
+             
             return redirect ($planoResponse['init_point']);
           }
               $user = User::findOrFail(auth()->user()->id);
@@ -169,13 +171,17 @@ if($this->isStripeButtonClicked) {
                     [
                         'id' => 'credit_card',
                     ],
-                ],
-                'payment_methods' => [
+                    [
+                        'id' => 'debit_card',
+                    ],
                     [
                         'id' => 'pix',
                     ],
                 ],
-            ],
+                'payment_methods' => [
+                   
+                ]
+            ]
         ];
    
 

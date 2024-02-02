@@ -35,67 +35,12 @@ class Imagem extends Step
         return 'photograph';
     }
 
-    /*
-     * When Wizard Form has submitted
-     */
-    public function save($state)
-    {
-  
-        $barbearia = new Barbearia;
-        $barbearia->nome = $state['name'];
-        $barbearia->cep = $state['cep'];
-        $path = $state['imagem']->store('uploads', 'public');
-        $barbearia->imagem =  $path;
-        $barbearia->rua = $state['rua'];
-        $barbearia->cidade = $state['cidade'];
-        $barbearia->estado = $state['estado'];
-        $barbearia->complemento = $state['complemento'];
-        $barbearia->owner_id = auth()->user()->id;
-        $barbearia->slug = $state['slug'];
-        $barbearia->cpf = $state['cpf'];
-        $barbearia->save();
-        
-        $barbeiro = new Barbeiros;
-        $barbeiro->name = auth()->user()->name;
-        $barbeiro->avatar = 'teste';
-        $barbeiro->barbearia_id = $barbearia->id;
-        $barbeiro->save();
-        
-        foreach ($state['dias'] as $index => $dia) {
-        
-        
-          BarbeiroWorkingHours::create([
-              'barbeiro_id' => $barbeiro->id,
-              'day_of_week' => $dia,
-              'start_hour' => $state['horariosIniciais'][$index],
-              'end_hour' => $state['horariosFinais'][$index],
-          ]);
-        }
-      
-        
-   
 
-    $plan =  Plan::where('user_id', auth()->user()->id)->first();
-    
-
-
-        $plan->inscrito = 0;
-        $plan->save();
-
-
-
-
-
- 
-      
-   
-
-    }
 
     /*
      * Step Validation
      */
-    public function validate()
+/*     public function validate()
     {
         return [
             [
@@ -108,7 +53,7 @@ class Imagem extends Step
                
             ],
         ];
-    }
+    } */
 
     /*
      * Step Title

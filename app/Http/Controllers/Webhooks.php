@@ -22,9 +22,11 @@ class Webhooks extends Controller
 {
     public function webhook(Request $request){
    
-        $accessToken = 'TEST-4528145694266395-011813-76b485df71f80a98e8d91e4c222c02bc-1644184890';
+        $accessToken = 'APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944';
 
-     
+     if($request->input("type") !== "payment" && $diaDoPagamento+30 ){
+                          plan->delete()
+     }
         try {
             if($request->input("type") === 'subscription_preapproval') {
   
