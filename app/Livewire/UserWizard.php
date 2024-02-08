@@ -41,8 +41,7 @@ class UserWizard extends WizardComponent
    
         Horario::class,
         Imagem::class,
-   
-        Pagamento::class,
+   Pagamento::class,
  
     ];
 

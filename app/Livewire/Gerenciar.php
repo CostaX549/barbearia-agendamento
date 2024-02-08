@@ -46,7 +46,8 @@ class Gerenciar extends Component
     ];
 
     public function mount($slug) {
-        $this->barbearia = Barbearia::where('slug', $slug)->firstOrFail();
+     
+        $this->barbearia = Barbearia::withTrashed()->where('slug', $slug)->firstOrFail();
         $this->type = Carbon::now()->year;
     
         // Carrega os relacionamentos

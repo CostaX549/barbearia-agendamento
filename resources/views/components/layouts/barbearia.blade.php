@@ -22,7 +22,7 @@
             <!-- Sidenav -->
   <nav
   id="full-screen-example"
-  class="fixed left-0 top-0 z-[1035] h-screen w-60 -translate-x-full overflow-hidden bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] dark:bg-zinc-800 md:data-[te-sidenav-hidden='false']:translate-x-0"
+  class="fixed  left-0 top-0 z-[1035] h-screen w-60   -translate-x-full overflow-hidden bg-white shadow-[0_4px_12px_0_rgba(0,0,0,0.07),_0_2px_4px_rgba(0,0,0,0.05)] dark:bg-zinc-800 md:data-[te-sidenav-hidden='false']:translate-x-0"
   data-te-sidenav-init
   data-te-sidenav-mode-breakpoint-over="0"
   data-te-sidenav-mode-breakpoint-side="sm"
@@ -45,7 +45,7 @@
   </div>
   <div id="scrollContainer">
     <ul
-      class="relative m-0 list-none px-[0.2rem]"
+      class="relative m-0 list-none px-[0.2rem] "
       data-te-sidenav-menu-ref>
       <li class="relative">
         <x-barbearia-link  :href="route('gerenciar', ['slug' => $barbearia->slug])"  :active="request()->routeIs('gerenciar')" wire:navigate>
@@ -91,6 +91,22 @@
           </svg>
         </span>
          <span>Gerenciar Agendamentos</span>
+            </x-barbearia-link>
+      </li>
+
+      <li class="relative">
+        <x-barbearia-link  :href="route('barbearia.plano', ['slug' => $barbearia->slug])"  :active="request()->routeIs('barbearia.plano')" wire:navigate>
+          <span
+          class="mr-4 [&>svg]:h-3.5 [&>svg]:w-3.5 [&>svg]:fill-gray-700 dark:[&>svg]:fill-gray-300">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 512 512">
+            <!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+            <path
+              d="M498.1 5.6c10.1 7 15.4 19.1 13.5 31.2l-64 416c-1.5 9.7-7.4 18.2-16 23s-18.9 5.4-28 1.6L284 427.7l-68.5 74.1c-8.9 9.7-22.9 12.9-35.2 8.1S160 493.2 160 480V396.4c0-4 1.5-7.8 4.2-10.7L331.8 202.8c5.8-6.3 5.6-16-.4-22s-15.7-6.4-22-.7L106 360.8 17.7 316.6C7.1 311.3 .3 300.7 0 288.9s5.9-22.8 16.1-28.7l448-256c10.7-6.1 23.9-5.5 34 1.4z" />
+          </svg>
+        </span>
+         <span>Gerenciar Plano</span>
             </x-barbearia-link>
       </li>
       <li class="relative">

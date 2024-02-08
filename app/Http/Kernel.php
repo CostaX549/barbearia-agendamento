@@ -3,7 +3,8 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
-
+use Illuminate\Console\Scheduling\Schedule;
+use App\Jobs\VerificarPagamento;
 class Kernel extends HttpKernel
 {
     /**
@@ -45,7 +46,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
     ];
-
+ 
     /**
      * The application's middleware aliases.
      *

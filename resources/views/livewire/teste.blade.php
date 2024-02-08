@@ -380,13 +380,17 @@ data-te-navbar-ref>
       class="absolute z-[1000] right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
       aria-labelledby="dropdownMenuButton2"
       data-te-dropdown-menu-ref>
+
       @forelse($this->notifications as $b)
+      @if($b)
       <li>
+      
         <img
     class="rounded-t-lg  object-cover "
     src="{{ asset('storage/' . $b->imagem) }}"
    style="width: 150px; height: 150px;"
     alt="" />
+
       <p class="p-2"> {{$b->nome}}</p>
         
        
@@ -491,10 +495,12 @@ data-te-navbar-ref>
     </button>
      
       </li>
+      @endif
       @empty 
-
+     
 
     @endforelse
+
 
    @forelse($this->notificationsNearEvents as $agendamento)
     <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl max-w-30" >
@@ -946,8 +952,8 @@ viewBox="0 0 24 24">
    
 
 
-@can('inscrito', $this->plan)
-          
+{{-- @can('inscrito', $this->plan)
+           --}}
   <!-- Section: Design Block -->
   <section class="mb-3 mt-5">
     <div
@@ -965,11 +971,11 @@ viewBox="0 0 24 24">
   <!-- Section: Design Block -->
 
 <!-- Container for demo purpose -->
-@else
+{{-- @else
 
       <livewire:assinatura />
      
-@endcan
+@endcan --}}
 
 
 

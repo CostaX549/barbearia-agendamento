@@ -23,6 +23,7 @@ class BarbeariaList extends Component
     public function barbeariasordenadas() {
  
         return Barbearia::where('nome', 'like', '%' . $this->search . '%')
+       
             ->get()
             ->sortByDesc(function ($barbearia) {
                 return $barbearia->barbeiros->pluck('agendamentos')->flatten()->count();

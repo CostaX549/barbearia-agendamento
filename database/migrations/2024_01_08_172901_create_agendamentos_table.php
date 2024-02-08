@@ -18,7 +18,7 @@ return new class extends Migration
             $table->dateTime("start_date");
             $table->dateTime("end_date");
             $table->boolean('status')->default(0);
-            
+            $table->string("payment_method");
       
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete("cascade");

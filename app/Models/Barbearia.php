@@ -3,11 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Model; 
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Barbearia extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     protected $casts = [
         'galeria' => 'array',

@@ -20,6 +20,8 @@ use App\Http\Controllers\Webhooks;
 use App\Livewire\Calendario;
 use App\Livewire\Subscribe;
 use App\Livewire\Deletar;
+use App\Livewire\Plano;
+use App\Jobs\VerificarPagamento;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -36,6 +38,7 @@ Route::post('/webhooks',[Webhooks::class, 'webhook'])->name('webhook');
 Route::put('/cancelpause/{id}',[MercadoPago::class,'uptade']);
 Route::get("/planos",[MercadoPago::class,'assinaturas']);
 Route::post('/criar-cliente', [MercadoPago::class, 'criarCliente']);
+
 
 Route::get('/checkout', [MercadoPago::class, 'index']);
 Route::get('/', function () {
@@ -93,6 +96,7 @@ Route::prefix('gerenciar/{slug}')->group(function () {
     Route::get('/horarios', Horarios::class)->name('horarios');
     Route::get('/horarios/calendario/{id}', Calendario::class)->name('barbeiro.calendario'); 
     Route::get('/deletar',Deletar::class)->name('deletar');
+    Route::get('/plano', Plano::class)->name('barbearia.plano');
 });
 Route::get('meus-agendamentos', Agendamentos::class)->name('agendamentos');
 Route::get('landing', LandingPage::class)->name('landing');
@@ -103,6 +107,11 @@ Route::middleware([
 ])->group(function () {
     Route::get('/home', Teste::class)->name('home');
         
+   
+});
+
+Route::get('/disparar-job', function () {
+    VerificarPagamento::dispatch();
    
 });
 

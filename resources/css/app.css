@@ -21,4 +21,8 @@
    
   }
 
-
+  .flatpickr-calendar .flatpickr-day.selected {
+    background-color: #373737;
+    color: #ffffff; /* Texto branco */
+    border-color: #ffffff; /* Cor da borda branca */
+}

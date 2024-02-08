@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Agendamento;
-use Livewire\Attributes\{On, Computed, Validate};
+use Livewire\Attributes\{On, Computed, Validate, Url};
 use Carbon\Carbon;
 
 class Agendamentos extends Component
@@ -12,6 +12,8 @@ class Agendamentos extends Component
 
     public ?Agendamento $editing = null;
     public $date;
+
+  
 public $agendamentoModal;
 public ?Agendamento $selectedAgendamento = null;
 #[Validate(['cortes.*' => 'required'])]

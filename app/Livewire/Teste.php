@@ -83,7 +83,9 @@ public $selectedBarbearia;
     $barbearia = auth()->user()->eventos
     ->where('status', 1)
     ->pluck('barbeiro.barbearia')
+
     ->unique();
+    
     $eventos = auth()->user()->eventos->where('start_date','>',Carbon::now());
 
 $barbeariasAvaliadas = \App\Models\Avaliacao::where('user_id', auth()->user()->id)

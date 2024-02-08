@@ -17,8 +17,9 @@
               @foreach($selectedAgendamento->barbeiro->cortes as $corte)
               <x-checkbox
               md
-          
-              id="right-label"
+              id="color-secondary"
+          secondary
+              
             label="{{ $corte->nome }} - R${{ $corte->preco }}"
               wire:model="cortes.{{ $selectedAgendamento->id }}"
               class="mb-3"
@@ -50,8 +51,7 @@
         
       @foreach($this->agendamentos as $agendamento )
       
- 
-   
+
       <div
    
       class="mx-auto mb-8 sm:mb-0  block rounded-lg max-w-[450px] bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]" >
@@ -59,11 +59,13 @@
         class="  relative   overflow-hidden bg-cover bg-no-repeat"
         data-te-ripple-init
         data-te-ripple-color="light">
+    
         <img
           class="rounded-t-lg  object-cover "
-          src="{{ asset("storage/" . $agendamento->barbeiro->barbearia->imagem )}}"
+          src="{{ asset("storage/" . $agendamento->barbeiro->barbearia()->withTrashed()->first()->imagem )}}"
          style="width: 450px; height: 317px;"
           alt="" />
+    
         <a href="/"
           wire:navigate
           >
@@ -91,15 +93,15 @@
          </p>
          <p class="mb-2 text-base text-neutral-600">
          
-          Cidade:   {{ $agendamento->barbeiro->barbearia->name }}
+          Cidade:   {{ $agendamento->barbeiro->barbearia()->withTrashed()->first()->name }}
          </p>
       
          <p class="mb-4 text-base text-neutral-600">
          
-          Estado:   {{ $agendamento->barbeiro->barbearia->estado }}
+          Estado:   {{ $agendamento->barbeiro->barbearia()->withTrashed()->first()->estado }}
          </p>
 
-
+      
 
          <x-button   class="rounded bg-black px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-gray-900 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-gray-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-black active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]" black label="Editar" spinner="edit({{ $agendamento->id }})" 
         spinner="abrirModal({{ $agendamento->id }})" wire:click="abrirModal({{ $agendamento->id }})" />

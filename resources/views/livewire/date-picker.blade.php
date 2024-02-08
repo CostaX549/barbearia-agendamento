@@ -24,74 +24,69 @@
  
 
 
-@php
- 
-  $specificDateFormatted = \Carbon\Carbon::parse($this->specificDate)->format('Y-m-d');
-
-
-$specificDateEntry = $this->barbeiroSelecionado->specificDates->filter(function ($entry) use ($specificDateFormatted) {
-    $startDate = \Carbon\Carbon::parse($entry->start_date)->format('Y-m-d');
-    return $startDate == $specificDateFormatted;
-})->first();
-    if ($specificDateEntry) {
-        // Definição inicial da data de início
-        $horariosAgendados = $this->barbeiroSelecionado->agendamentos;
-        
-        $startDateCarbon = \Carbon\Carbon::parse($this->specificDate);
-    
-        
-        $startDateAdd = \Carbon\Carbon::parse($specificDateEntry->start_date);
-        $endDate = $specificDateEntry->end_date;
-        $endDateCarbon = \Carbon\Carbon::parse($endDate);
-    }
-@endphp
-
-@if($specificDateEntry)
-    @while($startDateAdd->lt($endDateCarbon))
-        @php
-            $hour = $startDateAdd->format('H:i');
-            $hourlyTimes[] = $hour;
-            $dates[] = $startDateAdd->format('Y-m-d');
-
-            $intervalString = $this->barbeiroSelecionado->interval;
-
-
-list($hours, $minutes, $seconds) = explode(':', $intervalString);
-$intervalMinutes = $hours * 60 + $minutes;
-
-$interval = new DateInterval("PT{$hours}H{$minutes}M{$seconds}S");
-        @endphp
-    
-        @php
+      @php
+      $specificDateFormatted = \Carbon\Carbon::parse($this->specificDate)->format('Y-m-d');
+      
+      $specificDateEntries = $this->barbeiroSelecionado->specificDates->filter(function ($entry) use ($specificDateFormatted) {
+          $startDate = \Carbon\Carbon::parse($entry->start_date)->format('Y-m-d');
+          return $startDate == $specificDateFormatted;
+      });
+  @endphp
   
-            $dateTime = $startDateAdd->format('Y-m-d H:i');
-            $currentDateTime = Carbon::parse($dateTime);
-            $isAgendado = false;
-            $isAgendado = false;
-foreach ($horariosAgendados as $horarioAgendado) {
-    $startHorarioAgendado = Carbon::parse($horarioAgendado->start_date);
-    $endHorarioAgendado = Carbon::parse($horarioAgendado->end_date);
-
-    // Verifica se $currentDateTime está entre $startHorarioAgendado e $endHorarioAgendado
-    if ($currentDateTime >= $startHorarioAgendado && $currentDateTime < $endHorarioAgendado) {
-        $isAgendado = true;
-        break; // Se encontrou, não precisa continuar o loop
-    }
-}
-        @endphp
-    
-        @if($isAgendado)
-            <x-badge label="{{ $hour }}" negative />
-        @else
-            <x-badge label="{{ $hour }}" />
-        @endif
-    
-        @php
-            $startDateAdd->add($interval);
-        @endphp
-    @endwhile
-    
-@endif
+  @if($specificDateEntries->isNotEmpty())
+      @foreach($specificDateEntries as $specificDateEntry)
+          @php
+              // Definição inicial da data de início
+              $horariosAgendados = $this->barbeiroSelecionado->agendamentos;
+              
+              $startDateCarbon = \Carbon\Carbon::parse($this->specificDate);
+          
+              $startDateAdd = \Carbon\Carbon::parse($specificDateEntry->start_date);
+              $endDate = $specificDateEntry->end_date;
+              $endDateCarbon = \Carbon\Carbon::parse($endDate);
+          @endphp
+  
+          @while($startDateAdd->lt($endDateCarbon))
+              @php
+                  $hour = $startDateAdd->format('H:i');
+                  $hourlyTimes[] = $hour;
+                  $dates[] = $startDateAdd->format('Y-m-d');
+      
+                  $intervalString = $this->barbeiroSelecionado->interval;
+      
+                  list($hours, $minutes, $seconds) = explode(':', $intervalString);
+                  $intervalMinutes = $hours * 60 + $minutes;
+      
+                  $interval = new DateInterval("PT{$hours}H{$minutes}M{$seconds}S");
+      
+                  $dateTime = $startDateAdd->format('Y-m-d H:i');
+                  $currentDateTime = Carbon::parse($dateTime);
+                  
+                  $isAgendado = false;
+                  foreach ($horariosAgendados as $horarioAgendado) {
+                      $startHorarioAgendado = Carbon::parse($horarioAgendado->start_date);
+                      $endHorarioAgendado = Carbon::parse($horarioAgendado->end_date);
+      
+                      // Verifica se $currentDateTime está entre $startHorarioAgendado e $endHorarioAgendado
+                      if ($currentDateTime >= $startHorarioAgendado && $currentDateTime < $endHorarioAgendado) {
+                          $isAgendado = true;
+                          break; // Se encontrou, não precisa continuar o loop
+                      }
+                  }
+              @endphp
+          
+              @if($isAgendado)
+                  <x-badge label="{{ $hour }}" negative />
+              @else
+                  <x-badge label="{{ $hour }}" />
+              @endif
+          
+              @php
+                  $startDateAdd->add($interval);
+              @endphp
+          @endwhile
+      @endforeach
+  @endif    
         @php
         // Obtenha todos os horários agendados no formato 'Y-m-d H:i'
         $horariosAgendados = $this->barbeiroSelecionado->agendamentos;

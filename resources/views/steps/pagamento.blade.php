@@ -185,14 +185,10 @@
 
  
 <div id="paymentBrick_container" wire:ignore></div>
-@if($qrCode)
-
-<img src="{{ 'data:image/jpeg;base64,' . $qrCode->point_of_interaction->transaction_data->qr_code_base64 }}" class="mx-auto w-50" alt="QR Code PIX" />
-@endif
 
 @script
 <script>
-  const mp = new MercadoPago('APP_USR-6c284546-a6b3-429f-8181-2a69a2c4f764', {
+  const mp = new MercadoPago('APP_USR-0eacdb13-ba6e-4623-bf57-30f0edeb7a8f', {
     locale: 'pt-br'
   });
   const bricksBuilder = mp.bricks();

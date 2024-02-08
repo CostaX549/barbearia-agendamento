@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('plans', function (Blueprint $table) {
-            $table->dropColumn('price');
+        Schema::table('barbearias', function (Blueprint $table) {
+            $table->string("payment_id")->nullable();
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('plans', function (Blueprint $table) {
-            $table->float('price')->nullable()->default(15);
+        Schema::table('barbearias', function (Blueprint $table) {
+            $table->dropColumn("payment_id");
         });
     }
 };
