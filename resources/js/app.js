@@ -50,6 +50,25 @@ import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.e
 Livewire.start()
     
 
+    // Adicionar evento de clique para o botão "Responder"
+    const replyButtons = document.querySelectorAll('.reply-btn');
+    replyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const parentComment = button.closest('.comment');
+            const replyForm = parentComment.querySelector('.reply-form');
+            // Exibir o formulário de resposta quando o botão "Responder" é clicado
+            const isReplyFormVisible = window.getComputedStyle(replyForm).display !== 'none';
+
+            // Alternar a visibilidade do formulário de resposta
+            if (isReplyFormVisible) {
+                // Se estiver visível, ocultar o formulário de resposta
+                replyForm.style.display = 'none';
+            } else {
+                // Se não estiver visível, exibir o formulário de resposta
+                replyForm.style.display = 'block';
+            }
+        });
+    });
 
 
 document.addEventListener('livewire:navigated', () => {

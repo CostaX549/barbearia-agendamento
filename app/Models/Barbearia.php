@@ -26,6 +26,8 @@ public function barbeiros() {
         return $this->belongsToMany(User::class,"barbearia_users","barbearia_id","user_id");
     }
 
+
+
     public function caixas(){
           return $this->hasMany(Barbearia::class,"barbeiro_id");
     }

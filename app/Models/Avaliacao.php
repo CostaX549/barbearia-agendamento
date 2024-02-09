@@ -14,6 +14,10 @@ class Avaliacao extends Model
          return $this->belongsTo(User::class,"user_id");
     }
 
+    public function respostas() {
+     return $this->hasMany(Resposta::class, "avaliacao_id");
+    }
+
     public function barbearia(){
          return $this->belongsTo(Barbearia::class,"barbearia_id");
     }

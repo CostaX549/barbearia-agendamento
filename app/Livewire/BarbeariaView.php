@@ -15,6 +15,7 @@ use Carbon\Carbon;
 use App\Livewire\Auth;
 use App\Models\Avaliacao;
 use Illuminate\Support\Facades\App;
+use App\Models\User;
 use DateTime;
 class BarbeariaView extends Component
 {   
@@ -39,21 +40,25 @@ public array $cortes = [];
     public $date;
 
     public $dayOfWeek;
-    
+   
 
     
 
     public function mount($slug){
      
           $this->barbearia = Barbearia::where('slug', $slug)->firstOrFail();
-       
+         
         
     }
-#[Computed]
 
+    #[Computed]
     public function avaliacao() {
       return  auth()->user()->avaliacoes->where('barbearia_id', $this->barbearia->id)->pluck('qtd')->first();
     }
+
+
+
+
 
     
 
@@ -85,26 +90,7 @@ public array $cortes = [];
         $this->dayOfWeek = ucfirst($translatedDayOfWeek);
     }
 
-    #[On('avaliar')]
-    public function avaliar($valor, $id){
-
-          $existsAvaliacao = Avaliacao::where("barbearia_id",$id)->where("user_id",auth()->user()->id)->first();
-
-        if(!$existsAvaliacao){
-          $avaliacao = new Avaliacao;
-          
-          $avaliacao->qtd = $valor;
-          $avaliacao->user_id = auth()->user()->id;
-          $avaliacao->barbearia_id = $id;
-
-          $avaliacao->save();
-          $this->dispatch('avaliacao-salva');
-        }else{
-             $existsAvaliacao->qtd = $valor;
-
-             $existsAvaliacao->save();
-        }
-    }
+  
     
 #[On('transactionEmit')]
     public function AgendarHorario()
