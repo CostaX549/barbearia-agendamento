@@ -371,7 +371,7 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
   </div>
 
   @endforeach
-  @foreach($response['data'] as $data)
+  @foreach($response['data'] ?? [] as $data)
   <div
 
 
