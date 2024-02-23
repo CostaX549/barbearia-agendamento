@@ -8,12 +8,13 @@ use App\Models\Barbeiros;
 use Livewire\Attributes\{Validate,On};
 use Livewire\WithFileUploads;
 use App\Models\Cortes;
+use App\Enums\DaysOfWeek;
 
 class BarbeiroEditing extends Component
 {
     use WithFileUploads;
 
-    public $allDaysOfWeek = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+    public $allDaysOfWeek = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
     #[Validate(['dias.*' => 'nullable'])]
     public $dias = [];
     #[Validate(['horariosIniciais.*' => 'required_with:dias.*'], onUpdate: false)]
@@ -38,9 +39,11 @@ class BarbeiroEditing extends Component
         $this->name = $this->barbeiro->name;
     
  
-        foreach ($this->allDaysOfWeek as $day) {
-         $workingHour = $this->barbeiro->workingHours->firstWhere('day_of_week', $day);
- 
+        foreach ($this->allDaysOfWeek as $index => $day) {
+            $workingHour = $this->barbeiro->workingHours
+            ->where('day_of_week', constant(DaysOfWeek::class . '::' . $day))
+            ->first();
+
          if ($workingHour) {
              $this->dias[$day] = true;
              $this->horariosIniciais[$day] = $workingHour->start_hour;
@@ -75,7 +78,7 @@ $barbeiro->name = $this->name;
 $barbeiro->interval = $this->interval;
 
 if($this->foto) {
-$barbeiro->avatar = $this->foto->store('uploads', 'public');
+$barbeiro->avatar = $this->foto->store('/', 's3');
 }
 $barbeiro->save();
 
@@ -89,32 +92,36 @@ $barbeiro->save();
 
     foreach ($existingWorkingHours as $workingHour) {
     
-        if (in_array($workingHour->day_of_week, $selectedDays)) {
+        if (in_array($workingHour->day_of_week->name, $selectedDays)) {
          
             $workingHour->update([
-                'start_hour' => $this->horariosIniciais[$workingHour->day_of_week],
-                'end_hour' => $this->horariosFinais[$workingHour->day_of_week],
+                'start_hour' => $this->horariosIniciais[$workingHour->day_of_week->name],
+                'end_hour' => $this->horariosFinais[$workingHour->day_of_week->name],
             ]);
 
           
-            unset($selectedDays[array_search($workingHour->day_of_week, $selectedDays)]);
+            unset($selectedDays[array_search($workingHour->day_of_week->name, $selectedDays)]);
         } else {
            
             $workingHour->delete();
         }
     }
 
-   
-    foreach ($selectedDays as $day) {
+
+
+    foreach ($selectedDays as $index => $day) {
+
+
+      
+           $barbeiro->workingHours()->create([
        
-        $barbeiro->workingHours()->create([
-            'day_of_week' => $day,
-            'start_hour' => $this->horariosIniciais[$day],
-            'end_hour' => $this->horariosFinais[$day],
-        ]);
+                'day_of_week' => constant(DaysOfWeek::class . '::' . $day),
+                'start_hour' => $this->horariosIniciais[$day],
+                'end_hour' => $this->horariosFinais[$day],
+            ]);
+        
     }
 
-   
 $this->dispatch('equipe-edit-canceled');
 
 }

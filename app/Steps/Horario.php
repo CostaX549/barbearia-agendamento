@@ -2,9 +2,11 @@
 
 namespace App\Steps;
 
+use App\Enums\DaysOfWeek;
 use Vildanbina\LivewireWizard\Components\Step;
 use Illuminate\Validation\Rule;
 
+use Illuminate\Validation\Rules\Enum;
 class Horario extends Step
 {
     // Step view located at resources/views/steps/general.blade.php 
@@ -18,11 +20,49 @@ class Horario extends Step
     public function mount()
     {
         $this->mergeState([
-            'dias'                  => [],
+            'dias'                 => [
+
+            
+                '0' => '',
+                '1' => '',
+                '2' => '',
+                '3' => '',
+                '4' => '',
+                '5' => '',
+                '6' => '',
+            
+            ],
      
 
          
-            'horariosIniciais' => [
+            'horariosIniciais' => [  
+                
+                '0' => '',
+                '1' => '',
+                '2' => '',
+                '3' => '',
+                '4' => '',
+                '5' => '',
+                '6' => '',
+                
+        
+        ],
+           
+         
+            'horariosFinais' => [
+                '0' => '',
+                '1' => '',
+                '2' => '',
+                '3' => '',
+                '4' => '',
+                '5' => '',
+                '6' => '',
+                
+
+            ],
+           
+
+            'intervaloInicial' => [
                 '0' => '',
                 '1' => '',
                 '2' => '',
@@ -31,7 +71,7 @@ class Horario extends Step
                 '5' => '',
                 '6' => '',
             ],
-            'horariosFinais' => [
+            'intervaloFinal' => [
                 '0' => '',
                 '1' => '',
                 '2' => '',
@@ -43,6 +83,8 @@ class Horario extends Step
        
         
         ]);
+
+     
     }
     
     /*
@@ -57,28 +99,67 @@ class Horario extends Step
 
  
 
-    /*
-     * Step Validation
-     */
-/*     public function validate()
-    {
-        return [
-            [
-                'state.dias.*' => ['required'],
-                'state.horariosIniciais.*' => ['required_with:state.dias.*'],
-                'state.horariosFinais.*' => ['required_with:state.dias.*']
-               
-            ],
-            [],
-            [
-                'state.dias.*' => __('Dia'),
-                'state.horariosIniciais.*' => __('Horários Inicial'),
-                'state.horariosFinais.*' => __('Horário Final'),
-              
-               
-            ],
-        ];
-    } */
+ 
+
+    public function validate()
+{
+    $state = $this->livewire->state;
+
+    $rules = [];
+
+
+
+$rules['state.dias.*'] = ['nullable', function ($attribute, $value, $fail) {
+    $enumValues = array_map(function ($case) {
+        return $case->value;
+    }, DaysOfWeek::cases());
+    $attributeParts = explode('.', $attribute);
+    $index = end($attributeParts);
+
+    if (!in_array($index, $enumValues)) {
+        $fail('Os índices da matriz devem ser números correspondentes aos dias da semana.');
+    }
+}];
+    foreach ($state['dias'] as $index => $dia) {
+         // Agora permitimos valores nulos
+
+        if (!empty($dia)) { // Verifica se o dia está marcado
+            $horarioInicialKey = "state.horariosIniciais.{$index}";
+            $horarioFinalKey = "state.horariosFinais.{$index}";
+            $intervaloInicialKey = "state.intervaloInicial.{$index}";
+            $intervaloFinalKey = "state.intervaloFinal.{$index}";
+
+            $rules[$horarioInicialKey] = ['required'];
+            $rules[$horarioFinalKey] = ['required'];
+            $rules[$intervaloFinalKey] = [function ($attribute, $value, $fail) use ($state, $index, $horarioInicialKey, $intervaloFinalKey) {
+                if ($value) {
+                    $index = str_replace('state.intervaloFinal.', '', $attribute);
+                    $horarioInicial = $state['horariosIniciais'][$index];
+                    $horarioFinal = $state['horariosFinais'][$index];
+                    $intervaloFinal = $value;
+        
+                    if ($intervaloFinal < $horarioInicial || $intervaloFinal > $horarioFinal) {
+                        $fail(__('O intervalo final deve estar entre o horário inicial e o horário final.'));
+                    }
+                }
+            }];
+            $rules[$intervaloInicialKey] = [function ($attribute, $value, $fail) use ($state, $index, $intervaloInicialKey, $horarioFinalKey) {
+                if ($value) {
+                    $index = str_replace('state.intervaloInicial.', '', $attribute);
+                    $horarioInicial = $state['horariosIniciais'][$index];
+                    $horarioFinal = $state['horariosFinais'][$index];
+                    $intervaloInicial = $value;
+        
+                    if ($intervaloInicial < $horarioInicial || $intervaloInicial > $horarioFinal) {
+                        $fail(__('O intervalo inicial deve estar entre o horário inicial e o horário final.'));
+                    }
+                }
+            }];
+        }
+    }
+
+    return [$rules, [], []];
+}
 
     /*
      * Step Title

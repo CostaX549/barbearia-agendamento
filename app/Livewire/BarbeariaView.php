@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\DaysOfWeek;
 use App\Models\Barbearia;
 use App\Models\Barbeiros;
 use Livewire\Component;
@@ -14,9 +15,14 @@ use App\Models\Cortes;
 use Carbon\Carbon;
 use App\Livewire\Auth;
 use App\Models\Avaliacao;
+use App\Models\Favorito;
 use Illuminate\Support\Facades\App;
 use App\Models\User;
+use Illuminate\Support\Facades\Http;
 use DateTime;
+
+use Illuminate\Validation\Rules\Enum;
+
 class BarbeariaView extends Component
 {   
     use WithFileUploads;
@@ -42,11 +48,11 @@ public array $cortes = [];
     public $dayOfWeek;
    
 
-    
+
 
     public function mount($slug){
-     
-          $this->barbearia = Barbearia::where('slug', $slug)->firstOrFail();
+  
+          $this->barbearia = Barbearia::withTrashed()->where('slug', $slug)->firstOrFail();
          
         
     }
@@ -90,12 +96,15 @@ public array $cortes = [];
         $this->dayOfWeek = ucfirst($translatedDayOfWeek);
     }
 
+
+
   
     
 #[On('transactionEmit')]
     public function AgendarHorario()
     {
     
+        
         $this->validate();
        
 
@@ -159,11 +168,11 @@ public array $cortes = [];
   
     
     public function salvarGaleria() {
-     
+     $this->authorize('create', $this->barbearia);
         $galeriasExistente = $this->barbearia->galeria ?? [];
-    
+      
         foreach ($this->fotos as $index => $foto) {
-            $caminhoImagem = $foto->store("uploads", "public");
+            $caminhoImagem = $foto->store("/", "s3");
     
      
             $galeriasExistente[] = [
@@ -207,6 +216,16 @@ foreach ($this->barbeiroSelecionado->workingHours as $workingHour) {
 
 }
 
+}
+
+public function render()
+{
+    $response = Http::get('https://graph.instagram.com/me/media', [
+        'fields' => 'id,caption,media_url',
+        'access_token' => 'IGQWRQaF9QZADVpOU4zd0dPMVBoUTJXTi1NRW9BNXZAQdjh5NlFiSWY4MnhQb052XzFBOEg2YmdEU0REMkZA2ZA0QzMnI0dmNFMHU1TEROWFRTc2NuV3JETWMwZAE81TUtSYjJ6OHlOblZAfSlBsYjg4WG9aVmxmNHY2QjdGQ19OaHJPMXU5ZAwZDZD'
+    ])->json();
+
+    return view('livewire.barbearia-view', compact('response'));
 }
 
 

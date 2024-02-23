@@ -9,10 +9,15 @@ use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\{Validate, On, Url};
+use Livewire\Attributes\{Validate, On, Session, Url};
 use App\Models\Barbearia;
 use App\Models\Plan;
+use Instagram\FacebookLogin\FacebookLogin;
 use WireUi\Traits\Actions;
+
+ use Google\Auth\Credentials\ServiceAccountCredentials;
+use Google\Auth\HttpHandler\HttpHandlerFactory; 
+use Illuminate\Support\Facades\Log;
 
 
 use Carbon\Carbon;
@@ -37,7 +42,8 @@ class Teste extends Component
     public  string $cidade = '';
     #[Validate('required|string|unique:barbearias')]
     public string $slug = '';
-
+    #[Session]
+public $tab = 'pills-home7';
 public $compartilharModal;
 public $selectedBarbearia;
     public $preferencia;
@@ -75,6 +81,39 @@ public $selectedBarbearia;
        return  $eventos;
      }
  */
+  public function selecionarTab($tab) {
+    
+    $this->tab = $tab;
+  }
+
+
+  public function teste() {
+    $config = array( // instantiation config params
+        'app_id' => '<FB_APP_ID>', // facebook app id
+        'app_secret' => '<FB_APP_SECRET>', // facebook app secret
+    );
+    
+    // uri facebook will send the user to after they login
+    $redirectUri = 'https://path/to/fb/login/redirect.php';
+    
+    $permissions = array( // permissions to request from the user
+        'instagram_basic',
+        'instagram_content_publish', 
+        'instagram_manage_insights', 
+        'instagram_manage_comments',
+        'pages_show_list', 
+        'ads_management', 
+        'business_management', 
+        'pages_read_engagement'
+    );
+    
+    // instantiate new facebook login
+    $facebookLogin = new FacebookLogin( $config );
+    
+    // display login dialog link
+dd($facebookLogin->getLoginDialogUrl( $redirectUri, $permissions ));
+      
+  }
   
 
 #[Computed]
@@ -96,6 +135,10 @@ $barbeariasAvaliadas = \App\Models\Avaliacao::where('user_id', auth()->user()->i
 
  public function mount()
  {
+    if(session('status')) {
+    
+    $this->dispatch('agendamento');
+    }
     $contagemEventos = $this->notificationsNearEvents->count();
      foreach ($this->notificationsNearEvents as $event) {
          if ($event->read === 1) {
@@ -107,6 +150,15 @@ $barbeariasAvaliadas = \App\Models\Avaliacao::where('user_id', auth()->user()->i
         
      $this->contagem = $this->notifications->count() + $contagemEventos;
  }
+
+
+ public function save($token) {
+    $user = User::findOrFail(auth()->user()->id);
+    $user->token = $token;
+    $user->save();
+ }
+
+ 
 
  public function clicar() {
     $existingPlano = Plan::where('user_id', auth()->user()->id)->first();

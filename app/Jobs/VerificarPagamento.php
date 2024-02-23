@@ -10,7 +10,9 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Barbearia;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
+use App\Enums\PaymentMethods;
 
 class VerificarPagamento implements ShouldQueue
 {
@@ -29,45 +31,76 @@ class VerificarPagamento implements ShouldQueue
      */
     public function handle(): void
     {
-        $accessToken = 'TEST-3045657775074783-011813-d80b74d2be425de8d9abc56e759d6f7b-1642165427'; 
-        $barbeariaPix = Barbearia::withTrashed()->where("payment_method","PIX")->get();
-        
-        foreach($barbeariaPix as $barbearia){
+        $accessToken = 'TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433'; 
+        $barbeariasPix = Barbearia::whereIn("payment_method", [PaymentMethods::pix, PaymentMethods::bolbradesco])->where("price",15)->get();
+      
+        foreach($barbeariasPix as $barbearia){
             $horarioBrasilia = Carbon::now();
-    
+            $response = Http::withHeaders([
+                'Authorization' => 'Bearer ' . $accessToken,
+                'Accept' => 'application/json',
+            ])->get("https://api.mercadopago.com/v1/payments/{$barbearia->payment_id}");
+         if($response['status'] !== "cancelled" && ($response['payment_method_id'] === "pix" ||$response['payment_method_id'] === "bolbradesco" )) {  
             if ($horarioBrasilia > Carbon::parse($barbearia->plan_ends_at)) { 
-                $preferenceID = '1642165427-71f2702e-a83b-4853-bd6b-957305edde95';
+                $preferenceID = '1642165427-578edade-19d7-4033-a68d-52846af975ab';
     
                 $response = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $accessToken,
                     'Content-Type' => 'application/json',
                 ])->get("https://api.mercadopago.com/checkout/preferences/{$preferenceID}");
+
+       
                 
                 $preco = $response->json();
                 
                 $idempotencyKey = uniqid();
-                $paymentData = [
-                    'transaction_amount'=> $preco['items'][0]['unit_price'],
-                    'description' => 'Descrição do pagamento',
-                    'payment_method_id' => 'pix', 
-                    'payer' => [
+                $paymentMethod = strtolower($barbearia->payment_method->value);
+
+
+                if ($paymentMethod === 'pix') {
+                 
+                    $paymentData = [
+                        'transaction_amount'=> $preco['items'][0]['unit_price'],
+                        'description' => 'Descrição do pagamento',
+                        'payment_method_id' => 'pix',
+                        'payer' => [
+                            'email' => 'test_user_1498281909@testuser.com',
+                        ],
+                        'external_reference' => $barbearia->id
+                    ];
+                } elseif ($paymentMethod === 'boleto') {
+                
+                    $paymentData = [
+                        'transaction_amount'=> $preco['items'][0]['unit_price'],
+                        'description' => 'Descrição do pagamento',
+                        'payment_method_id' => 'bolbradesco',
+                        'payer' => [
+                        'first_name' => 'Test',
+                        'last_name' => 'User',
                         'email' => 'test_user_1498281909@testuser.com', 
+                        'identification' => [
+                            'type' => 'CPF', 
+                            'number' => '12345678909', 
+                        ],
                     ],
-                    'external_reference' => $barbearia->id
-                ];
+                        'external_reference' => $barbearia->id
+                    ];
+                }
     
                 $responsePayment = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $accessToken,
                     'Content-Type' => 'application/json',
                     'X-Idempotency-Key' => $idempotencyKey,
                 ])->post("https://api.mercadopago.com/v1/payments?access_token={$accessToken}&preference_id={$preferenceID}", $paymentData);
-                $barbearia->payment_id = $responsePayment['id'];
+                $barbearia->payment_id = $responsePayment->json()['id'];
+                
                 $barbearia->save();
-                if (Carbon::parse($responsePayment->json()['date_of_expiration']) < Carbon::now()) {
-                    $barbearia->delete();
-                }
+               
+                
             }
         }
+        }
+    
     }
     
 }

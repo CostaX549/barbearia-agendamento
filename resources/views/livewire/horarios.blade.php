@@ -61,12 +61,12 @@ class="mb-3"
 
       <livewire:barbeiro-editing :barbeiro="$barbeiro" :key="'editar-' . $barbeiro->id" />
       @else
-      <div class="mb-24 md:mb-0" wire:key="{{ $barbeiro->id }}">
+      <div class="mb-24 mt-10 pb-20 md:mb-0" wire:key="{{ $barbeiro->id }}">
         <div
           class="block h-full rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
           <div class="flex justify-center">
             <div class="flex justify-center -mt-[75px]">
-              <img src="{{ asset('storage/' . $barbeiro->avatar)}}"
+              <img src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbeiro->avatar }}"
                 class="mx-auto rounded-full shadow-lg dark:shadow-black/20 w-[150px] h-[150px] object-cover" alt="Avatar" />
             </div>
           </div>

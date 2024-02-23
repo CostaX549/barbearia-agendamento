@@ -178,6 +178,8 @@ class UserWizard extends WizardComponent
      /*
       * Will return App\Models\User instance or will create empty User (based on $userId parameter) 
       */
+
+      
      public function model()
      {
          return User::findOrNew($this->userId);

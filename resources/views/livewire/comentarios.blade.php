@@ -21,9 +21,10 @@
       
       <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com --> 
       <ul
-        class="my-1 mb-4 flex list-none gap-1 p-0"
+        class="ratingStar my-1 mb-4 flex list-none gap-1 p-0"
+        id="teste"
         wire:ignore
-        data-te-rating-init
+    
         data-te-readonly="true"
         data-te-value="{{ $avaliacao->qtd }}">
         <li>
@@ -146,8 +147,11 @@
               <div class="text-gray-300 font-bold pl-14">|</div>
               <div class="flex justify-between border ml-5  rounded-md ">
                 <div class="comment">
+                  @can('create', $this->barbearia)
                   <button class="reply-btn">Responder</button>
-            
+                 @else 
+                 <button class="reply-btn">Respostas</button>
+                 @endcan
                 <div class="reply-form" style="display: none;">
                     @forelse($avaliacao->respostas as $resposta)
                   <div class="p-3">
@@ -169,34 +173,34 @@
                 <p>Nenhum comentário</p>
              @endforelse   
                   
-       
+       @can('create', $barbearia)
 <livewire:responder :avaliacao="$avaliacao" :key="$avaliacao->id" />
+@endcan
     
     
-              <!-- Reply Container  -->
-             
-              <!-- END Reply Container  -->
+</div>  
+  
     
-          </div>
-          <!-- END Comment Container  -->
-    
-          @empty
-          <p>Nenhum Comentário</p>
-     @endforelse
+      
+
     
     
     
 
-      </div>
+ 
     </div>
+        
+    @empty
+    <p>Nenhum Comentário</p>
+@endforelse
     </div>
-    </div>
-  
+  </div>
+@if($barbearia->avaliacoes()->where('user_id', auth()->user()->id)->count() < 1)
       <div class="w-full px-3 mb-2 mt-6">
-        <ul  wire:ignore id="selected-value-example" class="my-1 flex list-none gap-1 p-0">
+        <ul  wire:ignore id="selected-value-example" class="ratingStar my-1 flex list-none gap-1 p-0">
           <li>
             <span
-              class="text-primary [&>svg]:h-5 [&>svg]:w-5"
+              class="text-black [&>svg]:h-5 [&>svg]:w-5"
               title="Bad"
               data-te-rating-icon-ref>
               <svg
@@ -214,7 +218,7 @@
           </li>
           <li>
             <span
-              class="text-primary [&>svg]:h-5 [&>svg]:w-5"
+              class="text-black [&>svg]:h-5 [&>svg]:w-5"
               title="Poor"
               data-te-rating-icon-ref>
               <svg
@@ -232,7 +236,7 @@
           </li>
           <li>
             <span
-              class="text-primary [&>svg]:h-5 [&>svg]:w-5"
+              class="text-black [&>svg]:h-5 [&>svg]:w-5"
               title="OK"
               data-te-rating-icon-ref>
               <svg
@@ -250,7 +254,7 @@
           </li>
           <li>
             <span
-              class="text-primary [&>svg]:h-5 [&>svg]:w-5"
+              class="text-black [&>svg]:h-5 [&>svg]:w-5"
               title="Good"
               data-te-rating-icon-ref>
               <svg
@@ -268,7 +272,7 @@
           </li>
           <li>
             <span
-              class="text-primary [&>svg]:h-5 [&>svg]:w-5"
+              class="text-black [&>svg]:h-5 [&>svg]:w-5"
               title="Excellent"
               data-te-rating-icon-ref>
               <svg
@@ -296,7 +300,11 @@
           <input type="submit"   id="botaoAvaliar"
           data-barbearia-id="{{$barbearia->id}}"
           type="button"
-        
-          class="inline-block  w-200 bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]" class="px-2.5 py-1.5 rounded-md text-white text-sm bg-indigo-500 text-lg" value='Post Comment'>
+        wire:loading.class="opacity-50"
+        wire:loading.attr="disabled"
+          class="inline-block  w-200 bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]" class="px-2.5 py-1.5 rounded-md text-white  bg-indigo-500 text-lg" value='Post Comment'>
       </div>
+      @endif
+
+      
 </div>

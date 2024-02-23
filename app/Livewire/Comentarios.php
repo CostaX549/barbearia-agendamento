@@ -6,12 +6,18 @@ use Livewire\Component;
 use Livewire\Attributes\{On, Computed};
 use App\Models\Avaliacao;
 use App\Models\Resposta;
+use App\Models\Barbeiros;
 
 class Comentarios extends Component
 {
     public $comment;
     public $barbearia;
     public $resposta;
+
+    #[Computed]
+    public function podeResponder(){
+              return Barbeiros::where("barberia_id",$this->barberia->id);
+    }
     #[Computed]
     public function avaliacoes() {
 

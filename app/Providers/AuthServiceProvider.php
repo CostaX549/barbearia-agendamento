@@ -9,7 +9,10 @@ use App\Models\Plan;
 use App\Policies\BarbeariaPolicy;
 use App\Policies\Pagamento;
 use App\Models\User;
+use App\Models\Agendamento;
+use App\Policies\AgendamentoPolicy;
 use App\Policies\SubscribedPolicy;
+use App\Policies\AuthPolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -20,7 +23,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Barbearia::class => BarbeariaPolicy::class,
-        User::class => Pagamento::class,
+        User::class => AuthPolicy::class,
+        Agendamento::class =>  AgendamentoPolicy::class,
         Plan::class => SubscribedPolicy::class,
     ];
 

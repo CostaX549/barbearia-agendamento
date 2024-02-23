@@ -35,12 +35,12 @@ use App\Jobs\VerificarPagamento;
 
 
 Route::post('/webhooks',[Webhooks::class, 'webhook'])->name('webhook');
-Route::put('/cancelpause/{id}',[MercadoPago::class,'uptade']);
-Route::get("/planos",[MercadoPago::class,'assinaturas']);
-Route::post('/criar-cliente', [MercadoPago::class, 'criarCliente']);
 
 
-Route::get('/checkout', [MercadoPago::class, 'index']);
+
+
+
+
 Route::get('/', function () {
     return view('auth.login');
 })->middleware('guest');
@@ -48,20 +48,10 @@ Route::get('/', function () {
 
 
 
+Route::get('/criar-plano', [MercadoPago::class, 'criar']);
 
-Route::get('/subscription-checkout', function (Request $request) {
-    return $request->user()
-        ->newSubscription('default', 'price_1OZPhaLHLvX4BR9HUv8tKmkh')
-        ->trialDays(30)
-        ->allowPromotionCodes()
-        ->checkout([
-            'success_url' => route('checkout-success'),
-            'cancel_url' => route('checkout-cancel'),
-        ]);
-})->middleware('subscribe');
 
-Route::view('checkout.success', 'dashboard')->name('checkout-success');
-Route::view('checkout.cancel', 'dashboard')->name('checkout-cancel');
+
 
 
 Route::get('/auth/{provider}/redirect', function(string $provider) {
@@ -87,9 +77,10 @@ Route::get('/auth/{provider}/callback', function(string $provider) {
        return redirect('/home');
 
 });
-Route::get('/sucesso', [OrderController::class, 'index'])->name('checkout.success');
-Route::view('/dashboard', 'dashboard')->name('dashboard');
-Route::post('/process-payment',[MercadoPago::class, 'pagar'])->name('process.payment');
+
+
+
+
 Route::prefix('gerenciar/{slug}')->group(function () {
     Route::get('/', Gerenciar::class)->name('gerenciar');
     Route::get('/agendamentos', Agendar::class)->name('barbearia.agendamentos');
@@ -97,8 +88,8 @@ Route::prefix('gerenciar/{slug}')->group(function () {
     Route::get('/horarios/calendario/{id}', Calendario::class)->name('barbeiro.calendario'); 
     Route::get('/deletar',Deletar::class)->name('deletar');
     Route::get('/plano', Plano::class)->name('barbearia.plano');
-});
-Route::get('meus-agendamentos', Agendamentos::class)->name('agendamentos');
+})->middleware("auth");
+
 Route::get('landing', LandingPage::class)->name('landing');
 Route::middleware([
     'auth:sanctum',
@@ -106,17 +97,14 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/home', Teste::class)->name('home');
-        
-   
-});
-
-Route::get('/disparar-job', function () {
-    VerificarPagamento::dispatch();
-   
+    Route::get('/{slug}',BarbeariaView::class);
+ 
 });
 
 
-Route::get('/{slug}',BarbeariaView::class);
+
+
+
 
 
 

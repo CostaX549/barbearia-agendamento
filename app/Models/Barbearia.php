@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\PaymentMethods;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model; 
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,6 +14,8 @@ class Barbearia extends Model
 
     protected $casts = [
         'galeria' => 'array',
+        'payment_method' => PaymentMethods::class,
+        
     ];
 
     

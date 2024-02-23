@@ -1,6 +1,8 @@
 
 @use('App\Models\Plan')
 <div >
+
+
 <!-- Navbar -->
 {{--     <div
       class="w-full text-gray-700 bg-white h-16 fixed top-0 animated z-40"
@@ -243,7 +245,7 @@ data-te-navbar-ref>
     aria-controls="offcanvasExample"
     data-te-ripple-init
     data-te-ripple-color="light">
-  <x-icon lg name="scissors" class="w-[50px] h-[50px]" />
+    <img src="{{ asset('vecteezy_barbershop-logo-vector_11874742.jpg') }}" class="w-[180px] h-[40px] object-cover"  alt="Flowbite Logo" />
 </a>
   </div>
   <!-- Hamburger button for mobile view -->
@@ -276,20 +278,24 @@ data-te-navbar-ref>
     id="navbarSupportedContent2"
     data-te-collapse-item>
     <!-- Left links -->
+ 
     <ul
     id="myTab"
     class="ml-5 flex list-none flex-col flex-wrap pl-0 md:flex-row"
     role="tablist"
     data-te-nav-ref>
     <li role="presentation">
+   
+    
       <a
         href="#pills-home7"
         class="my-2 block rounded bg-neutral-100 px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 data-[te-nav-active]:!bg-neutral-800 data-[te-nav-active]:text-neutral-50 dark:bg-neutral-700 dark:text-white dark:data-[te-nav-active]:!bg-neutral-900 dark:data-[te-nav-active]:text-neutral-50 md:mr-4"
         id="pills-home-tab7"
         data-te-toggle="pill"
         data-te-target="#pills-home7"
-        data-te-nav-active
+       @if($tab === 'pills-home7') data-te-nav-active @endif
         role="tab"
+        wire:click="selecionarTab('pills-home7')"
         aria-controls="pills-home7"
         aria-selected="true"
         wire:ignore.self
@@ -302,8 +308,10 @@ data-te-navbar-ref>
         class="my-2 block rounded bg-neutral-100 px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 data-[te-nav-active]:!bg-neutral-800 data-[te-nav-active]:text-neutral-50 dark:bg-neutral-700 dark:text-white dark:data-[te-nav-active]:!bg-neutral-900 dark:data-[te-nav-active]:text-neutral-50 md:mr-4"
         id="pills-profile-tab7"
         data-te-toggle="pill"
+        @if($tab === 'pills-profile7')    data-te-nav-active     @endif
         data-te-target="#pills-profile7"
         role="tab"
+        wire:click="selecionarTab('pills-profile7')"
         aria-controls="pills-profile7"
         aria-selected="false"
         wire:ignore.self
@@ -317,8 +325,10 @@ data-te-navbar-ref>
         class="my-2 block rounded bg-neutral-100 px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 data-[te-nav-active]:!bg-neutral-800 data-[te-nav-active]:text-neutral-50 dark:bg-neutral-700 dark:text-white dark:data-[te-nav-active]:!bg-neutral-900 dark:data-[te-nav-active]:text-neutral-50 md:mr-4"
         id="pills-contact-tab7"
         data-te-toggle="pill"
+        @if($tab === 'pills-contact7') data-te-nav-active @endif
         data-te-target="#pills-contact7"
         role="tab"
+        wire:click="selecionarTab('pills-contact7')"
         aria-controls="pills-contact7"
         aria-selected="false"
         wire:ignore.self
@@ -331,9 +341,12 @@ data-te-navbar-ref>
         href="#pills-contact8"
         class="my-2 block rounded bg-neutral-100 px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 data-[te-nav-active]:!bg-neutral-800 data-[te-nav-active]:text-neutral-50 dark:bg-neutral-700 dark:text-white dark:data-[te-nav-active]:!bg-neutral-900 dark:data-[te-nav-active]:text-neutral-50 md:mr-4"
         id="pills-contact-tab8"
+        
         data-te-toggle="pill"
         data-te-target="#pills-contact8"
+        @if($tab === 'pills-contact8') data-te-nav-active @endif
         role="tab"
+    wire:click="selecionarTab('pills-contact8')"
         aria-controls="pills-contact8"
         aria-selected="false"
         wire:ignore.self
@@ -346,13 +359,16 @@ data-te-navbar-ref>
   </div>
 
   <div class="relative"  data-te-dropdown-position="dropstart">
-    <button
+    
+  {{--   <button
       class="flex items-center whitespace-nowrap rounded bg-black px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-zinc-950 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-zinc-950 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-black active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
      @if($contagem > 0)
       wire:click="contar"
+      
       @endif
       type="button"
       wire:ignore.self
+      
       id="dropdownMenuButton2"
       data-te-dropdown-toggle-ref
       aria-expanded="false"
@@ -374,7 +390,7 @@ data-te-navbar-ref>
       @if($contagem > 0)
       <span class="notification-dot">{{ $contagem }}</span>
       @endif
-    </button>
+    </button> --}}
     <ul
     wire:ignore.self
       class="absolute z-[1000] right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
@@ -387,7 +403,7 @@ data-te-navbar-ref>
       
         <img
     class="rounded-t-lg  object-cover "
-    src="{{ asset('storage/' . $b->imagem) }}"
+    src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $b->imagem }}"
    style="width: 150px; height: 150px;"
     alt="" />
 
@@ -645,309 +661,26 @@ data-te-navbar-ref>
 <!--Tabs content-->
 <div class="mb-6">
   <div
-    class="hidden opacity-100 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+    class="hidden @if($tab === 'pills-home7') opacity-100 @else opacity-0 @endif transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
     id="pills-home7"
     role="tabpanel"
     aria-labelledby="pills-home-tab7"
-    data-te-tab-active
+
+    @if($tab === 'pills-home7') data-te-tab-active @endif
     wire:ignore.self
     >
- {{--   <div class="mb-3 ml-auto mr-3 mt-10">
-      <div class="relative mb-4 flex w-full flex-wrap justify-end  items-stretch">
-        <input
-          type="search"
-          class="relative m-0 -mr-0.5 block min-w-0  rounded-l border border-solid border-neutral-300 bg-transparent bg-clip-padding px-3 py-[0.25rem] text-base font-normal leading-[1.6] text-neutral-700 outline-none transition duration-200 ease-in-out focus:z-[3] focus:border-primary focus:text-neutral-700 focus:shadow-[inset_0_0_0_1px_rgb(59,113,202)] focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:focus:border-primary"
-          placeholder="Buscar"
-          wire:model.live="search"
-          aria-label="Search"
-          aria-describedby="button-addon1" />
-    
-        <!--Search button-->
-        <button
-          class="relative z-[2] flex items-center rounded-r bg-primary px-6 py-2.5 text-xs font-medium uppercase leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-primary-700 hover:shadow-lg focus:bg-primary-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-primary-800 active:shadow-lg"
-          type="button"
-          id="button-addon1"
-          data-te-ripple-init
-          data-te-ripple-color="light">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-            fill="currentColor"
-            class="h-5 w-5">
-            <path
-              fill-rule="evenodd"
-              d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"
-              clip-rule="evenodd" />
-          </svg>
-        </button>
-      </div>
-    </div>
-<div class="grid  grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-5 ">
 
-
-
-@foreach($this->barbeariasordenadas as $barbearia)
-
-<div
-class="mx-auto mb-8 sm:mb-0  block rounded-lg max-w-[450px] bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
-<div
-  class="  relative   overflow-hidden bg-cover bg-no-repeat"
-  data-te-ripple-init
-  data-te-ripple-color="light">
-  <img
-    class="rounded-t-lg  object-cover "
-    src="{{ asset('storage/' . $barbearia->imagem) }}"
-   style="width: 450px; height: 317px;"
-    alt="" />
-  <a href="/{{$barbearia->slug}}"
-    wire:navigate
-    >
-    <div
-      class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-[hsla(0,0%,98%,0.15)] bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100"></div>
-  </a>
-</div>
-<div class="p-6">
-  <h5
-    class="mb-2 text-xl font-medium leading-tight text-neutral-800">
-  {{ $barbearia->nome }}
-  </h5>
-  <p class="mb-2 text-base text-neutral-600">
-   Cep:   {{ $barbearia->cep }}
- 
-  
-  </p>
-  <p class="mb-2 text-base text-neutral-600">
-   
-    Rua:   {{ $barbearia->rua }}
-   </p>
-   <p class="mb-2 text-base text-neutral-600">
-   
-    Cidade:   {{ $barbearia->cidade }}
-   </p>
-
-   <p class="mb-4 text-base text-neutral-600">
-   
-    Estado:   {{ $barbearia->estado }}
-   </p>
-   <div class="flex  items-center ">
-  <a
-  type="button"
-  data-te-ripple-init
-  data-te-ripple-color="light"
-  href="/{{$barbearia->slug}}"
-  wire:navigate
-  class="rounded bg-black px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-gray-900 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-gray-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-black active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]">
- Conhecer Agora
-</a>
-<x-icon name="share" class=" w-6 h-6 ml-auto cursor-pointer"   data-te-toggle="modal"
-data-te-target="#exampleModal"
- x-on:click="$wire.compartilhar({{ $barbearia->id }})"/>
-
-
-
-</div>
-</div>
-</div>
-@endforeach
-</div>
-  </div>
-  <!-- Modal -->
-<div
-data-te-modal-init
-class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
-id="exampleModal"
-tabindex="-1"
-wire:ignore.self
-aria-labelledby="exampleModalLabel"
-aria-hidden="true">
-<div
-  data-te-modal-dialog-ref
-  wire:ignore.self
-  class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px]">
-  
-
-  <div
-    class="min-[576px]:shadow-[0_0.5rem_1rem_rgba(#000, 0.15)] pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
-    
-    
-    <div
-      class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-      <!--Modal title-->
-      <h5
-        class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200"
-        id="exampleModalLabel">
-       Compartilhar
-      </h5>
-      <!--Close button-->
-      <button
-        type="button"
-        class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
-        data-te-modal-dismiss
-        aria-label="Close">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          class="h-6 w-6">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            d="M6 18L18 6M6 6l12 12" />
-        </svg>
-      </button>
-
-      
-    </div>
-<!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com --> 
-
-    <!--Modal body-->
-    <div class="flex flex-col gap-4 items-center justify-center pt-10 pb-10" data-te-modal-body-ref>
-      <div class="flex items-center space-x-4">
-
-        <div
-  class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-  role="status" wire:loading wire:target="compartilhar">
-
-</div>  
-
-      @if($selectedBarbearia)
-      <div wire:loading.remove wire:target="compartilhar" class="flex gap-4">    
-<a
-type="button"
-data-te-ripple-init
-data-te-ripple-color="light"
-class="mb-2 inline-block rounded px-6 py-5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
-
-href="https://www.facebook.com/sharer/sharer.php?u=http://localhost/{{ $selectedBarbearia->slug }}&quote=Conheça%20a%20barbearia:%20{{ urlencode($selectedBarbearia->nome) }}""
-style="background-color: #1877f2">
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  class="h-4 w-4"
-  fill="currentColor"
-  viewBox="0 0 24 24">
-  <path
-    d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
-</svg>
-</a>
-
-<!-- Instagram -->
-<button
-type="button"
-data-te-ripple-init
-data-te-ripple-color="light"
-class="mb-2 inline-block rounded px-6 py-5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
-style="background-color: #c13584">
-<svg
-  xmlns="http://www.w3.org/2000/svg"
-  class="h-4 w-4"
-  fill="currentColor"
-  viewBox="0 0 24 24">
-  <path
-    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-</svg>
-</button>
-
-<!-- Google -->
-<a
-
-
-    href="https://twitter.com/intent/tweet?url=http://localhost/{{ $selectedBarbearia->slug }}&text=Conheça a  barbearia: {{ $selectedBarbearia->nome }}"
-
-  target="_blank"
-data-te-ripple-init
-data-te-ripple-color="light"
-class="mb-2 inline-block rounded px-6 py-5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg cursor-pointer"
-style="background-color: black">
-<i class="fa-brands fa-x-twitter fa-lg"></i>
-</a>
-
-<a
-
-data-te-ripple-init
-target="_blank"
-data-te-ripple-color="light"
-href="https://wa.me/?text=Confira%20esta%20barbearia: http://localhost/{{ $selectedBarbearia->slug }}&app_absent=0"
-class="mb-2 inline-block rounded px-6 py-5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
-style="background-color: #128c7e">
-<svg
-xmlns="http://www.w3.org/2000/svg"
-class="h-4 w-4"
-fill="currentColor"
-viewBox="0 0 24 24">
-<path
-  d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
-</svg>
-</a>
-
-
-</div> 
-
-
-
-@endif
-
-      </div>
-      <div
-  id="container-example"
-  class="fixed right-0 top-0 z-[2000] mr-3 mt-[59px] hidden w-1/4 items-center rounded-lg bg-primary-100 px-6 py-4 text-base text-primary-800 data-[te-alert-show]:inline-flex"
-  role="alert"
-  data-te-alert-init
-  data-te-autohide="true"
-  data-te-delay="1000">
-  Text copied!
-</div>
-
-      <div class="flex flex-col gap-2 items-center" wire:loading.remove wire:target="compartilhar">
-        <button
-          id="copy-button"
-          type="button"
-          data-te-clipboard-init
-          data-te-clipboard-target="#copy-target-2"
-          data-te-ripple-init
-          data-te-ripple-color="light"
-          class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
-          Copiar Link
-        </button>
-        @if($selectedBarbearia)
-        <div id="copy-target-2" class=" hidden border border-blue-600 rounded-md  p-5 mt-2">http://localhost/{{ $selectedBarbearia->slug }}</div>
-        @endif
-        </div>
-    </div>
-
-
-
-
-    <!--Modal footer-->
-    <div
-      class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
-      <button
-        type="button"
-        class="inline-block rounded bg-primary-100 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-primary-700 transition duration-150 ease-in-out hover:bg-primary-accent-100 focus:bg-primary-accent-100 focus:outline-none focus:ring-0 active:bg-primary-accent-200"
-        data-te-modal-dismiss
-        data-te-ripple-init
-        data-te-ripple-color="light">
-        Fechar
-      </button>
-    
-    </div>
-   
-  </div>
-
-  
-</div>  --}}
 <livewire:barbearia-list  /> 
 
 
 </div>
   <div
-    class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+    class="hidden @if($tab === 'pills-profile7') opacity-100 @else opacity-0 @endif  transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
     id="pills-profile7"
     role="tabpanel"
     aria-labelledby="pills-profile-tab7"
     wire:ignore.self
- 
+    @if($tab === 'pills-profile7') data-te-tab-active @endif
     >
    
 
@@ -957,7 +690,7 @@ viewBox="0 0 24 24">
   <!-- Section: Design Block -->
   <section class="mb-3 mt-5">
     <div
-      class="relative h-[300px] w-[85%] max-sm:w-[100%] rounded-lg mx-auto overflow-hidden bg-cover bg-[50%] bg-no-repeat" style="background-image: url('{{ asset('fundopreto.jpg') }}')">
+      class="relative h-[300px] w-[85%] max-sm:w-[100%] rounded-lg mx-auto overflow-hidden bg-cover bg-[50%] bg-no-repeat" style="background-image: url('https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/fundopreto.jpg')">
     </div>
 
       <div class="block m-auto w-[80%] max-sm:w-[100%] rounded-lg bg-[hsla(0,0%,100%,0.7)] px-6 py-12 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-[hsla(0,0%,5%,0.7)] dark:shadow-black/20 md:py-16 md:px-12 -mt-[100px] backdrop-blur-[30px] ">
@@ -982,10 +715,11 @@ viewBox="0 0 24 24">
 
   </div>
   <div
-    class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+    class="hidden @if($tab === 'pills-contact7') opacity-100 @else opacity-0 @endif transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
     id="pills-contact7"
     role="tabpanel"
     aria-labelledby="tabs-profile-tab01"
+    @if($tab === 'pills-contact7') data-te-tab-active @endif
     wire:ignore.self
     >  
     <div class="grid  grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-5 ">
@@ -998,7 +732,7 @@ viewBox="0 0 24 24">
           data-te-ripple-color="light">
           <img
             class="rounded-t-lg  object-cover "
-            src="{{ asset('storage/' . $barbearia->imagem) }}"
+            src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbearia->imagem }}"
            style="width: 450px; height: 317px;"
             alt="" />
           <a href="/{{$barbearia->slug}}"
@@ -1066,13 +800,75 @@ viewBox="0 0 24 24">
 </a>
   </div> --}}
   <div
-  class="hidden opacity-0 transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
+  class="hidden @if($tab === 'pills-contact8') opacity-100 @else opacity-0 @endif  transition-opacity duration-150 ease-linear data-[te-tab-active]:block"
   id="pills-contact8"
   role="tabpanel"
   aria-labelledby="tabs-profile-tab01"
+  @if($tab === 'pills-contact8') data-te-tab-active @endif
   wire:ignore.self
   >  
        <livewire:agendamentos >
   </div>
 
+ <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
+
+
+
+
+
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyA4CQogWgwcJfRi3c31j5oDWG_HI2GJ_CY",
+    authDomain: "barbearia-agendamento-7fe43.firebaseapp.com",
+    projectId: "barbearia-agendamento-7fe43",
+    storageBucket: "barbearia-agendamento-7fe43.appspot.com",
+    messagingSenderId: "1043760496155",
+    appId: "1:1043760496155:web:cced72387333a32fa482be",
+    measurementId: "G-3VPXJXJWVQ"
+  };
+
+ 
+
+
+
+
+
+
+  
+
+  
+
+ 
+
+
+     
+        const app = initializeApp(firebaseConfig);
+        const messaging = getMessaging(app);
+     
+        navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration => {
+            getToken(messaging, {
+                serviceWorkerRegistration: registration,
+                vapidKey: 'BFekMqC6gz42tCCpKVrxzqn6ScEQ5xRdXbxfIQxltloZduToLcJawLDAokGmYUGagHQnBERn4oRx5rI7luYx5YA' }).then((currentToken) => {
+                if (currentToken) {
+                    console.log("Token is: "+currentToken);
+                   @this.save(currentToken);
+                } else {
+                    // Show permission request UI
+                    console.log('No registration token available. Request permission to generate one.');
+                    // ...
+                }
+            }).catch((err) => {
+                console.log('An error occurred while retrieving token. ', err);
+                // ...
+            });
+        });
+    
+
+</script> 
 </div>

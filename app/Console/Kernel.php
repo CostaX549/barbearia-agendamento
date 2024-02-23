@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use App\Jobs\VerificarPagamento;
+use App\Jobs\NotificationJob;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -13,7 +14,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule):void
     {
-        $schedule->job(new VerificarPagamento())->everyMinute();
+        $schedule->job(new VerificarPagamento())->dailyAt('8:00');
+        $schedule->job(new NotificationJob())->everyMinute();
     }
     /**
      * Register the commands for the application.

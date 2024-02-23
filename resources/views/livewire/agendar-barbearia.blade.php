@@ -34,6 +34,7 @@
         <!--Close button-->
         <button
           type="button"
+          id="fechar"
           class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
           data-te-modal-dismiss
           aria-label="Close">
@@ -64,7 +65,7 @@
       
       @foreach($this->barbeiros as $barbeiro)
       
-        <x-select.user-option src="{{ asset('storage/' . $barbeiro->avatar)}}" label="{{ $barbeiro->name }}" value="{{ $barbeiro->id }}" />
+        <x-select.user-option src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbeiro->avatar }}" label="{{ $barbeiro->name }}" value="{{ $barbeiro->id }}" />
       
         @endforeach
       </x-select>
@@ -74,6 +75,7 @@
             <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
         </div>
       </div>
+   
       @if($barbeiroModel)
       
       <x-select
@@ -86,335 +88,24 @@
       autocomplete="off"
       >
       @foreach($this->barbeiroSelecionado->cortes as $corte)
-      <x-select.user-option src="{{ asset('storage/' . $this->barbeiroSelecionado->avatar)}}" label="{{ $corte->nome }} - R${{ $corte->preco }}" value="{{ $corte->id }}" />
+      <x-select.user-option src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $this->barbeiroSelecionado->avatar }}" label="{{ $corte->nome }} - R${{ $corte->preco }}" value="{{ $corte->id }}" />
       
       @endforeach
       </x-select>
- {{--      <div x-data="bob" x-init="initDatePicker($refs.datepicker2)" wire:ignore>
-        <div class="mb-4">
-            <x-input type="text"  x-ref="datepicker2" wire:model.live="date" label="Data" placeholder="Selecione uma data" />
+
+      
+      <livewire:date-picker  wire:model="date" :formattedDates="$formattedDates" :barbeiroSelecionado="$barbeiroSelecionado" :key="$barbeiroSelecionado->id" />
+        @if(session('error'))
+        <div x-data="{ isOpen: true }" x-on:mostrar.window="isOpen = true" x-show="isOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5" role="alert">
+            <strong class="font-bold">Erro</strong>
+            <span class="block sm:inline">{{ session('error') }}</span>
+            <span @click="isOpen = false" class="absolute top-0 bottom-0 right-0 px-4 py-3 cursor-pointer">
+                <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><title>Close</title><path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z"/></svg>
+            </span>
         </div>
-      </div>
-
-   
-      @script
-      <script>
-        Alpine.data('bob', () => ({
-            date: '',
-            
-            initDatePicker(datepickerRef) {
-                var enableDays = {!! json_encode($this->barbeiroSelecionado->workingHours->pluck('dia_numero')->toArray())  !!};
-                var addDays = {!! $this->barbeiroSelecionado->specificDates->where("status", "adicionar")->pluck('start_date')->map(function($date) {
-    return \Carbon\Carbon::parse($date)->format('d-m-Y');
-})->toJson() !!};
-
-var formattedDatesJson = {!! json_encode($this->formattedDates)  !!};
-
-var removeDays = {!! $this->barbeiroSelecionado->specificDates->where("status", "remover")->pluck('start_date')->map(function($date) {
-    return \Carbon\Carbon::parse($date)->format('d-m-Y');
-})->toJson() !!};
- 
-                var workingHours = {!! json_encode(
-                    $this->barbeiroSelecionado->workingHours->map(function($workingHour) {
-                        return [
-                            'day' => $workingHour->dia_numero,  
-                            'minTime' => $workingHour->start_hour,
-                            'maxTime' => $workingHour->end_hour,
-                        ];
-                    })
-                ) !!};
-
-                var specificHours = {!! json_encode(
-                    $this->barbeiroSelecionado->specificDates->map(function($specificDates) {
-                        return [
-                            'day' => \Carbon\Carbon::parse($specificDates->start_date)->dayOfWeek,
-                            'minTime' => $specificDates->start_date,
-                            'maxTime' => $specificDates->end_date,
-                        ];
-                    })
-                ) !!};
-      
-      
-                var bookedDates = {!! json_encode(
-                    $this->barbeiroSelecionado->agendamentos->pluck("start_date")
-                        ->map(function($date) {
-                            return \Carbon\Carbon::parse($date)->format('d-m-Y H:i');
-                        })
-                        ->toArray()
-                ) !!};
-                
-      
-                flatpickr(datepickerRef, {
-                    enableTime: true,
-                    dateFormat: 'd-m-Y H:i',
-                    inline: true,
-                    plugins: [
-                    new minMaxTimePlugin({
-                        table:  formattedDatesJson
-                    })
-                ],
-
-                
-              
-                    locale: 'pt',
-                    defaultHour: 13,
-                    minDate: 'today',
-
-                    disable: [
-        {
-            from: "06-02-2024 08:00",
-            to: "06-02-2024 10:00"
-        },
-      
-    ],
-                     enable: [
-        function (date) {
-            var date = new Date(date);
-            var formattedDate = ("0" + date.getDate()).slice(-2) + '-' + ("0" + (date.getMonth() + 1)).slice(-2) + '-' + date.getFullYear();
-              
-           
-         
-        
-            if (addDays.includes(formattedDate)) {
-                return true;
-            }
-
-            // Verifica se a data está em enableDays (dias permitidos)
-            return enableDays.includes(date.getDay());
-        }
-    ],      
-
-
-
-
-        
-
-   
-                    
-                    onChange: function (selectedDates, dateStr, instance) {
-                  
-       
-          var selectedDate = selectedDates[0];
-          var dayOfWeek = selectedDate.getDay();
-      
-      
-      
-          var selectedWorkingHours = workingHours.find(function (hour) {
-              return hour.day === dayOfWeek;
-          });
-
-      
-      
-          if (selectedWorkingHours) {
-         
-              instance.set('minTime', selectedWorkingHours.minTime);
-       
-              instance.set('maxTime', selectedWorkingHours.maxTime);
-          }
-          
-        
-          
-      }
-                });
-            }
-        }));
-      
-     
-      </script>
-      @endscript
-      
-      <div class="ml-2" wire:loading wire:target="date">
-        <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-            <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
-        </div>
-      </div>
-      
-      @if($date)
-      <h1 class="mb-3">Horários Disponíveis:</h1>
-      
-      <div wire:loading.remove wire:target="date">
-
- 
-
-
-@php
- 
-  $specificDateFormatted = \Carbon\Carbon::parse($this->specificDate)->format('Y-m-d');
-
-
-$specificDateEntry = $this->barbeiroSelecionado->specificDates->filter(function ($entry) use ($specificDateFormatted) {
-    $startDate = \Carbon\Carbon::parse($entry->start_date)->format('Y-m-d');
-    return $startDate == $specificDateFormatted;
-})->first();
-    if ($specificDateEntry) {
-        // Definição inicial da data de início
-        $horariosAgendados = $this->barbeiroSelecionado->agendamentos->flatMap(function ($agendamento) {
-            $start = Carbon::parse($agendamento->start_date);
-            $end = Carbon::parse($agendamento->end_date);
-        
-            $horarios = [];
-            while ($start < $end) {
-                $horarios[] = $start->format('Y-m-d H:i');
-                $start->addHour(); // Ajuste o intervalo conforme necessário
-            }
-        
-            return $horarios;
-        })->toArray();
-        $startDateCarbon = \Carbon\Carbon::parse($this->specificDate);
-    
-        
-        $startDateAdd = \Carbon\Carbon::parse($specificDateEntry->start_date);
-        $endDate = $specificDateEntry->end_date;
-        $endDateCarbon = \Carbon\Carbon::parse($endDate);
-    }
-@endphp
-
-@if($specificDateEntry)
-    @while($startDateAdd->lt($endDateCarbon))
-        @php
-            $hour = $startDateAdd->format('H:i');
-            $hourlyTimes[] = $hour;
-            $dates[] = $startDateAdd->format('Y-m-d');
-        @endphp
-    
-        @php
-            $dateTime = $startDateAdd->format('Y-m-d H:i');
-            $isAgendado = in_array($dateTime, $horariosAgendados);
-        @endphp
-    
-        @if($isAgendado)
-            <x-badge label="{{ $hour }}" negative />
-        @else
-            <x-badge label="{{ $hour }}" />
         @endif
-    
-        @php
-            $startDateAdd->addHour();
-        @endphp
-    @endwhile
-    
-@endif
-        @php
-        // Obtenha todos os horários agendados no formato 'Y-m-d H:i'
-        $horariosAgendados = $this->barbeiroSelecionado->agendamentos->flatMap(function ($agendamento) {
-            $start = Carbon::parse($agendamento->start_date);
-            $end = Carbon::parse($agendamento->end_date);
-      
-            $horarios = [];
-            while ($start < $end) {
-                $horarios[] = $start->format('Y-m-d H:i');
-                $start->addHour(); // Ajuste o intervalo conforme necessário
-            }
-      
-            return $horarios;
-        })->toArray();
-      @endphp
-      
-      @foreach($this->barbeiroSelecionado->workingHours as $workingHour)
-        @if($workingHour->day_of_week === $dayOfWeek)
-            @php
-                $startHour = new DateTime($workingHour->start_hour);
-                $endHour = new DateTime($workingHour->end_hour);
-                $interval = new DateInterval('PT1H'); // Intervalo de 1 hora
-                $currentHour = $startHour;
-            @endphp
-      
-            @while($currentHour < $endHour)
-                @php
-                    $formattedHour = $currentHour->format('H:i');
-                    $currentDateTime = Carbon::parse($this->date)->setTime($currentHour->format('H'), $currentHour->format('i'));
-                   
-                    $isAgendado = in_array($currentDateTime->format('Y-m-d H:i'), $horariosAgendados);
-                @endphp
-      
-                @if($isAgendado)
-                  
-                    <x-badge label="{{ $formattedHour }}" negative />
-                @else
-                  
-                    <x-badge label="{{ $formattedHour }}" />
-                @endif
-      
-                @php
-                    $currentHour->add($interval);
-                @endphp
-            @endwhile
-        @endif
-      @endforeach
 
- 
 
-      </div> --}}
-
-      
-      <livewire:date-picker  wire:model="date" :formattedDates="$formattedDates" :barbeiroSelecionado="$barbeiroSelecionado" />
-  
-
-<x-select
-label="Modo de Pagamento"
-placeholder="Selecione um método de pagamento"
-:options="['Pagar Agora', 'Pagar no Salão']"
-class="mt-4"
-autocomplete="off"
-wire:model.blur="payment"
-/>
-      <div class="ml-2" wire:loading wire:target="payment">
-        <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-            <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
-        </div>
-      </div>
-      @if($payment === 'Pagar Agora' && $this->cortes)
-      
-      @php 
-        $this->total = 0;
-              foreach($this->cortes as $valor) {
-                  $corte = \App\Models\Cortes::findOrFail($valor);
-                  $this->total += $corte->preco;
-              }
-              
-      @endphp
-      
-      <div class="mt-3" x-data="paypalIntegration" x-init="initPaypal($refs.button)" x-ref="button" wire:ignore >
-          
-          </div>
-      
-          @script 
-      <script>
-        Alpine.data('paypalIntegration', () => ({
-          initPaypal(button) {
-         
-      
-           
-                  paypal.Buttons({
-                      createOrder: function (data, actions) {
-                          return actions.order.create({
-                              purchase_units: [
-                                  {
-                                      amount: {
-                                          value: '{{ $this->total }}',
-                                      },
-                                  },
-                              ],
-                          });
-                      },
-                      onApprove: function (data, actions) {
-                          return actions.order.capture().then(function (orderData) {
-                              const transaction = orderData.purchase_units[0].payments.captures[0];
-                              
-                             
-                                  Livewire.dispatch('transactionEmit', {
-                                      transactionId: transaction.id,
-                                  });
-                             
-                          });
-                      },
-                  }).render(button);
-            
-          },
-      }));
-      </script>
-          @endscript
-      @endif
       @endif
 
     

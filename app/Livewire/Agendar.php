@@ -16,7 +16,7 @@ class Agendar extends Component
     #[Url(keep:true)]
     public $option = "Em breve";
     public function mount($slug) {
-        $this->barbearia = Barbearia::where('slug', $slug)->firstOrFail();
+        $this->barbearia = Barbearia::withTrashed()->where('slug', $slug)->firstOrFail();
 
       
 }

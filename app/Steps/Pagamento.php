@@ -2,6 +2,7 @@
 
 namespace App\Steps;
 
+use App\Enums\DaysOfWeek;
 use App\Enums\PaymentMethods;
 use Vildanbina\LivewireWizard\Components\Step;
 
@@ -20,7 +21,7 @@ use Illuminate\Support\Facades\Redirect;
 use MercadoPago\Client\Customer\CustomerClient;
 use MercadoPago\Client\Customer\CustomerCardClient;
 use MercadoPago\Client\Preference\PreferenceClient;
-
+use Illuminate\Support\Facades\Cache;
 use MercadoPago\Net\MPSearchRequest;
 use App\Enums\PlanTypes;
 use App\Livewire\Plano;
@@ -38,57 +39,35 @@ class Pagamento extends Step
      */
     public function mount()
     {
-        $this->mergeState([
-            'dias'                  => [],
-     
-
-         
-            'horariosIniciais' => [
-                '0' => '',
-                '1' => '',
-                '2' => '',
-                '3' => '',
-                '4' => '',
-                '5' => '',
-                '6' => '',
-            ],
-            'horariosFinais' => [
-                '0' => '',
-                '1' => '',
-                '2' => '',
-                '3' => '',
-                '4' => '',
-                '5' => '',
-                '6' => '',
-            ],
        
-        
-        ]);
+
+      
     }
 
 
         /*
      * When Wizard Form has submitted
      */
-    public function save($state, $formData, $paymentMethod)
+    public function save($state, $formData, $paymentMethod,$selectedPlan)
     {
 
-       
+          
              
-        $accessToken = 'TEST-3045657775074783-011813-d80b74d2be425de8d9abc56e759d6f7b-1642165427'; 
+        $accessToken = 'TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433'; 
 
 
         MercadoPagoConfig::setAccessToken($accessToken);
+    
 
         $barbearia = new Barbearia;
         $barbearia->nome = $state['name'];
         $barbearia->cep = $state['cep'];
-        $path = $state['imagem']->store('uploads', 'public');
+        $path = $state['imagem']->store('/', 's3');
         $barbearia->imagem =  $path;
         $barbearia->rua = $state['rua'];
         $barbearia->cidade = $state['cidade'];
 
-            $barbearia->plan_ends_at = Carbon::now()->addMonth();
+       
         
         
      
@@ -100,7 +79,9 @@ class Pagamento extends Step
 
             $barbearia->payment_method = constant(PaymentMethods::class . '::' . $paymentMethod);
         }
-        $barbearia->price = PlanTypes::mensal;
+        if (defined(PlanTypes::class . '::' . $selectedPlan)) {
+            $barbearia->price = constant(PlanTypes::class . '::' . $selectedPlan);
+        }
         $barbearia->estado = $state['estado'];
         $barbearia->complemento = $state['complemento'];
         $barbearia->owner_id = auth()->user()->id;
@@ -115,18 +96,35 @@ class Pagamento extends Step
         $barbeiro->avatar = 'teste';
         $barbeiro->barbearia_id = $barbearia->id;
         $barbeiro->save();
+        $dia = null; 
+
+        foreach ($state['dias'] as $index => $ativo) {
+            if ($ativo) {
+
+                $indexInt = $index;
         
-        foreach ($state['dias'] as $index => $dia) {
-        
-        
-          BarbeiroWorkingHours::create([
-              'barbeiro_id' => $barbeiro->id,
-              'day_of_week' => $dia,
-              'start_hour' => $state['horariosIniciais'][$index],
-              'end_hour' => $state['horariosFinais'][$index],
-          ]);
+               
+                $dia = DaysOfWeek::from($indexInt);
+
+ 
+
+                if ($dia !== null) {
+                    BarbeiroWorkingHours::create([
+                  
+                        'barbeiro_id' => $barbeiro->id,
+                        'day_of_week' => $dia->value, 
+                        'start_hour' => $state['horariosIniciais'][$index],
+                        'end_hour' => $state['horariosFinais'][$index],
+                        'intervals' => [
+                            'interval' => [
+                                'start' => $state['intervaloInicial'][$index],
+                                'end' => $state['intervaloFinal'][$index]
+                            ]
+                        ]
+                    ]);
+                }
+            }
         }
-      
   
 if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
 
@@ -142,23 +140,14 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
         
         
      
-   'preapproval_plan_id' => '2c9380848d698d98018d849f908c12ae',
+   'preapproval_plan_id' => '2c9380848dc7c710018dd27f7a900723',
 
       
         
          'payer_email'=> $formData['payer']['email'],
           
           'card_token_id' => $formData['token'],
-         'auto_recurring' => [
-            'frequency' => 1,
-            'frequency_type' => 'months',
-            'transaction_amount' => 15,
-            'currency_id' => 'BRL',
-            'free_trial' => [
-                'frequency' => 1,
-                'frequency_type' => 'months',
-            ],
-        ],
+        
 
         'external_reference' => $barbearia->id
       
@@ -175,53 +164,14 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
   
 
    
-    $client_customer = new CustomerClient();
-
-    $client = new CustomerCardClient();
-
- 
-    $response = Http::withHeaders([
-        'Authorization' => 'Bearer ' . $accessToken,
-        'Accept' => 'application/json',
-    ])->get('https://api.mercadopago.com/v1/customers/search', [
-        'email' => $formData['payer']['email']
-    ]);
-    
-    if(isset($response->json()['results'][0])) {
   
-
-
-    
-        $responseCartaoCliente = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $accessToken,
-            'Accept' => 'application/json',
-        ])->get("https://api.mercadopago.com/v1/customers/{$response->json()['results'][0]['id']}/cards");
-    
- 
-    
-    } else {
-        $client_customer = new CustomerClient();
-        $customer = $client_customer->create(["email" =>  $formData['payer']['email']]);
-
-   
-        $client = new CustomerCardClient();
-        $customer_card = $client->create($customer->id, ["token" => $formData['token']]);
-    
-     
-        $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . $accessToken,
-            'Accept' => 'application/json',
-        ])->get("https://api.mercadopago.com/v1/{$customer->id}/cards");
-
-   
-    }
 
 
    
     
 
 } else {
-    $preferenceID = '1642165427-71f2702e-a83b-4853-bd6b-957305edde95';
+    $preferenceID = '1660752433-7b5f0e5e-f624-4bb2-8c11-e04c162c0bf2';
 
     $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,
@@ -231,30 +181,57 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
     
     $preco = $response->json();
     
-    
+ 
     $idempotencyKey = uniqid();
+    
     $paymentData = [
-         'transaction_amount'=> $preco['items'][0]['unit_price'],
+         'transaction_amount'=> $preco['items'][0]['unit_price'] ,
     
         'description' => 'Descrição do pagamento',
-        'payment_method_id' => 'pix', 
+
         'payer' => [
-            'email' => 'test_user_1498281909@testuser.com', 
+           
+            'email' => $formData['payer']['email'], 
+          
         ],
+
+    
 
         'external_reference' => $barbearia->id
     ];
-    $response = Http::withHeaders([
-        'Authorization' => 'Bearer ' . $accessToken,
-        'Content-Type' => 'application/json',
-        'X-Idempotency-Key' => $idempotencyKey,
-    ])->post("https://api.mercadopago.com/v1/payments?access_token={$accessToken}&preference_id={$preferenceID}", $paymentData);
-       
-      
-    $this->qrCode = $response->json();
 
-    $barbearia->payment_id = $response->json()['id'];
+    if ($formData['payment_method_id'] === 'bolbradesco') {
+
+        $paymentData['payer']['identification']['type'] = $formData['payer']['identification']['type'];
+$paymentData['payer']['first_name'] = $formData['payer']['first_name'];
+$paymentData['payer']['last_name'] = $formData['payer']['last_name'];
+           $paymentData['payer']['identification']['number'] = $formData['payer']['identification']['number'];
+           $paymentData['payment_method_id'] = 'bolbradesco';
+      
+    } elseif($formData['payment_method_id'] === 'pec') {
+        $paymentData['payer']['identification']['type'] = 'CPF';
+        $paymentData['payer']['first_name'] = $formData['payer']['first_name'];
+        $paymentData['payer']['last_name'] = $formData['payer']['last_name'];
+           $paymentData['payer']['identification']['number'] = '12345678909';
+           $paymentData['payment_method_id'] = 'pec';
+    } else {
+      
+        $paymentData['payment_method_id'] = 'pix';
+      
+    }
+  
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $accessToken,
+            'Content-Type' => 'application/json',
+            'X-Idempotency-Key' => $idempotencyKey,
+        ])->post("https://api.mercadopago.com/v1/payments?access_token={$accessToken}&preference_id={$preferenceID}", $paymentData);
+
+
+ 
+    $this->qrCode = $response->json();
     
+    $barbearia->payment_id = $response->json()['id'];
+    $barbearia->plan_ends_at = $response->json()['date_of_expiration'];
    $barbearia->save();
    return Redirect::route('barbearia.plano', ['slug' => $barbearia->slug]);
     
@@ -275,7 +252,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
     $barbearia->plan_id = $assinatura->id;
   
   $barbearia->plan_ends_at = Carbon::parse($assinatura->next_payment_date);
-  $barbearia->card_id = $responseCartaoCliente[0]['id'];
+
   $barbearia->save();
   
 } 
@@ -295,6 +272,14 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
 
 
   
+    private function limparCacheBarbearias()
+    {
+  
+        $cacheKey = "homepage-barbearias";
+    
+   
+        Cache::forget($cacheKey);
+    }
     
     /*
     * Step icon 

@@ -237,7 +237,7 @@ return diasDaSemanaMapping[nomeDia.toLowerCase()];
 
        
                   <div class="flex justify-center -mt-[75px]">
-                    <img src="{{ asset('storage/' . $barbeiro->avatar)}}"
+                    <img src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbeiro->avatar }}"
                         class="mx-auto rounded-full shadow-lg dark:shadow-black/20 w-[150px] h-[150px] object-cover opacity-50" alt="Avatar" />
                       </div>
   

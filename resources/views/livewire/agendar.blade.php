@@ -12,7 +12,7 @@
   @endforeach
 
 </div>
-<ol  class="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-6 ml-56  mt-16  max-md:m-auto ">
+{{-- <ol  class="grid grid-cols-1 md:grid-cols-2  lg:grid-cols-4 gap-6 ml-56  mt-16  max-md:m-auto ">
     <div
     class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] text-primary motion-reduce:animate-[spin_1.5s_linear_infinite]"
     role="status" wire:loading wire:target="option">
@@ -23,83 +23,8 @@
   </div>
 
   @foreach($this->agendamentos as $agendamento)
-  {{-- <div  wire:loading.remove wire:target="option">
-  <x-modal wire:model="simpleModal.{{ $agendamento->id }}">
-    <x-card title="Detalhes">
-        <p class="text-gray-600">
-            Lorem Ipsum...
-        </p>
- 
-        <x-slot name="footer">
-            <div class="flex justify-end gap-x-4">
-                <x-button flat label="Cancel" x-on:click="close" />
-                <x-button primary label="I Agree" />
-            </div>
-        </x-slot>
-    </x-card>
-</x-modal>
-  <li>
-    <div class="flex-start md:flex">
-      <div
-        class="-ml-[13px] flex h-[25px] w-[25px] items-center justify-center rounded-full bg-info-100 text-info-700">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          class="h-4 w-4">
-          <path
-            fill-rule="evenodd"
-            d="M6.75 2.25A.75.75 0 017.5 3v1.5h9V3A.75.75 0 0118 3v1.5h.75a3 3 0 013 3v11.25a3 3 0 01-3 3H5.25a3 3 0 01-3-3V7.5a3 3 0 013-3H6V3a.75.75 0 01.75-.75zm13.5 9a1.5 1.5 0 00-1.5-1.5H5.25a1.5 1.5 0 00-1.5 1.5v7.5a1.5 1.5 0 001.5 1.5h13.5a1.5 1.5 0 001.5-1.5v-7.5z"
-            clip-rule="evenodd" />
-        </svg>
-      </div>
-      <div
-        class="mb-10 ml-6 block max-w-md rounded-lg bg-neutral-50 p-6 shadow-md shadow-black/5 dark:bg-neutral-700 dark:shadow-black/10">
-        <div class="mb-4 flex items-center justify-between">
-          <a
-            href="#!"
-            class="text-sm  text-info transition duration-150 ease-in-out hover:text-info-600 focus:text-info-600 active:text-info-700"
-            >{{ $agendamento->user->name }}</a
-          >
-          @php 
-\Carbon\Carbon::setLocale('pt-BR');
 
-          @endphp
-
-
-          <a
-            href="#!"
-            class=" gap-2 flex items-center text-sm text-info transition duration-150 ease-in-out hover:text-info-600 focus:text-info-600 active:text-info-700"
-            >{{ \Carbon\Carbon::parse($agendamento->start_date)->format('d/m/Y H:i') }} -  <x-badge md icon="clock"  label="{{ \Carbon\Carbon::parse($agendamento->start_date)->diffForHumans(\Carbon\Carbon::parse($agendamento->end_date),true) }}" /></a
-          >
-        </div>
-        <p class="mb-6 text-neutral-700 dark:text-neutral-200">
-           
-            <x-badge md icon="user"  label="{{ $agendamento->barbeiro->name }}" />
-        @foreach($agendamento->cortes as $corte)
-        <x-badge md icon="scissors"  label="{{ $corte->nome }}" />
-        @endforeach
-        
-        </p>
-        <button
-          wire:click ="EventoConcluido({{$agendamento->id}})"
-          type="button"
-          class="inline-block rounded bg-info px-4 pb-[5px] pt-[6px] text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#54b4d3] transition duration-150 ease-in-out hover:bg-info-600 hover:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] focus:bg-info-600 focus:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] focus:outline-none focus:ring-0 active:bg-info-700 active:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(84,180,211,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)]"
-          data-te-ripple-init
-          data-te-ripple-color="light">
-          Concluído
-        </button>
-        <button
-          type="button"
-          x-on:click="$wire.simpleModal[{{ $agendamento->id }}] = true"
-          class="inline-block rounded border-2 border-info px-4 pb-[3px] pt-[4px] text-xs font-medium uppercase leading-normal text-info transition duration-150 ease-in-out hover:border-info-600 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-info-600 focus:border-info-600 focus:text-info-600 focus:outline-none focus:ring-0 active:border-info-700 active:text-info-700 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
-          data-te-ripple-init>
-          mais detalhes
-        </button>
-      </div>
-    </div>
-  </li>
-</div> --}}
+  
 
 <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl w-96">
   <div class="p-6">
@@ -144,6 +69,57 @@
 @endforeach 
 
 
-</ol>
+</ol> --}}
+
+<section class="bg-white dark:bg-gray-900 antialiased">
+  <div class="max-w-screen-xl px-4 py-8 mx-auto lg:px-6 sm:py-16 lg:py-24">
+    <div class="max-w-3xl mx-auto text-center">
+      <h2 class="text-4xl font-extrabold leading-tight tracking-tight text-gray-900 dark:text-white">
+     Agendamentos
+      </h2>
+
+      <div class="mt-4">
+        <a href="#" title=""
+          class="inline-flex items-center text-lg font-medium text-primary-600 hover:underline dark:text-primary-500">
+          Learn more about our agenda
+          <svg aria-hidden="true" class="w-5 h-5 ml-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+            fill="currentColor">
+            <path fill-rule="evenodd"
+              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+              clip-rule="evenodd" />
+          </svg>
+        </a>
+      </div>
+    </div>
+
+
+@foreach($this->agendamentos as $agendamento)
+@if($loop->first)
+<div class="flow-root max-w-3xl mx-auto mt-8 sm:mt-12 lg:mt-16">
+  <div class="-my-4 divide-y divide-gray-200 dark:divide-gray-700">
+    <div class="flex flex-col gap-2 py-4 sm:gap-6 sm:flex-row sm:items-center">
+      <p class="w-32 text-lg font-normal text-gray-500 sm:text-right dark:text-gray-400 shrink-0">
+       {{ \Carbon\Carbon::parse($agendamento->start_date)->format('H:i') }} -    {{ \Carbon\Carbon::parse($agendamento->end_date)->format('H:i') }} 
+      </p>
+      <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+        <a href="#" class="flex items-center hover:underline">{{     \Carbon\Carbon::parse($agendamento->start_date)->format('d/m/Y')  }} - {{ $agendamento->barbeiro->name }} - Cortes: @foreach($agendamento->cortes as $corte) {{ $corte->nome }} @endforeach - <img src="{{ $agendamento->user->profile_photo_url }}" class="rounded-full ml-2 h-11"> </a>
+      </h3>
+    </div>
+@else
+        <div class="flex flex-col gap-2 py-4 sm:gap-6 sm:flex-row sm:items-center">
+          <p class="w-32 text-lg font-normal text-gray-500 sm:text-right dark:text-gray-400 shrink-0">
+            {{ \Carbon\Carbon::parse($agendamento->start_date)->format('H:i') }} -    {{ \Carbon\Carbon::parse($agendamento->end_date)->format('H:i') }} 
+          </p>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            <a href="#" class="flex items-center hover:underline">{{     \Carbon\Carbon::parse($agendamento->start_date)->format('d/m/Y')  }} - {{ $agendamento->barbeiro->name }} - Cortes: @foreach($agendamento->cortes as $corte) {{ $corte->nome }} @endforeach - <img src="{{ $agendamento->user->profile_photo_url }}" class="rounded-full ml-2 h-11"> </a>
+          </h3>
+        </div>
+@endif
+
+     @endforeach   
+      </div>
+    </div>
+  </div>
+</section>
 
 </div>

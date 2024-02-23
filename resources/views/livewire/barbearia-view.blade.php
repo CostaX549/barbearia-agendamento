@@ -1,17 +1,41 @@
 
 
-<div>
+<div x-data="{ shown: false, shownHome: false ,shownServico: false,shownBarbeiro : false, shownComentario:false}" class="overflow-hidden">
 
   @use (Carbon\Carbon)
+
+
+
+@cannot('agendar', $barbearia)
  
-  <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com --> 
+  <div class="lg:px-24 lg:py-24 md:py-20 md:px-44 px-4 py-24 items-center flex justify-center flex-col-reverse lg:flex-row md:gap-28 gap-16">
+    <div class="xl:pt-24 w-full xl:w-1/2 relative pb-12 lg:pb-0">
+        <div class="relative">
+            <div class="absolute">
+                <div class="">
+                    <h1 class="my-2 text-gray-800 font-bold text-2xl">
+                     Infelizmente, o plano da barbearia {{ $barbearia->nome }} não foi renovado, quando o plano desta barbearia for renovada, você poderá agendar nela.
+                    </h1>
+                    <p class="my-2 text-gray-800">Contate o dono da barbearia, para saber mais informações.</p>
+                    <button class="sm:w-full lg:w-auto my-2 border rounded md py-4 px-8 text-center bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50">Voltar a Página Inicial</button>
+                </div>
+            </div>
+            <div>
+                <img src="https://i.ibb.co/G9DC8S0/404-2.png" />
+            </div>
+        </div>
+    </div>
+    <div>
+        <img src="https://i.ibb.co/ck1SGFJ/Group.png" />
+    </div>
+</div>
 
-
+@else
 <!-- Container for demo purpose -->
 
  
 
-  <!-- Navbar -->
+{{--   <!-- Navbar -->
   <nav
     class="sticky top-0 z-10 flex w-full items-center justify-between bg-white py-2 text-neutral-600 shadow-lg hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600 dark:text-neutral-200 md:flex-wrap md:justify-start"
     data-te-navbar-ref>
@@ -57,7 +81,17 @@
               data-te-nav-link-ref
               data-te-ripple-init
               data-te-ripple-color="light"
-              >Home</a
+              >Agendar</a
+            >
+          </li>
+          <li data-te-nav-item-ref>
+            <a
+              class="block transition duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 dark:hover:text-white dark:focus:text-white md:p-2 [&.active]:border-primary [&.active]:text-primary"
+              href="#galeria"
+              data-te-smooth-scroll-init
+              data-te-easing="easeInOutQuart"
+       
+              >Galeria</a
             >
           </li>
           <li data-te-nav-item-ref>
@@ -67,17 +101,7 @@
               data-te-nav-link-ref
               data-te-ripple-init
               data-te-ripple-color="light"
-              >Features</a
-            >
-          </li>
-          <li data-te-nav-item-ref>
-            <a
-              class="block transition duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 dark:hover:text-white dark:focus:text-white md:p-2 [&.active]:border-primary [&.active]:text-primary"
-              href="#!"
-              data-te-nav-link-ref
-              data-te-ripple-init
-              data-te-ripple-color="light"
-              >Pricing</a
+              >Serviços</a
             >
           </li>
           <li data-te-nav-item-ref>
@@ -87,25 +111,103 @@
               data-te-nav-link-ref
               data-te-ripple-init
               data-te-ripple-color="light"
-              >About</a
+              >Comentários</a
             >
           </li>
         </ul>
       </div>
     </div>
-  </nav>
+  </nav> --}}
+
+  
+
+<nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+  <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+    <a href="/home" class="flex items-center space-x-3 rtl:space-x-reverse" wire:navigate>
+        <img src="{{ asset('vecteezy_barbershop-logo-vector_11874742.jpg') }}" class="w-[180px] h-[40px] object-cover"  alt="Flowbite Logo" />
+   
+    </a>
+    <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+        <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
+          <span class="sr-only">Open user menu</span>
+          <img class="w-8 h-8 rounded-full" @if(auth()->user()) src="{{ auth()->user()->profile_photo_url }}" @endif alt="user photo">
+        </button>
+        <!-- Dropdown menu -->
+        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
+          <div class="px-4 py-3">
+            <span class="block text-sm text-gray-900 dark:text-white">Bonnie Green</span>
+            <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
+          </div>
+          <ul class="py-2" aria-labelledby="user-menu-button">
+            <li>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Earnings</a>
+            </li>
+            <li>
+              <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+            </li>
+          </ul>
+        </div>
+        <button data-collapse-toggle="navbar-user" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+          </svg>
+      </button>
+    </div>
+    <div class="items-center justify-between hidden w-full lg:mr-32 md:flex md:w-auto md:order-1" id="navbar-user">
+      <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+        <li>
+          <a href="#home"   data-te-duration="1000"  data-te-easing="easeInOutQuart"  class=" linkSmooth block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" 
+          :class="{ 'block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500': shownHome}"
+          aria-current="page">Home</a>
+        </li>
+        <li>
+          <a href="#galeria"  data-te-duration="1000"  data-te-easing="easeInOutQuart" 
+          class="linkSmooth block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" 
+          :class="{ 'block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500': shown}"
+          aria-current="page">Galeria</a>
+        </li>
+        <li>
+          <a href="#services"   data-te-duration="1000"  data-te-easing="easeInOutQuart"   class="linkSmooth block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 ":class="{ 'block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500': shownServico}">Serviços</a>
+        </li>
+        <li>
+          <a href="#barbeiro"    data-te-duration="1000"  data-te-easing="easeInOutQuart" class="linkSmooth block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" :class="{ 'block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500': shownBarbeiro}">Barbeiros</a>
+        </li>
+        <li>
+          <a href="#comentario" id="comentarioLink" data-te-duration="1000"  data-te-easing="easeInOutQuart"   class=" linkSmooth block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" :class="{ 'block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500': shownComentario}">Comentários</a>
+        </li>
+      </ul>
+    </div>
+    </div>
+</nav>
+
 
   <!-- Hero section with background image, heading, subheading and button -->
   <div
-    class="relative overflow-hidden bg-cover bg-center bg-no-repeat p-12 text-center"
+    class="relative overflow-hidden  mx-auto bg-cover bg-center bg-no-repeat p-12 text-center "
+    id="home"
+
+x-intersect="shownHome = true;"
+    x-intersect:leave="shownHome =  false"
     style="
-      background-image: url('/fundopreto.jpg');
-      height: 800px;
-    ">
-    <div
+      background-image: url('https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/6c082904e4c74374b352ad53b2b2a8be-_1_-_1_-min.webp');
+      height: 850px;
+
+    
+    "
+    
+    >
+    <div 
+=
       class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed"
       style="background-color: rgba(0, 0, 0, 0.6)">
-      <div class="flex h-full items-center justify-center">
+      <div class="flex h-full items-center justify-center" >
         <div class="text-white">
           <h2 class="mb-4 text-4xl font-semibold">{{ $barbearia->nome }}</h2>
           <h4 class="mb-6 text-xl font-semibold">{{ $barbearia->cidade }}, {{ $barbearia->estado }}</h4>
@@ -115,20 +217,25 @@
             data-te-target="#exampleModalLg"
             class="rounded border-2 border-neutral-50 px-7 pb-[8px] pt-[10px] text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
             data-te-ripple-init
-            data-te-ripple-color="light">
+            data-te-ripple-color="light"
+          
+            >
        AGENDAR AGORA
           </button>
         </div>
       </div>
     </div>
   </div>
-  <!-- Container for demo purpose -->
-<div class="container my-16 mx-auto md:px-6">
 
-  
-  <h3 class="text-4xl text-center font-bold mb-4">Galeria</h3>
-  <hr class="h-[2px] bg-gray-100  my-10 border-none" />
+  <!-- Container for demo purpose -->
+<div class="container my-16 mx-auto md:px-6"    "   id="galeria">
+
+  <div  x-intersect="shown = true">
+  <h3      class="text-4xl text-center font-bold mb-4">Galeria</h3>
+  <hr class="h-[2px] bg-gray-100  my-10 border-none"     />
+</div>
 <div
+
 data-te-lightbox-init
 class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
 {{-- <div class="h-full w-full">
@@ -153,7 +260,22 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
     class="w-full cursor-zoom-in rounded shadow-sm data-[te-lightbox-disabled]:cursor-auto" />
 </div> --}}
 @can('create',$barbearia)
-
+<button
+  type="button"
+  data-te-ripple-init
+  wire:click="importarGaleria"
+  data-te-ripple-color="light"
+  class="mb-2 inline-block rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
+  style="background-color: #c13584">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    class="h-4 w-4"
+    fill="currentColor"
+    viewBox="0 0 24 24">
+    <path
+      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+  </svg>
+</button>
 <div class="mx-auto cursor-pointer" x-on:click="$openModal('galeriaModal')">
   <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" version="1.1" id="Capa_1" width="100px" height="100px" viewBox="0 0 45.402 45.402" xml:space="preserve">
     <g>
@@ -161,6 +283,8 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
     </g>
     </svg>
 </div>
+
+
 <x-modal.card title="Adicionar items" blur wire:model.defer="galeriaModal">
   <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
@@ -204,6 +328,12 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
 @endcan
 <div
   data-te-lightbox-init
+  x-intersect="shown = true"
+  x-intersect:leave="shown = false" 
+  :class="shown ? 'transition translate-x-none opacity-1 duration-1000' : 'transition translate-x-3/4 opacity-0 duration-1000'"
+  x-transition:leave="transition ease-in duration-1000"
+  x-transition:leave-start="opacity-1 translate-x-none"
+  x-transition:leave-end="opacity-0 translate-x-3/4"
   class="grid gap-6 lg:grid-cols-3 mx-auto"
   wire:ignore.self
 >
@@ -212,11 +342,14 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
   @foreach($barbearia->galeria ?? [] as $galeria)
 
     <div
+
+
+ 
     class="zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat shadow-lg dark:shadow-black/20 bg-[50%]"
-    data-te-ripple-init data-te-ripple-color="dark" >
-    <img   src="{{ asset('storage/' . $galeria['foto']) }}"
-    data-te-img="{{ asset('storage/' . $galeria['foto']) }}"
-      class="w-[400px] object-cover align-middle transition duration-300 ease-linear" />
+    data-te-ripple-init data-te-ripple-color="dark"  wire:key="{{ $galeria['descricao'] }}">
+    <img   src="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}"
+    data-te-img="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}"
+      class="w-[400px] object-cover align-middle transition duration-300 ease-linear"  />
   {{--   <a   data-te-img="{{ asset('storage/' . $galeria['foto']) }}">
       <div
         class="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed bg-[hsla(0,0%,0%,0.3)]">
@@ -238,19 +371,32 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
   </div>
 
   @endforeach
+  @foreach($response['data'] as $data)
+  <div
+
+
+ 
+  class="zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat shadow-lg dark:shadow-black/20 bg-[50%]"
+  data-te-ripple-init data-te-ripple-color="dark"  >
+  <img   src="{{ $data['media_url'] }}"
+  data-te-img="{{ $data['media_url'] }}"
+    class="w-[400px] object-cover align-middle transition duration-300 ease-linear"  />
+
+</div>
+  @endforeach
 </div>
 
 </div>
   </div>
   <!-- Container for demo purpose -->
-<div class="container my-24 mx-auto md:px-6">
+<div class="container my-24 mx-auto md:px-6" x-intersect = "shownServico=true" x-intersect:leave = "shownServico = false"  id="services" >
   <!-- Section: Design Block -->
-  <section class="mb-32 text-center md:text-left">
+  <section class="mb-32 text-center md:text-left" >
     <div
       class="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
       <div class="flex flex-wrap items-center">
         <div class="block w-full shrink-0 grow-0 basis-auto lg:flex lg:w-6/12 xl:w-4/12">
-          <img src="{{ asset('storage/' . $barbearia->imagem)}}" alt="Trendy Pants and Shoes"
+          <img src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbearia->imagem }}" alt="Trendy Pants and Shoes"
             class="w-full rounded-t-lg lg:rounded-tr-none lg:rounded-bl-lg" />
         </div>
         <div class="w-full shrink-0 grow-0 basis-auto lg:w-6/12 xl:w-8/12">
@@ -564,7 +710,7 @@ wire:model.blur="payment"
 
 </div>
 
-  <div class="container my-24 mx-auto md:px-6">
+  <div class="container my-24 mx-auto md:px-6 " id="barbeiro" x-intersect = "shownBarbeiro =true" x-intersect:leave = "shownBarbeiro =false">
     <!-- Section: Design Block -->
     <section class="mb-32 text-center">
         <h2 class="mb-12 text-3xl font-bold">
@@ -576,7 +722,7 @@ wire:model.blur="payment"
             <div class="mb-6 lg:mb-0">
                 <div class="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
                     <div class="relative overflow-hidden bg-cover bg-no-repeat">
-                        <img src="{{ asset('storage/' . $barbeiro->avatar)}}" class="w-full rounded-t-lg max-h-[400px] object-cover" />
+                        <img src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbeiro->avatar }}" class="w-full rounded-t-lg max-h-[400px] object-cover" />
                         <a href="#!">
                             <div class="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed"></div>
                         </a>
@@ -617,8 +763,9 @@ wire:model.blur="payment"
 </div>
 
 
-
-<livewire:comentarios :barbearia="$barbearia" />
+<div id="comentario"  x-intersect = "shownComentario =true" x-intersect:leave = "shownComentario =false" >
+<livewire:comentarios :barbearia="$barbearia"  />
+</div>
 
 
 
@@ -864,5 +1011,19 @@ wire:model.blur="payment"
   </div>
 </footer>
 
+@assets 
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+@endassets
+
+ 
+<script type="application/javascript">
+  function initFlowbite() {
+      console.log(flowbite);
+      // Coloque aqui o código que depende do Flowbite, por exemplo:
+      // flowbite.Button.initAll();
+  }
+  </script>
+@endcan
 
 </div>

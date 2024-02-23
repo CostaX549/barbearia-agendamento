@@ -9,9 +9,11 @@ use Livewire\Attributes\Modelable;
 class DatePicker extends Component
 {
     #[Modelable] 
+    
     public $date;
     public $dayOfWeek;
     public $specificDate;
+    public $dateChanged = null;
     public $barbeiroSelecionado;
     public $selectedAgendamento;
     
@@ -21,32 +23,9 @@ class DatePicker extends Component
         if($this->selectedAgendamento) {
             $this->barbeiroSelecionado = $this->selectedAgendamento->barbeiro;
 
-            $diasDaSemana = [
-                'domingo' => 0,
-                'segunda' => 1,
-                'terça' => 2,
-                'quarta' => 3,
-                'quinta' => 4,
-                'sexta' => 5,
-                'sábado' => 6,
-            ];
-            
-            foreach ($this->barbeiroSelecionado->workingHours as $workingHour) {
-                $workingHour->dia_numero = $diasDaSemana[strtolower($workingHour->day_of_week)];
-            }
+      
     
-    
-    
-            $specificDates = $this->barbeiroSelecionado->specificDates->where("status", "adicionar");
-    
-        
-    
-            foreach ($specificDates as $specificDate) {
-                $this->formattedDates[\Carbon\Carbon::parse($specificDate->start_date)->format('Y-m-d')] = [
-                    'minTime' => \Carbon\Carbon::parse($specificDate->start_date)->format('H:i'),
-                    'maxTime' => \Carbon\Carbon::parse($specificDate->end_date)->format('H:i')
-                ];
-            }
+         
             $datetime = Carbon::parse($this->date);
             $dayTranslations = [
                 'Monday' => 'Segunda',
@@ -63,12 +42,17 @@ class DatePicker extends Component
         
       
             $translatedDayOfWeek = $dayTranslations[$dayOfWeek] ?? $dayOfWeek;
+            $specificDates = $this->barbeiroSelecionado->specificDates->where("status", "adicionar");
+    
+        
+    
         
          
         
             $this->dayOfWeek = ucfirst($translatedDayOfWeek);
     
             $this->specificDate = $datetime;
+            $this->dateChanged = $datetime->format('d-m-Y');
         }
     }
     public function updatedDate($value)
@@ -95,11 +79,16 @@ class DatePicker extends Component
   
         $translatedDayOfWeek = $dayTranslations[$dayOfWeek] ?? $dayOfWeek;
     
-     
-    
-        $this->dayOfWeek = ucfirst($translatedDayOfWeek);
-
+ 
         $this->specificDate = $datetime;
+        $this->dayOfWeek = ucfirst($translatedDayOfWeek);
+if($this->dateChanged !== $datetime->format('d-m-Y')) {
+        $this->updateDateChanged($datetime);
+}
+    }
+
+    public function updateDateChanged($datetime) {
+        $this->dateChanged = $datetime->format('d-m-Y');
     }
 
 

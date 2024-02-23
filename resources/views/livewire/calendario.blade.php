@@ -66,18 +66,11 @@ https://cdn.jsdelivr.net/npm/@fullcalendar/moment-timezone@6.1.10/index.global.m
         $carbonDateFinal = \Carbon\Carbon::parse($this->dateFinal);
         $dayOfWeek = $carbonDate->format('N');
 
-        $diasDaSemana = [
-            '1' => 'Segunda',
-            '2' => 'Terça',
-            '3' => 'Quarta',
-            '4' => 'Quinta',
-            '5' => 'Sexta',
-            '6' => 'Sábado',
-            '7' => 'Domingo',
-        ];
+   
 
-        // Verifica se o dia da semana está nos horários de trabalho
-        $trabalhaNesseDia = in_array($diasDaSemana[$dayOfWeek], $barbeiro->workingHours->pluck("day_of_week")->toArray());
+ 
+
+
 
         $diaAdicionado = $barbeiro->specificDates()
                                 ->where('status', 'adicionar')
@@ -104,7 +97,7 @@ https://cdn.jsdelivr.net/npm/@fullcalendar/moment-timezone@6.1.10/index.global.m
     
    
         $dentroDosHorarios = $barbeiro->workingHours()
-                                      ->where('day_of_week', $diasDaSemana[$dayOfWeek])
+                                      ->where('day_of_week', $dayOfWeek)
                                       ->where('start_hour', '<=', $horaAtual)
                                       ->where('end_hour', '>=', $horaFinal)
                                       ->exists();
@@ -112,14 +105,14 @@ https://cdn.jsdelivr.net/npm/@fullcalendar/moment-timezone@6.1.10/index.global.m
                                   
     @endphp
 
-    @if((!$dentroDosHorarios && !$diaAdicionado) || $diaRemovido )
+    @if((!$dentroDosHorarios && !$diaAdicionado) || $diaRemovido   )
         <button
             type="button"
             wire:click="add"
             class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
             Adicionar dia de Trabalho
         </button>
-    @elseif($dentroDosHorarios || $diaAdicionado)
+    @elseif($dentroDosHorarios || $diaAdicionado )
         <button
             type="button"
             wire:click="remover"

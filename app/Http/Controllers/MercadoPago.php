@@ -315,6 +315,32 @@ dd($obj);
         
     
 }
+
+public function criar() {
+
+    $response = Http::get('https://graph.instagram.com/me/media', [
+        'fields' => 'id,caption,media_url',
+        'access_token' => 'IGQWRQaF9QZADVpOU4zd0dPMVBoUTJXTi1NRW9BNXZAQdjh5NlFiSWY4MnhQb052XzFBOEg2YmdEU0REMkZA2ZA0QzMnI0dmNFMHU1TEROWFRTc2NuV3JETWMwZAE81TUtSYjJ6OHlOblZAfSlBsYjg4WG9aVmxmNHY2QjdGQ19OaHJPMXU5ZAwZDZD'
+    ]);
+
+  
+    if ($response->successful()) {
+        // A solicitação foi bem-sucedida, você pode acessar os dados da resposta
+        dd($response->json());
+        // Faça o que quiser com os dados aqui...
+    } else {
+        // A solicitação falhou, você pode lidar com isso aqui
+      // Obtenha o código de status HTTP
+         dd($response->body()); // Obtenha o corpo da resposta
+        // Faça o que quiser com o status e o corpo da resposta...
+    }
+
+
+
+}
+
+
+
  public function createPreapprovalRequest(): array
 {
  

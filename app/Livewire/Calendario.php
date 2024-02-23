@@ -28,16 +28,7 @@ class Calendario extends Component
     public function mount($id) {
         $this->barbeiro = Barbeiros::findOrFail($id);
         
-        $diasDaSemana = [
-            'domingo' => 0,
-            'segunda' => 1,
-            'terça' => 2,
-            'quarta' => 3,
-            'quinta' => 4,
-            'sexta' => 5,
-            'sábado' => 6,
-        ];
-        
+
         // Inicializar um array vazio para armazenar os horários de trabalho
         $horarios = [];
         
@@ -45,7 +36,7 @@ class Calendario extends Component
         foreach ($this->barbeiro->workingHours as $workingHour) {
             // Adicionar o horário atual ao array de horários
             $horarios[] = [
-                'daysOfWeek' => [$diasDaSemana[strtolower($workingHour->day_of_week)]],
+                'daysOfWeek' => [$workingHour->day_of_week->value],
                 'startTime' => $workingHour->start_hour,
                 'endTime' => $workingHour->end_hour
             ];
@@ -73,7 +64,7 @@ class Calendario extends Component
         // Converta as datas para o formato desejado
         $startDate = Carbon::parse($validated['StartDate'])->format('Y-m-d H:i:s');
         $endDate = Carbon::parse($validated['EndDate'])->format('Y-m-d H:i:s');
-        dd($startDate);
+  
        $agendamento = Agendamento::findOrFail($id);
 
        $agendamento->start_date = $startDate;

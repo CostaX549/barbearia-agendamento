@@ -8,5 +8,5 @@ enum PaymentMethods: string
     case bolbradesco = "Boleto";
     case credit_card = "Cartão de Crédito";
     case debit_card = "Cartão de Débito";
-
+    case ticket = "Lotérica";
 }

@@ -15,7 +15,14 @@ class BarbeariaPolicy
         //
     }
 
+ 
     public function create(User $user, Barbearia $barbearia){
         return $user->id=== $barbearia->owner_id;
+  }
+
+  public function agendar(User $user, Barbearia $barbearia)
+  {
+      // Verifica se o usuário é o proprietário da barbearia e se a barbearia não está deletada
+      return !$barbearia->trashed();
   }
 }

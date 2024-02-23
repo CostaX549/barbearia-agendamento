@@ -9,6 +9,7 @@ class Responder extends Component
 {
     public $avaliacao;
     public $resposta;
+  
 
     public function responder($id) {
         $resposta = new Resposta;

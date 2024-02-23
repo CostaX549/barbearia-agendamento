@@ -6,6 +6,8 @@
 @tailwind components;
 @tailwind utilities;
 
+
+
 [x-cloak] {
     display: none;
 }
@@ -26,3 +28,5 @@
     color: #ffffff; /* Texto branco */
     border-color: #ffffff; /* Cor da borda branca */
 }
+
+
