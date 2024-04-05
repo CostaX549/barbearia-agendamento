@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('specific_dates', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("barbeiro_id");  
+            $table->unsignedBigInteger('barbearia_user_id'); 
+            $table->foreign('barbearia_user_id')->references('id')->on('barbearia_users')->onDelete('cascade');
             $table->dateTime("start_date");
             $table->dateTime("end_date");
             $table->string("status");
-            $table->foreign('barbeiro_id')->references('id')->on('barbeiros')->onDelete('cascade');
+      
             $table->timestamps();
         });
     }

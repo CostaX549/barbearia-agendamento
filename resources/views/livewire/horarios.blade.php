@@ -46,7 +46,7 @@ class="mb-3"
 
 
 <!-- Container for demo purpose -->
-<div class="container my-24 mx-auto md:px-6 mr-24 max-sm:m-auto">
+<div class="my-24 mx-auto md:px-6 mr-24 max-sm:m-auto">
   <!-- Section: Design Block -->
 
 
@@ -66,22 +66,28 @@ class="mb-3"
           class="block h-full rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
           <div class="flex justify-center">
             <div class="flex justify-center -mt-[75px]">
-              <img src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbeiro->avatar }}"
+              <img src="{{ $barbeiro->user->profile_photo_url }}"
                 class="mx-auto rounded-full shadow-lg dark:shadow-black/20 w-[150px] h-[150px] object-cover" alt="Avatar" />
             </div>
           </div>
           <div class="p-6">
-            <h5 class="mb-4 text-lg font-bold">{{ $barbeiro->name }}</h5>
+            <h5 class="mb-4 text-lg font-bold">{{ $barbeiro->user->name }}</h5>
             <p class="mb-6">Frontend Developer</p>
             <ul class="mx-auto flex flex-col gap-4 list-inside justify-center">
               
-              <x-button primary label="Editar Barbeiro" spinner="edit({{ $barbeiro->id }})" wire:click="edit({{ $barbeiro->id }})" />
+              <x-button primary label="Gerenciar Barbeiro" spinner="edit({{ $barbeiro->id }})" wire:click="edit({{ $barbeiro->id }})" />
                 <a
                 href="horarios/calendario/{{ $barbeiro->id }}"
-                wire:navigate
+         
                 class="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
                 >Gerenciar Calendário</a
               >
+              <a
+              href="horarios/{{ $barbeiro->id }}"
+            
+              class="text-primary transition duration-150 ease-in-out hover:text-primary-600 focus:text-primary-600 active:text-primary-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
+              >Gerenciar Colaborador</a
+            >
             </ul>
           </div>
         </div>

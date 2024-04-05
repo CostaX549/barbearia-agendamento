@@ -12,7 +12,9 @@ class Comentarios extends Component
 {
     public $comment;
     public $barbearia;
+    public  $responding;
     public $resposta;
+    public $all = false;
 
     #[Computed]
     public function podeResponder(){
@@ -24,6 +26,15 @@ class Comentarios extends Component
         
         
         return $this->barbearia->avaliacoes;
+    }
+
+    public function seeAll() {
+        $this->all = true;
+    }
+
+    public function voltar() {
+        $this->all = false;
+        $this->dispatch('recarregar');
     }
 
     #[On('avaliar')]

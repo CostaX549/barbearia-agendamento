@@ -26,10 +26,8 @@ class BarbeariaList extends Component
  
         return Barbearia::where('nome', 'like', '%' . $this->search . '%')
        
-            ->get()
-            ->sortByDesc(function ($barbearia) {
-                return $barbearia->barbeiros->pluck('agendamentos')->flatten()->count();
-            });
+            ->get();
+           
     }
 
     public function render()

@@ -15,6 +15,7 @@ class Cortes extends Model
     }
 
     public function agendamentos() {
-        return $this->belongsToMany(Agendamento::class, "agendamentos_cortes", "corte_id", "agendamento_id");
+        return $this->belongsToMany(Agendamento::class, "agendamentos_cortes", "user_corte_id", "agendamento_id");
     }
+    
 }

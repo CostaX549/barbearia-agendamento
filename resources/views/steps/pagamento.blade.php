@@ -1,32 +1,30 @@
 
+@php 
+ $accessToken = 'TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433'; 
 
 
-
-
+ \MercadoPago\MercadoPagoConfig::setAccessToken($accessToken);
+$cards = auth()->user()->getMercadoPagoCards();
+foreach($cards as $card) {
+    $cardIds[] = $card->id;
+}
+@endphp
  
 
   <div id="paymentBrick_container" wire:ignore x-data="mercadoPagoIntegration" x-init="initMercadoPago()">
-    <input type="radio" name="plan" id="monthly" value="mensal" @change="selectedPlan = $event.target.value">
-    <label for="mensal">Plano Mensal</label><br>
-    
-    <input type="radio" name="plan" id="annual" value="anual" @change="selectedPlan = $event.target.value">
-    <label for="anual">Plano Anual</label><br>
-    
-    <input type="radio" name="plan" id="semiannual" value="semestral" @change="selectedPlan = $event.target.value">
-    <label for="semestral">Plano Semestral</label><br>
+
 </div>
 
 
-@assets
-<script src="https://sdk.mercadopago.com/js/v2"></script>
-  @endassets
+
   
 @script
 <script>
+
     Alpine.data('mercadoPagoIntegration', () => ({
         selectedPlan: '',
         initMercadoPago() {
-            const mp = new MercadoPago('APP_USR-f1004ea5-890e-45cc-b3b2-f42af7c5bff0', {
+            const mp = new MercadoPago('TEST-ccf01c62-f583-48b5-ab9a-6ce59349afc3', {
                 locale: 'pt-br'
             });
 
@@ -37,6 +35,13 @@
                     amount: 15,
 /*   preferenceId: "1642165427-578edade-19d7-4033-a68d-52846af975ab", */
                     payer: {
+
+          
+        
+           customerId: @json(auth()->user()->payer_id),
+           cardsIds:  @json($cardIds),
+     
+
                         firstName: "",
                         lastName: "",
                         email: "test_user_1498281909@testuser.com",

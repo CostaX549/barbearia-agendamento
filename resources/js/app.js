@@ -77,11 +77,10 @@ document.addEventListener('livewire:navigated', () => {
     new Rating(star);
   });
 
+  
 
 
 })
-
-
 
 
 

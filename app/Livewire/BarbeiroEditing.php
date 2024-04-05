@@ -4,11 +4,13 @@ namespace App\Livewire;
 
 use App\Models\Agendamento;
 use Livewire\Component;
-use App\Models\Barbeiros;
+use App\Models\BarbeariaUser;
 use Livewire\Attributes\{Validate,On};
 use Livewire\WithFileUploads;
 use App\Models\Cortes;
+use Carbon\Carbon;
 use App\Enums\DaysOfWeek;
+use App\Models\UserCorte;
 
 class BarbeiroEditing extends Component
 {
@@ -22,23 +24,21 @@ class BarbeiroEditing extends Component
 
     #[Validate(['horariosFinais.*' => 'required_with:dias.*'], onUpdate: false)]
     public $horariosFinais = [];
-
+public $date;
     public $foto;
     public $interval;
-    public $corteModal;
-    public $cortename;
-    public $cortedescricao;
-    public $currency;
+public array $cortes = [];
+public $model;
     public $name;
-    public Barbeiros $barbeiro;
+    public BarbeariaUser $barbeiro;
     
     
     public function mount()
     {
        
         $this->name = $this->barbeiro->name;
-    
- 
+
+          $this->cortes = $this->barbeiro->cortes->pluck('corte.id')->toArray();
         foreach ($this->allDaysOfWeek as $index => $day) {
             $workingHour = $this->barbeiro->workingHours
             ->where('day_of_week', constant(DaysOfWeek::class . '::' . $day))
@@ -69,19 +69,16 @@ class BarbeiroEditing extends Component
     }
 
 
-    public function editarBarbeiro(Barbeiros $barbeiro)
+    public function editarBarbeiro(BarbeariaUser $barbeiro)
 {
 
   $this->validate();
 
-$barbeiro->name = $this->name;
-$barbeiro->interval = $this->interval;
 
-if($this->foto) {
-$barbeiro->avatar = $this->foto->store('/', 's3');
-}
+
+
+$barbeiro->interval = Carbon::parse($this->interval);
 $barbeiro->save();
-
     $selectedDays = array_keys(array_filter($this->dias, function ($value) {
         return $value === true;
     }));
@@ -114,7 +111,7 @@ $barbeiro->save();
 
       
            $barbeiro->workingHours()->create([
-       
+               
                 'day_of_week' => constant(DaysOfWeek::class . '::' . $day),
                 'start_hour' => $this->horariosIniciais[$day],
                 'end_hour' => $this->horariosFinais[$day],
@@ -122,6 +119,15 @@ $barbeiro->save();
         
     }
 
+  
+    
+     
+
+      
+        $barbeiro->cortesBarbearia()->sync($this->cortes); 
+    
+
+    
 $this->dispatch('equipe-edit-canceled');
 
 }
@@ -129,7 +135,7 @@ $this->dispatch('equipe-edit-canceled');
 
 
     
-    public function criarCorte(Barbeiros $barbeiro) {
+    public function criarCorte(BarbeariaUser $barbeiro) {
         $corte = new Cortes;
         $corte->nome = $this->cortename;
         $corte->descricao = $this->cortedescricao;
@@ -141,6 +147,10 @@ $this->dispatch('equipe-edit-canceled');
 
     public function render()
     {
+      
+ 
+
+
         return view('livewire.barbeiro-editing');
     }
 }

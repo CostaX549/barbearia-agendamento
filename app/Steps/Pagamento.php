@@ -11,7 +11,7 @@ use App\Models\Barbearia;
 use App\Models\Barbeiros;
 use Carbon\Carbon;  
 use Illuminate\Support\Facades\Http;
-use App\Models\BarbeiroWorkingHours;
+use App\Models\UserWorkingHours;
 use App\Models\Plan;
 use MercadoPago\Client\PreApproval\PreApprovalClient;
 use MercadoPago\Client\PreApprovalPlan\PreApprovalPlanClient;
@@ -19,9 +19,11 @@ use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Payment\PaymentClient;
 use Illuminate\Support\Facades\Redirect;
 use MercadoPago\Client\Customer\CustomerClient;
+
 use MercadoPago\Client\Customer\CustomerCardClient;
 use MercadoPago\Client\Preference\PreferenceClient;
 use Illuminate\Support\Facades\Cache;
+use App\Models\BarbeariaUser;
 use MercadoPago\Net\MPSearchRequest;
 use App\Enums\PlanTypes;
 use App\Livewire\Plano;
@@ -31,6 +33,7 @@ class Pagamento extends Step
     // Step view located at resources/views/steps/general.blade.php 
     protected string $view = 'steps.pagamento';
     public $qrCode;
+    public $cardIds = [];
 
  
 
@@ -40,8 +43,7 @@ class Pagamento extends Step
     public function mount()
     {
        
-
-      
+   
     }
 
 
@@ -69,33 +71,33 @@ class Pagamento extends Step
 
        
         
-        
+        $barbearia_user = new BarbeariaUser;
+        $barbearia_user->user_id = auth()->user()->id;
+    
      
         if (defined(PaymentMethods::class . '::' . $formData['payment_method_id'])) {
-        
-            $barbearia->payment_method = constant(PaymentMethods::class . '::' . $formData['payment_method_id']);
+   
+        $barbearia_user->payment_method = constant(PaymentMethods::class . '::' . $formData['payment_method_id']);
+          
         } else {
        
 
-            $barbearia->payment_method = constant(PaymentMethods::class . '::' . $paymentMethod);
+            $barbearia_user->payment_method = constant(PaymentMethods::class . '::' . $paymentMethod);
         }
-        if (defined(PlanTypes::class . '::' . $selectedPlan)) {
-            $barbearia->price = constant(PlanTypes::class . '::' . $selectedPlan);
-        }
+        $barbearia_user->price = constant(PlanTypes::class . '::' . 'mensal');
         $barbearia->estado = $state['estado'];
-        $barbearia->complemento = $state['complemento'];
+        $barbearia->complemento = $state['complemento'];      
         $barbearia->owner_id = auth()->user()->id;
         $barbearia->slug = $state['slug'];
         $barbearia->cpf = $state['cpf'];
  
         $barbearia->save();
-        $barbearia->delete();
+        $barbearia_user->barbearia_id = $barbearia->id;
+        $barbearia_user->save();
+        $barbearia_user->delete();
+       
         
-        $barbeiro = new Barbeiros;
-        $barbeiro->name = auth()->user()->name;
-        $barbeiro->avatar = 'teste';
-        $barbeiro->barbearia_id = $barbearia->id;
-        $barbeiro->save();
+
         $dia = null; 
 
         foreach ($state['dias'] as $index => $ativo) {
@@ -109,9 +111,10 @@ class Pagamento extends Step
  
 
                 if ($dia !== null) {
-                    BarbeiroWorkingHours::create([
+                    UserWorkingHours::create([
                   
-                        'barbeiro_id' => $barbeiro->id,
+                      
+                 'barbearia_user_id' => $barbearia_user->id,
                         'day_of_week' => $dia->value, 
                         'start_hour' => $state['horariosIniciais'][$index],
                         'end_hour' => $state['horariosFinais'][$index],
@@ -149,7 +152,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
           'card_token_id' => $formData['token'],
         
 
-        'external_reference' => $barbearia->id
+        'external_reference' => $barbearia_user->id
       
     
 
@@ -158,11 +161,16 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
 
         
 
-    
-  $assinatura = $client->create($preapprovalData);
+    try {
+        $assinatura = $client->create($preapprovalData);
+
+        // Faça algo com a assinatura criada, como salvar no banco de dados ou retornar uma resposta para o usuário
+    } catch (\Exception $e) {
+           dd($e);
+    }
  
   
-
+ Redirect::route('barbearia.billing', ['slug' => $barbearia->slug]);
    
   
 
@@ -171,7 +179,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
     
 
 } else {
-    $preferenceID = '1660752433-7b5f0e5e-f624-4bb2-8c11-e04c162c0bf2';
+    $preferenceID = '1660752433-f143c091-2454-40f0-9451-128b6ca2824a';
 
     $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,
@@ -186,8 +194,8 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
     
     $paymentData = [
          'transaction_amount'=> $preco['items'][0]['unit_price'] ,
-    
-        'description' => 'Descrição do pagamento',
+       
+        'description' => 'Pague o plano do barbeiro',
 
         'payer' => [
            
@@ -197,7 +205,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
 
     
 
-        'external_reference' => $barbearia->id
+        'external_reference' => $barbearia_user->id
     ];
 
     if ($formData['payment_method_id'] === 'bolbradesco') {
@@ -228,12 +236,13 @@ $paymentData['payer']['last_name'] = $formData['payer']['last_name'];
 
 
  
-    $this->qrCode = $response->json();
+
     
-    $barbearia->payment_id = $response->json()['id'];
-    $barbearia->plan_ends_at = $response->json()['date_of_expiration'];
-   $barbearia->save();
-   return Redirect::route('barbearia.plano', ['slug' => $barbearia->slug]);
+    $barbearia_user->payment_id = $response->json()['id'];
+    $barbearia_user->plan_ends_at = $response->json()['date_of_expiration'];
+   $barbearia_user->save();
+
+   Redirect::route('barbearia.billing', ['slug' => $barbearia->slug]);
     
 }
     
@@ -249,11 +258,11 @@ $paymentData['payer']['last_name'] = $formData['payer']['last_name'];
 
       
 if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
-    $barbearia->plan_id = $assinatura->id;
+    $barbearia_user->assinatura_id = $assinatura->id;
   
-  $barbearia->plan_ends_at = Carbon::parse($assinatura->next_payment_date);
+  $barbearia_user->plan_ends_at = Carbon::parse($assinatura->next_payment_date);
 
-  $barbearia->save();
+  $barbearia_user->save();
   
 } 
 

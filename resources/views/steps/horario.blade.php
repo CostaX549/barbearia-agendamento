@@ -1,9 +1,9 @@
 
 
-<div>
-    <div>
+
+    <div class=" flex flex-col gap-4 px-2" >
         @foreach(['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'] as $index => $dia)
-            <div class="flex flex-wrap items-center gap-4" >
+          
                 <x-checkbox id="{{ strtolower($dia) }}" md value="{{ $index }}" wire:model.blur="state.dias.{{$index }}" label="{{ $dia }}" />
 
                 <x-time-picker
@@ -45,7 +45,7 @@
             format="24"
             class="mb-3"
         />
-            </div>
+           
         @endforeach
     </div>
-</div>
+

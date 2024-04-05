@@ -21,10 +21,10 @@
       <div
       
       class="relative flex max-w-[30rem] flex-col overflow-hidden rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
-      <a href="/{{ $agendamento->barbeiro->barbearia->slug }}"    data-te-ripple-init
+      <a href="/{{ $agendamento->colaborador->barbearia->slug }}"    data-te-ripple-init
         data-te-ripple-color="light" wire:navigate class="relative m-0 overflow-hidden text-gray-700 bg-transparent rounded-none shadow-none bg-clip-border">
         <img
-          src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $agendamento->barbeiro->barbearia->imagem }}"
+          src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $agendamento->colaborador->barbearia->imagem }}"
           class="w-full h-[317px] object-cover"
           alt="ui/ux review check" />
       </a>
@@ -33,7 +33,7 @@
            {{ \Carbon\Carbon::parse($agendamento->start_date)->format('d/m/Y H:i') }}
         </h4>
         <p class="block mt-3 font-sans text-xl antialiased font-normal leading-relaxed text-gray-700">
-       Cortes:@foreach($agendamento->cortes as $corte) {{ $corte->nome }}@if(!$loop->last),@else.@endif    @endforeach
+       Cortes:@foreach($agendamento->cortes as $corte) {{ $corte->corte->nome }}@if(!$loop->last),@else.@endif    @endforeach
  
         </p>
         <p class="block mt-1 font-sans text-xl antialiased font-normal leading-relaxed text-gray-700">
@@ -46,7 +46,7 @@
            </p>
            <p class="block mt-1 font-sans text-xl antialiased font-normal leading-relaxed text-gray-700">
         
-            Barbearia: {{ ucfirst($agendamento->barbeiro->barbearia()->withTrashed()->first()->nome) }}
+            Barbearia: {{ ucfirst($agendamento->colaborador->barbearia->nome) }}
       
              </p>
       </div>
@@ -54,7 +54,7 @@
         <div class="flex items-center -space-x-3">
           
           <img alt="natali craig"
-          src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $agendamento->barbeiro->avatar }}"
+          src="{{ $agendamento->colaborador->user->profile_photo_url }}"
             class="relative inline-block h-9 w-9 !rounded-full  border-2 border-white object-cover object-center hover:z-10" />
 
         </div>
@@ -65,35 +65,55 @@
       
     </div> 
   @endforeach
-  
-        </div>
-    
-    
-        
 
+        </div>
+        @if($this->agendamentos->count() < auth()->user()->eventos->count())
+        <div class="bg-white p-2" x-data="{
+          infinityScroll() {
+              const observer = new IntersectionObserver((items) => {
+                  items.forEach((item) => {
+                      if(item.isIntersecting) {
+                    
+                          @this.loadMore()
+                      }
+                  })
+              }, {
+                  threshold: 0.5, 
+                  rootMargin: '100px'
+              })
+              observer.observe(this.$el)
+          }
+      }" x-init="infinityScroll()">
+      @endif
+<div class="fixed bottom-20  left-1/2 transform -translate-x-1/2">
+    <div wire:loading wire:target="loadMore" class="h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-surface motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white" role="status">
+   
+    </div>
+  </div>
+</div>
         <x-modal.card title="Editar Agendamento" blur  wire:model="agendamentoModal"  x-on:agendamento-editado.window="close" x-on:close="$wire.limpar()">
           @if($selectedAgendamento)
-          <div class="flex flex-col gap-4 mb-3" wire:key="{{ $selectedAgendamento->id }}">
+          <div class="flex flex-col gap-4 mb-3" wire:key="view-{{ $selectedAgendamento->id }}">
          
-            @foreach($selectedAgendamento->barbeiro->cortes as $corte)
+         
+        
+        @foreach($selectedAgendamento->colaborador->cortes as $corte)
             <x-checkbox
-            md
-            id="color-secondary"
-        secondary
-            
-          label="{{ $corte->nome }} - R${{ $corte->preco }}"
-            wire:model="cortes.{{ $selectedAgendamento->id }}"
-            class="mb-3"
-           value="{{ $corte->id }}"
-            autocomplete="off"
+                md
+                id="color-secondary"
+                secondary
+                label="{{ $corte->corte->nome }} - R${{ $corte->corte->preco }}"
+                wire:model="cortes.{{ $this->selectedAgendamento->id }}"
+                class="mb-3"
+                value="{{ $corte->id }}"
+                autocomplete="off"
             />
-         
-            @endforeach
+        @endforeach
           </div>
 
   
         
-          <livewire:date-picker  wire:model="date"   :selectedAgendamento="$selectedAgendamento" />
+          <livewire:date-picker  wire:model="date" :barbeiroSelecionado="$selectedAgendamento->colaborador" :key="$selectedAgendamento->id" :selectedAgendamento="$selectedAgendamento" />
           @if(session('error'))
           <div x-data="{ isOpen: true }" x-on:mostrar.window="isOpen = true" x-show="isOpen" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-90" x-transition:enter-end="opacity-100 transform scale-100" x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 transform scale-100" x-transition:leave-end="opacity-0 transform scale-90" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mt-5" role="alert">
               <strong class="font-bold">Erro</strong>

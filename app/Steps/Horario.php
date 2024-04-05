@@ -106,7 +106,7 @@ class Horario extends Step
     $state = $this->livewire->state;
 
     $rules = [];
-
+ 
 
 
 $rules['state.dias.*'] = ['nullable', function ($attribute, $value, $fail) {
@@ -131,6 +131,19 @@ $rules['state.dias.*'] = ['nullable', function ($attribute, $value, $fail) {
 
             $rules[$horarioInicialKey] = ['required'];
             $rules[$horarioFinalKey] = ['required'];
+
+            
+
+            $rules[$horarioInicialKey][] = function ($attribute, $value, $fail) use ($state, $index, $horarioFinalKey) {
+                $horarioFinal = $state['horariosFinais'][$index];
+    if($value) {
+                if ($value >= $horarioFinal) {
+                    $fail(__('O horário inicial deve ser menor que o horário final.'));
+                }
+            }
+            };
+    
+         
             $rules[$intervaloFinalKey] = [function ($attribute, $value, $fail) use ($state, $index, $horarioInicialKey, $intervaloFinalKey) {
                 if ($value) {
                     $index = str_replace('state.intervaloFinal.', '', $attribute);
@@ -157,6 +170,7 @@ $rules['state.dias.*'] = ['nullable', function ($attribute, $value, $fail) {
             }];
         }
     }
+
 
     return [$rules, [], []];
 }

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Barbearia;
+use App\Models\BarbeariaUser;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
@@ -32,7 +33,7 @@ class VerificarPagamento implements ShouldQueue
     public function handle(): void
     {
         $accessToken = 'TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433'; 
-        $barbeariasPix = Barbearia::whereIn("payment_method", [PaymentMethods::pix, PaymentMethods::bolbradesco])->where("price",15)->get();
+        $barbeariasPix = BarbeariaUser::whereIn("payment_method", [PaymentMethods::pix, PaymentMethods::bolbradesco])->where("price",15)->get();
       
         foreach($barbeariasPix as $barbearia){
             $horarioBrasilia = Carbon::now();
@@ -66,7 +67,7 @@ class VerificarPagamento implements ShouldQueue
                         'payer' => [
                             'email' => 'test_user_1498281909@testuser.com',
                         ],
-                        'external_reference' => $barbearia->id
+                        'external_reference' => $barbearia->user_id
                     ];
                 } elseif ($paymentMethod === 'boleto') {
                 
@@ -83,7 +84,7 @@ class VerificarPagamento implements ShouldQueue
                             'number' => '12345678909', 
                         ],
                     ],
-                        'external_reference' => $barbearia->id
+                        'external_reference' => $barbearia->user_id
                     ];
                 }
     

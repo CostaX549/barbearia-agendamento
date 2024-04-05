@@ -30,7 +30,8 @@ class BarbeariaView extends Component
  
     public $payment;
     public $galeriaModal;
-  
+  public array $redesocial = [];
+  public $link;
     public $fotos = [];
     public $descricao = [];
     #[Validate('required')]
@@ -44,6 +45,7 @@ public $total;
 public array $cortes = [];
 #[Validate('required')]    
     public $date;
+    public $cardModal;
 
     public $dayOfWeek;
    
@@ -51,8 +53,10 @@ public array $cortes = [];
 
 
     public function mount($slug){
-  
-          $this->barbearia = Barbearia::withTrashed()->where('slug', $slug)->firstOrFail();
+        for ($i = 0; $i < 4; $i++) {
+            $this->link[$i] = '';
+        }
+          $this->barbearia = Barbearia::where('slug', $slug)->firstOrFail();
          
         
     }
@@ -66,7 +70,31 @@ public array $cortes = [];
 
 
 
+    public function save()
+{
+    // Verificar se a barbearia já tem redes sociais associadas
+    $redeSociais = $this->barbearia->redes_sociais ?? [];
+
+    // Verificar se há redes sociais selecionadas e links correspondentes
+    if (!empty($this->redesocial) && !empty($this->link)) {
+        // Loop pelas redes sociais selecionadas
+        foreach ($this->redesocial as $index => $rede) {
+            // Verificar se há um link correspondente
+            if (isset($this->link[$index])) {
+                $link = $this->link[$index];
+                // Adicionar a rede social e o link ao array de redeSociais
+                $redeSociais[$rede] = $link;
+            }
+        }
+    }
     
+
+    $this->barbearia->redes_sociais = $redeSociais;
+    $this->barbearia->save();
+
+    // Fechar o modal após salvar
+    $this->cardModal = false;
+}
 
     public function updatedDate($value)
     {
@@ -162,10 +190,51 @@ public array $cortes = [];
      
 
     }
+     public function importarGaleria() {
+        $url = 'https://api.instagram.com/oauth/authorize';
+        
+        $parameters = [
+            'client_id' => '1059008688493787',
+            'redirect_uri' => 'https://localhost/instagram',
+            'scope' => 'user_profile,user_media',
+            'response_type' => 'code',
+            'state' => $this->barbearia->id
+        ];
+    
+        $fullUrl = $url . '?' . http_build_query($parameters);
+    
+        return redirect($fullUrl);
+    }
+ 
 
+    #[Computed]
+    public function galeria()
+    {
+     
+        $barbeariaGallery = $this->barbearia->galeria ?? [];
 
-
+    
+     
   
+
+
+
+
+           
+
+            $instagramGallery = $response['data'] ?? [];
+
+        
+            $combinedGallery = array_merge($barbeariaGallery, $instagramGallery);
+        
+          
+     /*        $combinedGallery = array_slice($barbeariaGallery, 0, 6); */
+        
+
+
+      
+        return $combinedGallery;
+    }
     
     public function salvarGaleria() {
      $this->authorize('create', $this->barbearia);
@@ -220,12 +289,8 @@ foreach ($this->barbeiroSelecionado->workingHours as $workingHour) {
 
 public function render()
 {
-    $response = Http::get('https://graph.instagram.com/me/media', [
-        'fields' => 'id,caption,media_url',
-        'access_token' => 'IGQWRQaF9QZADVpOU4zd0dPMVBoUTJXTi1NRW9BNXZAQdjh5NlFiSWY4MnhQb052XzFBOEg2YmdEU0REMkZA2ZA0QzMnI0dmNFMHU1TEROWFRTc2NuV3JETWMwZAE81TUtSYjJ6OHlOblZAfSlBsYjg4WG9aVmxmNHY2QjdGQ19OaHJPMXU5ZAwZDZD'
-    ])->json();
 
-    return view('livewire.barbearia-view', compact('response'));
+    return view('livewire.barbearia-view');
 }
 
 

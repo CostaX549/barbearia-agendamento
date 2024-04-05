@@ -42,7 +42,8 @@ class Teste extends Component
     public  string $cidade = '';
     #[Validate('required|string|unique:barbearias')]
     public string $slug = '';
-    #[Session]
+    #[Url]
+    
 public $tab = 'pills-home7';
 public $compartilharModal;
 public $selectedBarbearia;

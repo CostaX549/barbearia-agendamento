@@ -1,4 +1,4 @@
-<div x-data="{ previewImagem: null }">
+<div x-data="{ previewImagem: null }" class="px-2">
   <label class="mb-5 mt-5 block text-xl font-semibold text-black">
       Enviar Imagem
   </label>

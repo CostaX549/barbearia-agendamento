@@ -4,6 +4,8 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Barbearia;
+use App\Models\BarbeariaUser;
+use App\Models\User;
 use App\Models\Barbeiros;
 use App\Models\Cortes;
 use Livewire\Attributes\{Validate,On};
@@ -17,7 +19,7 @@ class Horarios extends Component
     public $barbeiroSelecionado;
   
 
-    public ?Barbeiros $editing = null; 
+    public ?BarbeariaUser $editing = null; 
 
     use WithFileUploads;
 
@@ -27,7 +29,7 @@ class Horarios extends Component
     }
 
      
-   public function edit(Barbeiros $barbeiro): void
+   public function edit(BarbeariaUser $barbeiro): void
    {
        $this->editing = $barbeiro;
     

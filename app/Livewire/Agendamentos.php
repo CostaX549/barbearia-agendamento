@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 use App\Models\Cortes;
 use App\Enums\DaysOfWeek;
+use App\Models\UserCorte;
+
 #[Lazy]
 class Agendamentos extends Component
 {
@@ -19,12 +21,14 @@ class Agendamentos extends Component
   
 public $agendamentoModal;
 public ?Agendamento $selectedAgendamento = null;
-
+public $allAgendamentos;
 public $cortes = [];
 public $options = [];
 public $barbeiroSelecionado;
 public $formattedDates;
 
+public int $amount = 10;
+public int $loads = 0;
 
 
 public function placeholder() {
@@ -62,6 +66,10 @@ public function mount() {
 
     public function editar($id)
     {
+      
+        if($this->selectedAgendamento) {
+
+       
         $this->validate([
             'cortes.' . $id => 'filled',
         ], [
@@ -70,79 +78,92 @@ public function mount() {
         
         $evento = Agendamento::findOrFail($id);
         $this->authorize('update', $evento);
+
+        $startDate = Carbon::parse($this->date);
+        if ($startDate->isPast()) {
+            session()->flash('error', 'Não é possível agendar um horário no passado.');
+            $this->dispatch('mostrar');
+            return;
+        }
         
         $intervalInMinutesTotal = 0; 
+      
         foreach ($this->cortes[$id] as $corteId) {
-            $corteSelecionado = Cortes::findOrFail($corteId);
+            $corteSelecionado = UserCorte::
+            findOrFail($corteId)
+            ->corte;
             $intervalInMinutesTotal += $this->convertTimeToMinutes($corteSelecionado->intervalo);
         }
     
         $end_date_clone = Carbon::parse($this->date)->clone()->addMinutes($intervalInMinutesTotal);
     
-        $this->barbeiroSelecionado = $this->selectedAgendamento->barbeiro;
-        $date = Carbon::parse($this->date);
-
-        $startDate = Carbon::parse($this->date);
-
-        $numeroDia = $startDate->dayOfWeek; 
-        
-        // Mapear para o nome do dia da semana
-        $nomesDiasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-        $dia = $nomesDiasSemana[$numeroDia];
-       $totalMinutes = $this->getTotalMinutes();
-
-       $specificDates = $this->barbeiroSelecionado->specificDates
-       ->where('status', 'adicionar')
-       ->filter(function ($specificDate) use ($date) {
-           $startDate = Carbon::parse($specificDate->start_date);
-           
-           return $startDate->format('Y-m-d') === $date->format('Y-m-d');
-       });
-   $horasTrabalho = $this->barbeiroSelecionado->workingHours()->where("day_of_week", constant(DaysOfWeek::class . '::' . $dia))->first();
-   $totalMinutes = $this->getTotalMinutes();
-   if ($horasTrabalho) {
-       if (!$this->verificarHorarioTrabalho($this->date, $totalMinutes, $horasTrabalho, $end_date_clone) && !$this->verificarDatasEspecificas($this->date, $totalMinutes, $specificDates, $end_date_clone)) {
-           return false;
-       }  
-   } else {
-       if (!$this->verificarDatasEspecificas($this->date, $totalMinutes, $specificDates, $end_date_clone)) {
-           return false;
-       }
-   }
+        $this->barbeiroSelecionado = $this->selectedAgendamento->colaborador;
         $eventosAgendados = $this->barbeiroSelecionado->agendamentos;
+  
    
         foreach ($eventosAgendados as $appointment) {
-            if ($appointment->id === $this->selectedAgendamento->id) {
-                continue;
+            if ($this->selectedAgendamento && $appointment->id === $this->selectedAgendamento->id) {
+                 continue;
             }
     
             $existingStartTime = Carbon::parse($appointment->start_date);
             $existingEndTime = Carbon::parse($appointment->end_date);
             
             if (Carbon::parse($this->date) < $existingEndTime && $end_date_clone > $existingStartTime) {
-                session()->flash('error', 'Escolha um horário disponível, ou o horário de término do seu agendamento está se sobrepondo a horários já agendados.');
+                session()->flash('error', 'Tente diminuir o número de cortes, pois o seu agendamento esta sobrepondo horários já agendados.');
                 $this->dispatch('mostrar');
-                return;
+                return false;
             }
         }
-
-    
-       
-        $datasRemovidas = $this->barbeiroSelecionado->specificDates()
+        $removedDates = $this->barbeiroSelecionado->specificDates()
         ->where('status', 'remover')
-        ->whereDate('start_date', '=', $date->format('Y-m-d'))
+       ->whereDate('start_date', Carbon::parse($this->date)->format('Y-m-d'))
         ->get();
+   
+        foreach ($removedDates as $removedDate) {
+           $startHorarioRemovido = Carbon::parse($removedDate->start_date);
+           $endHorarioRemovido = Carbon::parse($removedDate->end_date);
+   
+           if (Carbon::parse($this->date) < $endHorarioRemovido && $end_date_clone > $startHorarioRemovido) {
+          
+               session()->flash('error', 'Tente diminuir o número de cortes, pois o seu agendamento esta sobrepondo a horários removidos pelo barbeiro.');
+               $this->dispatch('mostrar');
+               return false;
+           }
+       }
+    
+       $availableTimes = $this->barbeiroSelecionado->getAllAvailableTimes($this->date, $this->selectedAgendamento);
 
-        foreach ($datasRemovidas as $dataEspecifica) {
-            $startDate = Carbon::parse($dataEspecifica->start_date);
-            $endDate = Carbon::parse($dataEspecifica->end_date);
+       // Filtrar apenas os horários disponíveis sem cor atribuída
+       $availableTimesWithoutColor = array_filter($availableTimes, function($availableTime) {
+        return $availableTime['color'] === '' || $availableTime['color'] === 'black';
+    });
 
-       if ($date < $endDate && $end_date_clone > $startDate ) {
-        session()->flash('error', 'Escolha um horário disponível, este horário foi removido pela barbearia neste dia.');
-        $this->dispatch('mostrar');
-        return;
-    }
-        }
+       
+       $selectedDateTime = Carbon::createFromFormat('d-m-Y H:i', $this->date);
+       $isTimeAvailable = false;
+   
+       foreach ($availableTimesWithoutColor as $availableTime) {
+           $availableDateTime = $availableTime['time'];
+   
+           // Verifica se o horário selecionado corresponde a um dos horários disponíveis
+           if ($selectedDateTime->eq($availableDateTime)) {
+               $isTimeAvailable = true;
+               break;
+           }
+       }
+   
+       if (!$isTimeAvailable) {
+           session()->flash('error', 'O horário selecionado não está disponível.');
+           $this->dispatch('mostrar');
+           return false;
+       }
+   
+       if ($this->barbeiroSelecionado->isEndTimeExceeded($this->date, $end_date_clone)) {
+           session()->flash('error', 'O horário final selecionado ultrapassa o término do expediente da barbearia.');
+           $this->dispatch('mostrar');
+           return false;
+       }
        
    
     
@@ -157,80 +178,9 @@ public function mount() {
         $this->limparCacheAgendamentos();
         $this->dispatch('agendamento-editado');
     }
+    }
 
-    private function verificarHorarioTrabalho($date, $totalMinutes, $horasTrabalho, $endDate)
-    {
-        $horaAbertura = Carbon::parse($horasTrabalho->start_hour); 
-        $horaFechamento = Carbon::parse($horasTrabalho->end_hour); 
-        $horarioSelecionado = Carbon::parse($date);
- 
-        $horariosIntervalo = [];
-        
-
-        
   
-        $horaAtual = $horaAbertura->copy();
-        while ($horaAtual < $horaFechamento) {
-            $horariosIntervalo[] = $horaAtual->format('H:i');
-            $horaAtual->addMinutes($totalMinutes);
-        }
-
-
-        if (!in_array($horarioSelecionado->format('H:i'), $horariosIntervalo)) {
-     
-       
-            return false;
-        }
-    
-        if ($endDate->day > $horarioSelecionado->day || $endDate->format('H:i') > $horaFechamento->format('H:i') && in_array($horarioSelecionado->format('H:i'), $horariosIntervalo)) {
-       
-            session()->flash('error', 'Horário de término do agendamento é maior que o horário de fechamento da barbearia');
-            $this->dispatch('mostrar');
-            return;
- 
-        }
-    
-  
-        return true;
-    }
-
-    private function getTotalMinutes()
-    {
-        $interval = $this->barbeiroSelecionado->interval;
-        list($hours, $minutes, $seconds) = explode(':', $interval);
-        return ($hours * 60) + $minutes;
-    }
-    private function verificarDatasEspecificas($date, $totalMinutes, $datasEspecificas, $final)
-    {
-   
-   
-   
-    
-        $horaSelecionada = Carbon::parse($date)->format('H:i');
-        foreach ($datasEspecificas as $dataEspecifica) {
-            $startDate = Carbon::parse($dataEspecifica->start_date);
-            $endDate = Carbon::parse($dataEspecifica->end_date);
-            if ($final > $endDate) {
-             session()->flash('error', 'Horário de término do agendamento é maior que o horário de fechamento da barbearia');
-             $this->dispatch('mostrar');
-             return;
-            }
-            
-            $startDateTime = $startDate->copy();
-            $horariosIntervalo = []; 
-        
-            while ($startDateTime < $endDate) {
-                $horariosIntervalo[] = $startDateTime->format('H:i');
-                $startDateTime->addMinutes($totalMinutes);
-            }
-      
-            if (in_array($horaSelecionada, $horariosIntervalo)) {
-                return true;
-            }
-   
-         
-        }
-    }
 
     public function abrirModal($agendamentoId) {
 
@@ -245,7 +195,7 @@ public function mount() {
         $this->date = \Carbon\Carbon::parse($this->selectedAgendamento->start_date)->format('d-m-Y H:i');
     
        
-            $this->cortes[$agendamentoId] = $this->selectedAgendamento->cortes->pluck("id")->toArray();
+        $this->cortes[$agendamentoId] = $this->selectedAgendamento->cortes()->pluck('user_corte.id')->toArray();
     
       
            
@@ -254,19 +204,32 @@ public function mount() {
          
 
     }
-#[Computed]
-    public function agendamentos() {
-    
-        $userId = auth()->id();
-        
-        // Defina uma chave única para o cache usando o ID do usuário
-        $cacheKey = "agendamentos_{$userId}";
-    
-        return Cache::remember($cacheKey, now()->addMinutes(10), function () {
-            // Lógica para obter os agendamentos do usuário
-            return auth()->user()->eventos;
-        });
+   
+    public function loadMore() {
+      /*   $this->amount += 10; */
+      $this->loads++;
     }
+
+
+    #[Computed]
+    public function newAgendamentos() {
+        $offset = $this->amount * $this->loads;
+        $limit = $this->amount;
+        
+        return auth()->user()->eventos()->offset($offset)->limit($limit)->get();
+    }
+
+    #[Computed]
+    public function agendamentos() {
+  
+    
+     
+           $this->allAgendamentos = ($this->loads == 0) ? $this->newAgendamentos : $this->allAgendamentos->merge($this->newAgendamentos);
+
+           return $this->allAgendamentos;
+    
+    }
+
     public function limpar() {
    
         $this->selectedAgendamento = null;

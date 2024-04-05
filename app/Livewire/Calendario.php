@@ -9,6 +9,7 @@ use Livewire\Attributes\On;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Agendamento;
+use App\Models\BarbeariaUser;
 use App\Models\SpecificDate;
 
 class Calendario extends Component
@@ -26,7 +27,7 @@ class Calendario extends Component
 
 
     public function mount($id) {
-        $this->barbeiro = Barbeiros::findOrFail($id);
+        $this->barbeiro = BarbeariaUser::findOrFail($id);
         
 
         // Inicializar um array vazio para armazenar os horários de trabalho
@@ -86,7 +87,7 @@ class Calendario extends Component
     public function add(){
         $existingSpecificDate = SpecificDate::where('start_date', Carbon::parse($this->date))
                                              ->where('end_date', Carbon::parse($this->dateFinal))
-                                             ->where('barbeiro_id', $this->barbeiro->id)
+                                             ->where('barbearia_user_id', $this->barbeiro->id)
                                              ->first();
     
         if($existingSpecificDate) {
@@ -97,7 +98,7 @@ class Calendario extends Component
             // Se não existir, crie uma nova entrada
             $specificDate = new SpecificDate;
             $specificDate->start_date = Carbon::parse($this->date);
-            $specificDate->barbeiro_id = $this->barbeiro->id;
+            $specificDate->barbearia_user_id = $this->barbeiro->id;
             $specificDate->end_date = Carbon::parse($this->dateFinal);
             $specificDate->status = 'adicionar';
             $specificDate->save();
@@ -106,9 +107,9 @@ class Calendario extends Component
     
     public function remover() {
         $existingSpecificDate = SpecificDate::where('start_date', Carbon::parse($this->date))
-                                             ->where('end_date', Carbon::parse($this->dateFinal))
-                                             ->where('barbeiro_id', $this->barbeiro->id)
-                                             ->first();
+        ->where('end_date', Carbon::parse($this->dateFinal))
+        ->where('barbearia_user_id', $this->barbeiro->id)
+        ->first();
     
         if($existingSpecificDate) {
           
@@ -118,7 +119,7 @@ class Calendario extends Component
             // Se não existir, crie uma nova entrada
             $specificDate = new SpecificDate;
             $specificDate->start_date = Carbon::parse($this->date);
-            $specificDate->barbeiro_id = $this->barbeiro->id;
+            $specificDate->barbearia_user_id = $this->barbeiro->id;
             $specificDate->end_date = Carbon::parse($this->dateFinal);
             $specificDate->status = 'remover';
             $specificDate->save();
@@ -176,8 +177,6 @@ class Calendario extends Component
         return view('livewire.calendario', [
             'agendamentos' => $agendamentos,
           
-        ])->layout('components.layouts.barbearia', [
-            'barbearia' => $this->barbeiro->barbearia,
         ]);
     }
 }

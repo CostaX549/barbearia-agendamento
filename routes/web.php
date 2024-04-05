@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\InstagramController;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Teste;
 use App\Models\User;
@@ -13,14 +14,17 @@ use App\Livewire\Gerenciar;
 use App\Livewire\Horarios;
 use App\Livewire\Agendamentos;
 use App\Livewire\LandingPage;
+use App\Livewire\Colaborador;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\BarbeariaController;
 use App\Http\Controllers\MercadoPago;
 use App\Http\Controllers\Webhooks;
 use App\Livewire\Calendario;
 use App\Livewire\Subscribe;
 use App\Livewire\Deletar;
 use App\Livewire\Plano;
+use App\Livewire\Services;
 use App\Jobs\VerificarPagamento;
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +41,8 @@ use App\Jobs\VerificarPagamento;
 Route::post('/webhooks',[Webhooks::class, 'webhook'])->name('webhook');
 
 
-
+Route::view('view', 'view');
+Route::get('/barbearia/{nome}', [BarbeariaController::class, 'buscarPorNome']);
 
 
 
@@ -45,11 +50,15 @@ Route::get('/', function () {
     return view('auth.login');
 })->middleware('guest');
 
+Route::get('/byebye', [MercadoPago::class, 'index']);
+
 
 
 
 Route::get('/criar-plano', [MercadoPago::class, 'criar']);
 
+
+Route::get('/instagram', [InstagramController::class, 'instagram']);
 
 
 
@@ -86,7 +95,9 @@ Route::prefix('gerenciar/{slug}')->group(function () {
     Route::get('/agendamentos', Agendar::class)->name('barbearia.agendamentos');
     Route::get('/horarios', Horarios::class)->name('horarios');
     Route::get('/horarios/calendario/{id}', Calendario::class)->name('barbeiro.calendario'); 
+    Route::get('/billing', Colaborador::class)->name('barbearia.billing');
     Route::get('/deletar',Deletar::class)->name('deletar');
+    Route::get('/services', Services::class)->name('barbearia.services');
     Route::get('/plano', Plano::class)->name('barbearia.plano');
 })->middleware("auth");
 

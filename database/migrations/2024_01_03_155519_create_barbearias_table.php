@@ -39,13 +39,10 @@ return new class extends Migration
             $table->string("estado");
             $table->string("cidade");
             $table->string("complemento");
-         
-            $table->enum('payment_method', $paymentMethodValues)->nullable();
-            $table->string("card_id")->nullable();
-            $table->enum('price', $planTypeValues)->nullable(); // Usando array_values()
-            $table->timestamp('plan_ends_at')->nullable();
-
-            $table->softDeletes();
+            $table->json("redes_sociais")->nullable();
+            $table->string("slug")->unique();
+            $table->string("CPF")->unique();
+            $table->json('galeria')->nullable();
             $table->unsignedBigInteger("owner_id");
             $table->timestamps();
             $table->foreign('owner_id')->references('id')->on('users')->onDelete("cascade");

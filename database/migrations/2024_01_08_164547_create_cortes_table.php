@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string("nome");
             $table->string("descricao");
             $table->float('preco');
-            $table->unsignedBigInteger('barbeiro_id');
+            $table->unsignedBigInteger("barbearia_id");
             $table->time("intervalo")->default('01:00:00');
-            $table->foreign("barbeiro_id")->references('id')->on('barbeiros')->onDelete("cascade");
+            $table->foreign("barbearia_id")->references('id')->on('barbearias')->onDelete("cascade");
             $table->timestamps();
         });
     }

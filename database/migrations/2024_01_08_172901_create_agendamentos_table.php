@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('agendamentos', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("user_id");
-            $table->unsignedBigInteger("barbeiro_id");
+            $table->unsignedBigInteger("owner_id");
+            $table->unsignedBigInteger('barbearia_user_id'); 
+            $table->foreign('barbearia_user_id')->references('id')->on('barbearia_users')->onDelete('cascade');
             $table->dateTime("start_date");
             $table->dateTime("end_date");
-            $table->boolean('status')->default(0);
-            $table->string("payment_method");
-      
+            $table->softDeletes();
+     
+            $table->boolean("read")->default(0);
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete("cascade");
-            $table->foreign("barbeiro_id")->references('id')->on('barbeiros')->onDelete("cascade");
+            $table->foreign('owner_id')->references('id')->on('users')->onDelete("cascade");
+       
        
         });
     }

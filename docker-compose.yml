@@ -5,15 +5,15 @@ services:
             - '${HTTP_PORT:-8000}:80'
             - '${SSL_PORT:-443}:443'
         environment:
-            - SSL_PORT=${SSL_PORT:-443}
-            - APP_SERVICE=${APP_SERVICE:-laravel.test}
-            - SERVER_NAME=${SERVER_NAME:-localhost}
+            - 'SSL_PORT=${SSL_PORT:-443}'
+            - 'APP_SERVICE=${APP_SERVICE:-laravel.test}'
+            - 'SERVER_NAME=${SERVER_NAME:-localhost}'
         volumes:
             - 'sail-nginx:/etc/nginx/certs'
             - './vendor/ryoluo/sail-ssl/nginx/templates:/etc/nginx/templates'
             - './vendor/ryoluo/sail-ssl/nginx/generate-ssl-cert.sh:/docker-entrypoint.d/99-generate-ssl-cert.sh'
         depends_on:
-            - ${APP_SERVICE:-laravel.test}
+            - '${APP_SERVICE:-laravel.test}'
         networks:
             - sail
     laravel.test:
@@ -41,6 +41,7 @@ services:
         depends_on:
             - mysql
             - redis
+            - mailpit
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -80,6 +81,13 @@ services:
                 - ping
             retries: 3
             timeout: 5s
+    mailpit:
+        image: 'axllent/mailpit:latest'
+        ports:
+            - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
+        networks:
+            - sail
 networks:
     sail:
         driver: bridge

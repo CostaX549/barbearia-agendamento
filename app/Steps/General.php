@@ -62,7 +62,7 @@ class General extends Step
     /*
      * Step Validation
      */
-    /*  public function validate()
+/*       public function validate()
     {
        
 
@@ -135,7 +135,7 @@ class General extends Step
                 
             ],
         ];
-    }  */
+    }   */
 
     /*
      * Step Title

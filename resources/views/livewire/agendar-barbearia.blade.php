@@ -63,9 +63,9 @@
         autocomplete="off"
       >
       
-      @foreach($this->barbeiros as $barbeiro)
+      @foreach($this->barbearia->barbeiros as $barbeiro)
       
-        <x-select.user-option src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbeiro->avatar }}" label="{{ $barbeiro->name }}" value="{{ $barbeiro->id }}" />
+        <x-select.user-option src="{{ $barbeiro->user->profile_photo_url }}" label="{{ $barbeiro->user->name }}" value="{{ $barbeiro->id }}" />
       
         @endforeach
       </x-select>
@@ -82,13 +82,13 @@
       label="Selecionar Corte"
       multiselect
       placeholder="Selecionar Corte"
-      wire:model.live="cortes"
+      wire:model="cortes"
       
       class="mb-3"
       autocomplete="off"
       >
       @foreach($this->barbeiroSelecionado->cortes as $corte)
-      <x-select.user-option src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $this->barbeiroSelecionado->avatar }}" label="{{ $corte->nome }} - R${{ $corte->preco }}" value="{{ $corte->id }}" />
+      <x-select.user-option src="{{ $this->barbeiroSelecionado->user->profile_photo_url }}" label="{{ $corte->corte->nome }} - R${{ $corte->corte->preco }}" value="{{ $corte->id }}" />
       
       @endforeach
       </x-select>

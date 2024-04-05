@@ -354,13 +354,15 @@ data-te-navbar-ref>
       >
     </li>
 
+   
+
   </ul>
 
   </div>
 
   <div class="relative"  data-te-dropdown-position="dropstart">
     
-  {{--   <button
+    <button
       class="flex items-center whitespace-nowrap rounded bg-black px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-zinc-950 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-zinc-950 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-black active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
      @if($contagem > 0)
       wire:click="contar"
@@ -390,7 +392,7 @@ data-te-navbar-ref>
       @if($contagem > 0)
       <span class="notification-dot">{{ $contagem }}</span>
       @endif
-    </button> --}}
+    </button> 
     <ul
     wire:ignore.self
       class="absolute z-[1000] right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
@@ -528,7 +530,7 @@ data-te-navbar-ref>
         </svg>
         
         <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-         {{ $agendamento->barbeiro->name }}
+         {{ $agendamento->owner->name }}
         </h5>
         <p class="block font-sans text-base antialiased font-semibold leading-relaxed text-inherit">
           Cortes: @foreach($agendamento->cortes as $corte)  {{ $corte->nome }}      @endforeach
@@ -690,10 +692,10 @@ data-te-navbar-ref>
   <!-- Section: Design Block -->
   <section class="mb-3 mt-5">
     <div
-      class="relative h-[300px] w-[85%] max-sm:w-[100%] rounded-lg mx-auto overflow-hidden bg-cover bg-[50%] bg-no-repeat" style="background-image: url('https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/fundopreto.jpg')">
+      class="relative   lg:h-[300px]  w-[85%] max-sm:w-[100%] rounded-lg mx-auto overflow-hidden bg-cover bg-[50%] bg-no-repeat" style="background-image: url('https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/fundopreto.jpg')">
     </div>
 
-      <div class="block m-auto w-[80%] max-sm:w-[100%] rounded-lg bg-[hsla(0,0%,100%,0.7)] px-6 py-12 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-[hsla(0,0%,5%,0.7)] dark:shadow-black/20 md:py-16 md:px-12 -mt-[100px] backdrop-blur-[30px] ">
+      <div class="block  m-auto w-[80%] max-sm:w-[100%] rounded-lg bg-[hsla(0,0%,100%,0.7)]  lg:px-6 py-12 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-[hsla(0,0%,5%,0.7)] dark:shadow-black/20 md:py-16 md:px-12 lg:-mt-[100px] mt-[2px] lg:backdrop-blur-md  " >
        
        
           <livewire:user-wizard user-id="3"/>
@@ -723,7 +725,7 @@ data-te-navbar-ref>
     wire:ignore.self
     >  
     <div class="grid  grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-5 ">
-        @foreach(auth()->user()->barbearias as $barbearia)
+        @foreach(auth()->user()->barbeariasOwned as $barbearia)
         <div
         class="mx-auto mb-8 sm:mb-0  block rounded-lg max-w-[450px] bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
         <div
@@ -809,6 +811,8 @@ data-te-navbar-ref>
   >  
        <livewire:agendamentos >
   </div>
+
+ 
 
  <script type="module">
 

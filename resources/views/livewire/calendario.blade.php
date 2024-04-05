@@ -1,11 +1,11 @@
 <div>
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js' defer></script>
-<script src="
-https://cdn.jsdelivr.net/npm/@fullcalendar/moment-timezone@6.1.10/index.global.min.js
-" defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/locales/pt-br.js" defer></script>
 
-    <div wire:ignore id='calendar' class="max-w-[50%] mx-auto"></div>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/index.global.min.js' ></script>
+    <script src="
+    https://cdn.jsdelivr.net/npm/@fullcalendar/moment-timezone@6.1.10/index.global.min.js
+    " defer></script>
+            <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.9/locales/pt-br.js" defer></script>
+    <div wire:ignore id="calendar" class="w-full mx-auto"></div>
 
 
 
@@ -122,8 +122,11 @@ https://cdn.jsdelivr.net/npm/@fullcalendar/moment-timezone@6.1.10/index.global.m
     @endif
 @endif
 </x-modal.card>
+
+<livewire:dates-list :barbeiro="$barbeiro" />
+
     <script >
-        document.addEventListener('livewire:navigated', function() {
+      
 
 
      
@@ -142,10 +145,7 @@ right: 'dayGridMonth,timeGridWeek,timeGridDay' // Adicionei a vírgula aqui
                     selectable: true,
                    
                     locale: 'pt-br', 
-                    validRange: {
-                    start: new Date(), // Impede datas anteriores à data atual
-                  
-                },
+             
                     select: function(data) {
                       Livewire.dispatch('open-modal', {
                         date: data,
@@ -183,7 +183,7 @@ right: 'dayGridMonth,timeGridWeek,timeGridDay' // Adicionei a vírgula aqui
                 console.log(new Date());
                 calendar.render();
                 console.log(@json($agendamentos))
-        });
+    
     </script> 
 
 

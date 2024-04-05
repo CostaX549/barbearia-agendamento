@@ -427,38 +427,31 @@ $jsonPlanResponse = $planResponse->json();
 
 public function index()
 {
-    $this->authenticate();
-
-    // Retrieve information about the user (use your own function)
-    $user = auth()->user();
-
-    $payer = [
-        "name" => $user->name,
-        "surname" => $user->surname,
-        "email" => $user->email,
-    ];
-
-    
-    $jsonPlanResponse = $this->createPreapprovalRequest();
+    $accessToken = 'TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433'; 
    
-     $user = User::findOrFail(auth()->user()->id);
 
-     
-    try {
-       if($user->plans()->count()==0){
-        return redirect($jsonPlanResponse['init_point']);
-       } else{
-         return redirect('/home');
-       }
+    $response = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $accessToken,
+        'Content-Type' => 'application/json',
+    ])->post('https://api.mercadopago.com/checkout/preferences', [
+        'items' => [ 
+            [
+                'title' => 'Barbearia',
+                'description' => 'Barbearia',
+                'quantity' => 1,
+           
+                'unit_price' => 15, 
+            ]
+        ],
         
-    }
-    catch (MPApiException $error) {
+    ]);
 
-        
-        return null;
-    }
+    dd($response->json());
+
+    dd($response->json());
 
 }  
+
 
 
   }

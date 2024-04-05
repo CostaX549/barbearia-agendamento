@@ -1,5 +1,5 @@
 @php 
- $agendamentos = \App\Models\Agendamento::where('user_id', auth()->user()->id)->get();
+ $agendamentos = \App\Models\Agendamento::where('owner_id', auth()->user()->id)->get();
 @endphp
 
 <div class="grid  grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 p-5 grid-cols-custom   ">

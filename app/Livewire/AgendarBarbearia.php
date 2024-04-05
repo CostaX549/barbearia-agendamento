@@ -11,22 +11,32 @@ use App\Models\Agendamento;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use App\Enums\DaysOfWeek;
+use Google\Auth\Credentials\ServiceAccountCredentials;
+use Google\Auth\HttpHandler\HttpHandlerFactory;
+use App\Models\BarbeariaUser;
+use App\Models\UserCorte;
+use App\Models\Barbearia;
+use App\Models\User;
 
 class AgendarBarbearia extends Component
 {
-    public $barbearia;
+    public  $barbearia = null;
+    
     #[Validate(['cortes' => 'filled', 'cortes.*' => 'required'])]
     public array $cortes = [];
+    
     #[Validate('required')]    
-    public $date;
-    public $barbeiroSelecionado;
-     #[Validate('required')]
-    public $barbeiroModel;
-    public $payment;
-    public $corteSelecionado;
-    public $dayOfWeek;
-    public $formattedDates = [];
-    public $specificDate;
+    public string $date = '';
+    
+    public ?BarbeariaUser $barbeiroSelecionado = null;
+    
+    #[Validate('required')]
+    public ?int $barbeiroModel = null;
+
+    public ?Cortes $corteSelecionado = null;
+
+    public array $formattedDates = [];
+
 
 
   
@@ -40,7 +50,7 @@ class AgendarBarbearia extends Component
   $this->reset('date', 'cortes');
   $this->dispatch('teste');
         if($value) {
-        $this->barbeiroSelecionado = Barbeiros::findOrFail($value);
+        $this->barbeiroSelecionado = BarbeariaUser::findOrFail($value);
         
    
 
@@ -92,27 +102,46 @@ class AgendarBarbearia extends Component
 
  public function AgendarHorario()
  {
+
      $this->authorize('agendar', $this->barbearia);
      $this->authorize('authenticated', auth()->user());
   
      $this->validate();
+     $existingAgendamentoBarbearia = Agendamento
+ 
+     ::where('barbearia_user_id',$this->barbeiroSelecionado->id)
+     ->where('start_date', Carbon::createFromFormat('d-m-Y H:i', $this->date))
+     ->first();
+   
+
+ if ($existingAgendamentoBarbearia) {
+     session()->flash('error', 'Já existe um agendamento para este horário.');
+     $this->dispatch('mostrar');
+     return false;
+ }
+
+ 
      
      $agendamento = new Agendamento;
-     $agendamento->user_id = auth()->user()->id;
-     $agendamento->barbeiro_id = $this->barbeiroSelecionado->id;
+     $agendamento->owner_id = auth()->user()->id;
+     $agendamento->barbearia_user_id = $this->barbeiroSelecionado->id;
+     
      $agendamento->start_date = Carbon::createFromFormat('d-m-Y H:i', $this->date);
  
      $intervalInMinutesTotal = 0; 
      foreach ($this->cortes as $corteId) {
-         $corteSelecionado = Cortes::findOrFail($corteId);
+         $corteSelecionado = UserCorte::findOrFail($corteId)->corte;
          $intervalInMinutesTotal += $this->convertTimeToMinutes($corteSelecionado->intervalo);
      }
+
+
  
      $end_date_clone = $agendamento->start_date->clone()->addMinutes($intervalInMinutesTotal);
  
 
 
      $eventosAgendados = $this->barbeiroSelecionado->agendamentos;
+  
    
      foreach ($eventosAgendados as $appointment) {
     
@@ -121,81 +150,97 @@ class AgendarBarbearia extends Component
          $existingEndTime = Carbon::parse($appointment->end_date);
          
          if (Carbon::parse($this->date) < $existingEndTime && $end_date_clone > $existingStartTime) {
-             session()->flash('error', 'Escolha um horário disponível, ou o horário de término do seu agendamento está se sobrepondo a horários já agendados.');
+             session()->flash('error', 'Tente diminuir o número de cortes, pois o seu agendamento esta sobrepondo horários já agendados.');
              $this->dispatch('mostrar');
-             return;
+             return false;
          }
      }
-
-
-  
-     $date = Carbon::parse($this->date);
-     $datasRemovidas = $this->barbeiroSelecionado->specificDates()
+     $removedDates = $this->barbeiroSelecionado->specificDates()
      ->where('status', 'remover')
-     ->whereDate('start_date', '=', $date->format('Y-m-d'))
+    ->whereDate('start_date', Carbon::parse($this->date)->format('Y-m-d'))
      ->get();
-     foreach ($datasRemovidas as $dataEspecifica) {
-         $startDate = Carbon::parse($dataEspecifica->start_date);
-         $endDate = Carbon::parse($dataEspecifica->end_date);
-      
-   
-         if ($date < $endDate && $end_date_clone > $startDate) {
-             session()->flash('error', 'Escolha um horário disponível, este horário foi removido pela barbearia neste dia.');
-             $this->dispatch('mostrar');
-             return;
-         }
-     }
-$startDate = Carbon::parse($this->date);
 
-$numeroDia = $startDate->dayOfWeek; 
+     foreach ($removedDates as $removedDate) {
+        $startHorarioRemovido = Carbon::parse($removedDate->start_date);
+        $endHorarioRemovido = Carbon::parse($removedDate->end_date);
 
+        if (Carbon::parse($this->date) < $endHorarioRemovido && $end_date_clone > $startHorarioRemovido) {
+       
+            session()->flash('error', 'Tente diminuir o número de cortes, pois o seu agendamento esta sobrepondo a horários removidos pelo barbeiro.');
+            $this->dispatch('mostrar');
+            return false;
+        }
+    }
+ 
+    $availableTimes = $this->barbeiroSelecionado->getAllAvailableTimes($this->date);
 
-$nomesDiasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-$dia = $nomesDiasSemana[$numeroDia];
-$specificDates = $this->barbeiroSelecionado->specificDates
-    ->where('status', 'adicionar')
-    ->filter(function ($specificDate) use ($date) {
-        $startDate = Carbon::parse($specificDate->start_date);
-        
-        return $startDate->format('Y-m-d') === $date->format('Y-m-d');
+    // Filtrar apenas os horários disponíveis sem cor atribuída
+    $availableTimesWithoutColor = array_filter($availableTimes, function($availableTime) {
+        return $availableTime['color'] === '';
     });
-$horasTrabalho = $this->barbeiroSelecionado->workingHours()->where("day_of_week", constant(DaysOfWeek::class . '::' . $dia))->first();
-$totalMinutes = $this->getTotalMinutes();
-if ($horasTrabalho) {
-    if (!$this->verificarHorarioTrabalho($this->date, $totalMinutes, $horasTrabalho, $end_date_clone) && !$this->verificarDatasEspecificas($this->date, $totalMinutes, $specificDates, $end_date_clone)) {
-        return false;
-    }  
-} else {
-    if (!$this->verificarDatasEspecificas($this->date, $totalMinutes, $specificDates, $end_date_clone)) {
+
+    
+    $selectedDateTime = Carbon::createFromFormat('d-m-Y H:i', $this->date);
+    $isTimeAvailable = false;
+
+    foreach ($availableTimesWithoutColor as $availableTime) {
+        $availableDateTime = $availableTime['time'];
+
+        // Verifica se o horário selecionado corresponde a um dos horários disponíveis
+        if ($selectedDateTime->eq($availableDateTime)) {
+            $isTimeAvailable = true;
+            break;
+        }
+    }
+
+    if (!$isTimeAvailable) {
+        session()->flash('error', 'O horário selecionado não está disponível.');
+        $this->dispatch('mostrar');
         return false;
     }
-}
+
+    if ($this->barbeiroSelecionado->isEndTimeExceeded($this->date, $end_date_clone)) {
+        session()->flash('error', 'O horário final selecionado ultrapassa o término do expediente da barbearia.');
+        $this->dispatch('mostrar');
+        return false;
+    }
+
+  
 
  
   
      $this->saveAgendamento($agendamento, $end_date_clone);
-
+     $this->redirect('/home?tab=pills-contact8');
      $firebaseToken = auth()->user()->token;
-     Http::withHeaders([
+     $pvKeyPath = public_path('pvKey.json');
+     $credential = new ServiceAccountCredentials(
+        "https://www.googleapis.com/auth/firebase.messaging",
+        json_decode(file_get_contents($pvKeyPath), true)
+    );
+    
+    $token = $credential->fetchAuthToken(HttpHandlerFactory::build());
+
+
+    $response = Http::withHeaders([
         'Content-Type' => 'application/json',
-        'Authorization' => 'Bearer ya29.a0AfB_byBdzX-Bj0INODFJbfYPQOHjuV0bLUiBTebQB6g3WEkR-sfA--Gy1OQZByI_7gDt0iSfxYZnhWH_PkXhQvBJrsr6atD0HKWOzXenPAldnLe_5LV-Ur0T04xpqn3ZXkv-PfD6JM_5eR13-XvS-8-Temc16WRF4p7JaCgYKAYYSARMSFQHGX2MiPIjXVH21O-b8r_rqRPLpHg0171'
+        'Authorization' => 'Bearer '. $token['access_token']
     ])->post('https://fcm.googleapis.com/v1/projects/barbearia-agendamento-7fe43/messages:send', [
         "message" => [
             "token" => $firebaseToken,
             "notification" => [
                 "title" => "Agendamento criado com sucesso.",
-                "body" => "Data: ". $date->format('d/m/Y H:i'),
-                "image" => "http://localhost/storage/" . $agendamento->barbeiro->barbearia->imagem
+                "body" => "Data: ". $agendamento->start_date->format('d/m/Y H:i'),
+                "image" => "https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/" . $this->barbeiroSelecionado->barbearia->imagem
             ],
             "webpush" => [
                 "fcm_options" => [
-                    "link" => "http://localhost/home"
+                    "link" => "http://localhost/home?tab=pills-contact8"
                 ]
             ]
         ]
     ]);
 
-$this->redirect('/home');
+
    
    
 
@@ -205,69 +250,7 @@ $this->redirect('/home');
  
 
  
- private function getTotalMinutes()
- {
-     $interval = $this->barbeiroSelecionado->interval;
-     list($hours, $minutes, $seconds) = explode(':', $interval);
-     return ($hours * 60) + $minutes;
- }
- 
- private function verificarHorarioTrabalho($date, $totalMinutes, $horasTrabalho, $endDate)
- {
-     $horaAbertura = Carbon::parse($horasTrabalho->start_hour); 
-     $horaFechamento = Carbon::parse($horasTrabalho->end_hour); 
-     $horarioSelecionado = Carbon::parse($date);
 
-     if ($endDate->day > $horarioSelecionado->day || $endDate->format('H:i') > $horaFechamento->format('H:i')) {
-        return false;
-     } else {
- 
-     $horariosIntervalo = [];
-     $horaAtual = $horaAbertura->copy();
-     while ($horaAtual < $horaFechamento) {
-         $horariosIntervalo[] = $horaAtual->format('H:i');
-         $horaAtual->addMinutes($totalMinutes);
-     }
-
-     return in_array($horarioSelecionado->format('H:i'), $horariosIntervalo);
-    }
- }
- 
- private function verificarDatasEspecificas($date, $totalMinutes, $datasEspecificas, $final)
- {
-
-
-   
- 
-     $horaSelecionada = Carbon::parse($date)->format('H:i');
-     foreach ($datasEspecificas as $dataEspecifica) {
-
-      
-         $startDate = Carbon::parse($dataEspecifica->start_date);
-         $endDate = Carbon::parse($dataEspecifica->end_date);
-         if($final > $endDate) {
-       
-            session()->flash('error', 'Horário de término do agendamento é maior que o horário de fechamento da barbearia');
-            $this->dispatch('mostrar');
-            return;
-         }
-         $startDateTime = $startDate->copy();
-         $horariosIntervalo = []; 
-     
-         while ($startDateTime < $endDate) {
-             $horariosIntervalo[] = $startDateTime->format('H:i');
-             $startDateTime->addMinutes($totalMinutes);
-         }
-   
-         if (in_array($horaSelecionada, $horariosIntervalo)) {
-             return true;
-         }
-
-      
-     }
-  
-     return false;
- }
 
  private function saveAgendamento($agendamento, $end_date_clone)
  {

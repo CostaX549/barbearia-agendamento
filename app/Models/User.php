@@ -9,9 +9,13 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
+use MercadoPago\MercadoPagoConfig;
+use MercadoPago\Client\Customer\CustomerCardClient;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Laravel\Cashier\Billable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use Billable;
     use HasApiTokens;
@@ -59,16 +63,68 @@ class User extends Authenticatable
      */
     protected $appends = [
         'profile_photo_url',
+       
     ];
 
 
-    public function barbearias(){
+    public function barbeariasOwned(){
          return $this->hasMany(Barbearia::class,"owner_id");
     }
 
-    public function eventos(){
-         return $this->HasMany(Agendamento::class,"user_id");
+    public function barbeariasWorking() {
+        return $this->belongsToMany(Barbearia::class, "barbearia_users", "user_id", "barbearia_id");
     }
+
+
+    public function workingHours() {
+        return $this->hasMany(UserWorkingHours::class, "user_id");
+    }
+   public function cortes(){
+        return $this->belongsToMany(Cortes::class,"user_corte","user_id","corte_id");
+   }
+
+    public function specificDates() {
+        return $this->hasMany(SpecificDate::class, "user_id");
+    }
+
+    public function getMercadoPagoCards()
+    {
+        try {
+          
+            MercadoPagoConfig::setAccessToken("TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433");
+            
+            
+            $client = new CustomerCardClient();
+            
+         if($this->payer_id) {
+
+       
+            $resposta = $client->list($this->payer_id);
+            $cards = $resposta->data;
+        } else {
+            $cards = [];
+        }
+            
+            return $cards;
+        } catch (\Exception $e) {
+            // Se ocorrer uma exceção, capture-a e retorne null
+            dd($e);
+            return null;
+        }
+    }
+
+
+
+   
+     
+
+    public function eventos(){
+         return $this->hasMany(Agendamento::class,"owner_id");
+    }
+
+
+ 
+
     public function plans()
     {
         return $this->hasMany(Plan::class);

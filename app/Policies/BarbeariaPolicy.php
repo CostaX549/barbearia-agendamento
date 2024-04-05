@@ -23,6 +23,6 @@ class BarbeariaPolicy
   public function agendar(User $user, Barbearia $barbearia)
   {
       // Verifica se o usuário é o proprietário da barbearia e se a barbearia não está deletada
-      return !$barbearia->trashed();
+      return true;
   }
 }

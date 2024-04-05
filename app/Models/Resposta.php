@@ -9,7 +9,7 @@ class Resposta extends Model
 {
     use HasFactory;
 
-    public function user() {
-        return $this->belongsTo(User::class, "user_id");
+    public function barbearia() {
+        return $this->belongsTo(Barbearia::class, "barbearia_id");
     }
 }

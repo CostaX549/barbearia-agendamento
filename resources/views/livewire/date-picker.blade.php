@@ -20,112 +20,24 @@
       </div>
       
       @if($dateChanged)
-      <h1 class="mb-3">Horários Disponíveis:</h1>
-  @php 
-        $specificDateFormatted = \Carbon\Carbon::parse($this->specificDate)->format('Y-m-d');
-  $specificDateEntries = $this->barbeiroSelecionado->specificDates
-    ->filter(function ($entry) use ($specificDateFormatted) {
-        return $entry->status === 'adicionar' && \Carbon\Carbon::parse($entry->start_date)->format('Y-m-d') === $specificDateFormatted;
-    });
-         $intervalString = $this->barbeiroSelecionado->interval;
-         $removedDates = $this->barbeiroSelecionado->specificDates()->where('status', 'remover')->get();
-      list($hours, $minutes, $seconds) = explode(':', $intervalString);
-      $intervalMinutes = $hours * 60 + $minutes;
-  @endphp
-      @php
-          function isTimeBooked($currentDateTime, $horariosAgendados, $removedDates, $selectedAgendamento = null) {
-              $isAgendado = false;
-              foreach ($horariosAgendados as $horarioAgendado) {
-                  $startHorarioAgendado = \Carbon\Carbon::parse($horarioAgendado->start_date);
-                  $endHorarioAgendado = \Carbon\Carbon::parse($horarioAgendado->end_date);
-  
-                  if ($currentDateTime >= $startHorarioAgendado && $currentDateTime < $endHorarioAgendado) {
-
-                    
-                  if ($selectedAgendamento && $horarioAgendado->id === $selectedAgendamento->id) {
-                return 'black'; // Retorna 'black' se for o agendamento selecionado
-            }
-            else {
-                $isAgendado = true;
-            }
-                   
-                 
-                  }
-              }
-  
-              $isRemovedDate = false;
-              foreach ($removedDates as $removedDate) {
-                  $startHorarioRemovido = \Carbon\Carbon::parse($removedDate->start_date);
-                  $endHorarioRemovido = \Carbon\Carbon::parse($removedDate->end_date);
-  
-                  if ($currentDateTime >= $startHorarioRemovido && $currentDateTime < $endHorarioRemovido) {
-                      $isRemovedDate = true;
-                      break; // Se encontrou, não precisa continuar o loop
-                  }
-              }
-  
-              return ($isAgendado || $isRemovedDate);
-          }
-      @endphp
-  
-      @foreach($specificDateEntries as $specificDateEntry)
-          @php
-              $startHour = \Carbon\Carbon::parse($specificDateEntry->start_date);
-              $endHour = \Carbon\Carbon::parse($specificDateEntry->end_date);
-              $currentHour = clone $startHour;
-          @endphp
-  
-          @while($currentHour < $endHour)
-              @php
-                  $currentDateTime = \Carbon\Carbon::parse($this->specificDate)->setTime($currentHour->hour, $currentHour->minute);
-              @endphp
-  
-  @if(isTimeBooked($currentDateTime, $this->barbeiroSelecionado->agendamentos, $removedDates, $selectedAgendamento) === 'black')
-  <x-badge label="{{ $currentHour->format('H:i') }}" black />
-@elseif(isTimeBooked($currentDateTime, $this->barbeiroSelecionado->agendamentos, $removedDates, $selectedAgendamento))
-  <x-badge label="{{ $currentHour->format('H:i') }}" negative />
-@else
-  <x-badge label="{{ $currentHour->format('H:i') }}" />
-@endif
-  
-              @php
-                  $currentHour->addMinutes($intervalMinutes);
-              @endphp
-          @endwhile
-      @endforeach
-  
-     
-      @foreach($this->barbeiroSelecionado->workingHours as $workingHour)
-          @if($workingHour->day_of_week->name === $dayOfWeek)
-              @php
-                  $startHour = \Carbon\Carbon::parse($workingHour->start_hour);
-                  $endHour = \Carbon\Carbon::parse($workingHour->end_hour);
-                  $currentHour = clone $startHour;
-              @endphp
-  
-              @while($currentHour < $endHour)
-                  @php
-                      $currentDateTime = \Carbon\Carbon::parse($this->date)->setTime($currentHour->hour, $currentHour->minute);
-
-             
-
-                  @endphp
-  
-  @if(isTimeBooked($currentDateTime, $this->barbeiroSelecionado->agendamentos, $removedDates, $selectedAgendamento) === 'black')
-  <x-badge label="{{ $currentHour->format('H:i') }}" black />
-@elseif(isTimeBooked($currentDateTime, $this->barbeiroSelecionado->agendamentos, $removedDates, $selectedAgendamento))
-  <x-badge label="{{ $currentHour->format('H:i') }}" negative />
-@else
-  <x-badge label="{{ $currentHour->format('H:i') }}" />
-@endif
-  
-                  @php
-                      $currentHour->addMinutes($intervalMinutes);
-                  @endphp
-              @endwhile
-          @endif
-      @endforeach
-  @endif
+      <p class="text-neutral-800  mb-2">
+      Horários Disponíveis:
+      </p>
+      @foreach ($this->barbeiroSelecionado->getAllAvailableTimes($this->date, $this->selectedAgendamento) as $time)
+   
+    @php
+        
+        $color = $time['color'];
+    @endphp
+    @if ($color === 'red')
+        <x-badge label="{{ $time['time']->format('H:i') }}" negative />
+    @elseif($color === '')
+    <x-badge label="{{ $time['time']->format('H:i') }}"  />
+    @else 
+    <x-badge label="{{ $time['time']->format('H:i') }}" black />
+    @endif
+@endforeach
+   @endif
 
  
 </div>
@@ -181,7 +93,11 @@ return \Carbon\Carbon::parse($date)->format('d-m-Y');
    
     
 
+var today = new Date();
 
+// Adicione 1 mês à data de hoje
+var nextMonth = new Date(today);
+nextMonth.setMonth(nextMonth.getMonth() + 1);
        
           
           var plugins = [];
@@ -199,6 +115,7 @@ return \Carbon\Carbon::parse($date)->format('d-m-Y');
               locale: 'pt',
       
               minDate: 'today',
+       
 
 
                enable: [
@@ -226,7 +143,7 @@ onChange: function (selectedDates, dateStr, instance) {
             var dayOfWeek = selectedDate.getDay();
         
    
-            if (!addDays.includes(dateStr.split(' ')[0])) {
+        /*     if (!addDays.includes(dateStr.split(' ')[0])) {
                 var selectedWorkingHours = workingHours.find(function (hour) {
                     return hour.day === dayOfWeek;
                 });
@@ -240,7 +157,7 @@ onChange: function (selectedDates, dateStr, instance) {
             } else {
                 instance.set('minTime', null); 
                 instance.set('maxTime', null);
-            }
+            } */
             
         
             

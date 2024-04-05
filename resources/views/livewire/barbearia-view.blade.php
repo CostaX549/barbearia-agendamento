@@ -6,31 +6,7 @@
 
 
 
-@cannot('agendar', $barbearia)
- 
-  <div class="lg:px-24 lg:py-24 md:py-20 md:px-44 px-4 py-24 items-center flex justify-center flex-col-reverse lg:flex-row md:gap-28 gap-16">
-    <div class="xl:pt-24 w-full xl:w-1/2 relative pb-12 lg:pb-0">
-        <div class="relative">
-            <div class="absolute">
-                <div class="">
-                    <h1 class="my-2 text-gray-800 font-bold text-2xl">
-                     Infelizmente, o plano da barbearia {{ $barbearia->nome }} não foi renovado, quando o plano desta barbearia for renovada, você poderá agendar nela.
-                    </h1>
-                    <p class="my-2 text-gray-800">Contate o dono da barbearia, para saber mais informações.</p>
-                    <button class="sm:w-full lg:w-auto my-2 border rounded md py-4 px-8 text-center bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-700 focus:ring-opacity-50">Voltar a Página Inicial</button>
-                </div>
-            </div>
-            <div>
-                <img src="https://i.ibb.co/G9DC8S0/404-2.png" />
-            </div>
-        </div>
-    </div>
-    <div>
-        <img src="https://i.ibb.co/ck1SGFJ/Group.png" />
-    </div>
-</div>
 
-@else
 <!-- Container for demo purpose -->
 
  
@@ -130,7 +106,7 @@
     <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
         <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
           <span class="sr-only">Open user menu</span>
-          <img class="w-8 h-8 rounded-full" @if(auth()->user()) src="{{ auth()->user()->profile_photo_url }}" @endif alt="user photo">
+          <img class="w-8 h-8 rounded-full" @if(auth()->user() && isset(auth()->user()->profile_photo_url)) src="{{ auth()->user()->profile_photo_url }}" @endif alt="user photo">
         </button>
         <!-- Dropdown menu -->
         <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" id="user-dropdown">
@@ -203,6 +179,8 @@ x-intersect="shownHome = true;"
     "
     
     >
+{{--     Versão Homem: https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/6c082904e4c74374b352ad53b2b2a8be-_1_-_1_-min.webp
+    Versão Mulher: salao de beleza 76ee1d75-c173-4ac8-9b66-26ef60913419 (1).png --}}
     <div 
 =
       class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed"
@@ -260,22 +238,7 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
     class="w-full cursor-zoom-in rounded shadow-sm data-[te-lightbox-disabled]:cursor-auto" />
 </div> --}}
 @can('create',$barbearia)
-<button
-  type="button"
-  data-te-ripple-init
-  wire:click="importarGaleria"
-  data-te-ripple-color="light"
-  class="mb-2 inline-block rounded px-6 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
-  style="background-color: #c13584">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="h-4 w-4"
-    fill="currentColor"
-    viewBox="0 0 24 24">
-    <path
-      d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-  </svg>
-</button>
+
 <div class="mx-auto cursor-pointer" x-on:click="$openModal('galeriaModal')">
   <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000" version="1.1" id="Capa_1" width="100px" height="100px" viewBox="0 0 45.402 45.402" xml:space="preserve">
     <g>
@@ -337,58 +300,93 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
   class="grid gap-6 lg:grid-cols-3 mx-auto"
   wire:ignore.self
 >
+@foreach(array_slice($this->galeria, 0, 6) as $galeria)
+<div class="zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat shadow-lg dark:shadow-black/20 bg-[50%]" data-te-ripple-init data-te-ripple-color="dark" >
+    @if(isset($galeria['media_url']))
+        <img src="{{ $galeria['media_url'] }}" data-te-caption="{{ $galeria['caption'] }}" data-te-img="{{ $galeria['media_url'] }}" class="w-[400px] h-[200px] object-cover align-middle transition duration-300 ease-linear" />
+    @else
+        <img src="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}" data-te-caption="{{ $galeria['descricao'] }}" data-te-img="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}" class="w-[400px] max-h-[400px]   xl:min-h-[350px] lg:min-h-[250px]  object-cover align-middle transition duration-300 ease-linear" />
+    @endif
+</div>
+@endforeach
+</div>
 
-
-  @foreach($barbearia->galeria ?? [] as $galeria)
-
-    <div
-
-
- 
-    class="zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat shadow-lg dark:shadow-black/20 bg-[50%]"
-    data-te-ripple-init data-te-ripple-color="dark"  wire:key="{{ $galeria['descricao'] }}">
-    <img   src="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}"
-    data-te-img="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}"
-      class="w-[400px] object-cover align-middle transition duration-300 ease-linear"  />
-  {{--   <a   data-te-img="{{ asset('storage/' . $galeria['foto']) }}">
-      <div
-        class="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed bg-[hsla(0,0%,0%,0.3)]">
-        <div class="flex h-full items-end justify-start">
-          <h5 class="m-6 text-lg font-bold text-white">
-          {{ $galeria['descricao']}}
-          </h5>
-        </div>
-      </div>
-      <div>
-        <div
-    
-          class="mask absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed opacity-0 transition duration-300 ease-in-out hover:opacity-100 bg-[hsla(0,0%,99.2%,0.15)]">
-        
-        
-        </div>
-      </div>
-    </a> --}}
+</div>
   </div>
+<div class="flex justify-center">
+<button
+data-te-toggle="modal"
+data-te-target="#exampleModalLg2"
+data-te-ripple-init
+data-te-ripple-color="light"
+  type="button"
+  class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+Galeria Completa
+</button>
+</div>
 
-  @endforeach
-  @foreach($response['data'] ?? [] as $data)
+<div
+  data-te-modal-init
+  class="fixed left-0 top-0 z-[1055] hidden h-full w-full overflow-y-auto overflow-x-hidden outline-none"
+  id="exampleModalLg2"
+  tabindex="-1"
+  aria-labelledby="exampleModalLgLabel"
+  aria-modal="true"
+  role="dialog">
   <div
+    data-te-modal-dialog-ref
+    class="pointer-events-none relative w-auto translate-y-[-50px] opacity-0 transition-all duration-300 ease-in-out min-[576px]:mx-auto min-[576px]:mt-7 min-[576px]:max-w-[500px] min-[992px]:max-w-[800px]">
+    <div
+      class="pointer-events-auto relative flex w-full flex-col rounded-md border-none bg-white bg-clip-padding text-current shadow-lg outline-none dark:bg-neutral-600">
+      <div
+        class="flex flex-shrink-0 items-center justify-between rounded-t-md border-b-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
+        <!--Modal title-->
+        <h5
+          class="text-xl font-medium leading-normal text-neutral-800 dark:text-neutral-200"
+          id="exampleModalLgLabel">
+       Galeria Completa
+        </h5>
+        <!--Close button-->
+        <button
+          type="button"
+          class="box-content rounded-none border-none hover:no-underline hover:opacity-75 focus:opacity-100 focus:shadow-none focus:outline-none"
+          data-te-modal-dismiss
+          aria-label="Close">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="h-6 w-6">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
 
+      <!--Modal body-->
+      <div class="relative  overflow-y-auto p-4">
+        <div  data-te-lightbox-init wire:ignore.self class="grid gap-4 lg:grid-cols-3 mx-auto">
+          @foreach($this->galeria as $galeria)
 
- 
-  class="zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat shadow-lg dark:shadow-black/20 bg-[50%]"
-  data-te-ripple-init data-te-ripple-color="dark"  >
-  <img   src="{{ $data['media_url'] }}"
-  data-te-img="{{ $data['media_url'] }}"
-    class="w-[400px] object-cover align-middle transition duration-300 ease-linear"  />
-
-</div>
-  @endforeach
-</div>
-
-</div>
+          <div class="zoom relative overflow-hidden rounded-lg bg-cover bg-no-repeat shadow-lg dark:shadow-black/20 bg-[50%]" data-te-ripple-init data-te-ripple-color="dark" >
+              @if(isset($galeria['media_url']))
+              <img  src="{{ $galeria['media_url'] }}"   data-te-caption="{{ $galeria['caption'] }}" data-te-img="{{ $galeria['media_url'] }}" class="w-[400px]  object-cover align-middle transition duration-300 ease-linear" />
+              @else
+              
+              <img  src="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}"   data-te-caption="{{ $galeria['descricao'] }}" data-te-img="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}" class="w-full max-h-[250px]    object-cover align-middle transition duration-300 ease-linear" />
+              @endif
+          </div>
+       @endforeach   
+    </div>
+      </div>
+    </div>
   </div>
-  <!-- Container for demo purpose -->
+</div>
+
 <div class="container my-24 mx-auto md:px-6" x-intersect = "shownServico=true" x-intersect:leave = "shownServico = false"  id="services" >
   <!-- Section: Design Block -->
   <section class="mb-32 text-center md:text-left" >
@@ -397,7 +395,7 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
       <div class="flex flex-wrap items-center">
         <div class="block w-full shrink-0 grow-0 basis-auto lg:flex lg:w-6/12 xl:w-4/12">
           <img src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbearia->imagem }}" alt="Trendy Pants and Shoes"
-            class="w-full rounded-t-lg lg:rounded-tr-none lg:rounded-bl-lg" />
+            class="w-full max-h-[500px] object-cover  rounded-t-lg lg:rounded-tr-none lg:rounded-bl-lg" />
         </div>
         <div class="w-full shrink-0 grow-0 basis-auto lg:w-6/12 xl:w-8/12">
           <div class="px-6 py-12 md:px-12">
@@ -409,7 +407,7 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
             </p>
             <div class="mb-6 flex flex-wrap">
               @foreach($barbearia->barbeiros as $barbeiro)
-              @foreach($barbeiro->cortes as $corte)
+              @foreach($barbearia->cortes as $corte)
               <div class="mb-4 w-full md:w-4/12">
                 <p class="flex">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
@@ -449,261 +447,9 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
 @endcan
 
 
-<livewire:agendar-barbearia :barbearia="$barbearia" />
+<livewire:agendar-barbearia :barbearia="$barbearia" :key="$barbearia->id" />
 
 
-{{--   <form wire:submit="AgendarHorario"  >
-  <x-select
-  label="Selecionar Barbeiro"
-  placeholder="Selecionar Barbeiro"
-  wire:model.blur="barbeiroModel"
-  class="mb-3"
-  autocomplete="off"
->
-
-@foreach($this->barbeiros as $barbeiro)
-
-  <x-select.user-option src="/barbearia.avif" label="{{ $barbeiro->name }}" value="{{ $barbeiro->id }}" />
-
-  @endforeach
-</x-select>
-
-<div class="ml-2" wire:loading wire:target="barbeiroModel">
-  <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-      <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
-  </div>
-</div>
-@if($barbeiroModel)
-
-<x-select
-label="Selecionar Corte"
-multiselect
-placeholder="Selecionar Corte"
-wire:model.live="cortes"
-
-class="mb-3"
-autocomplete="off"
->
-@foreach($this->barbeiroSelecionado->cortes as $corte)
-<x-select.user-option src="/barbearia.avif" label="{{ $corte->nome }} - R${{ $corte->preco }}" value="{{ $corte->id }}" />
-
-@endforeach
-</x-select>
-<div x-data="bob" x-init="initDatePicker($refs.datepicker2)" wire:ignore>
-  <div class="mb-4">
-      <x-input type="text"  x-ref="datepicker2" wire:model.live="date" label="Data" placeholder="Selecione uma data" />
-  </div>
-</div>
-@script
-<script>
-  Alpine.data('bob', () => ({
-      date: '',
-      
-      initDatePicker(datepickerRef) {
-          var enableDays = {!! json_encode($this->barbeiroSelecionado->workingHours->pluck('dia_numero')->toArray()) !!};
-     
-          var workingHours = {!! json_encode(
-              $this->barbeiroSelecionado->workingHours->map(function($workingHour) {
-                  return [
-                      'day' => $workingHour->dia_numero,
-                      'minTime' => $workingHour->start_hour,
-                      'maxTime' => $workingHour->end_hour,
-                  ];
-              })
-          ) !!};
-
-          var bookedDates = {!! json_encode(
-              $this->barbeiroSelecionado->agendamentos->pluck("start_date")
-                  ->map(function($date) {
-                      return \Carbon\Carbon::parse($date)->format('d-m-Y H:i');
-                  })
-                  ->toArray()
-          ) !!};
-          
-
-          flatpickr(datepickerRef, {
-              enableTime: true,
-              dateFormat: 'd-m-Y H:i',
-              inline: true,
-              locale: 'pt',
-              defaultHour: 13,
-              minDate: 'today',
-              enable: [function (date) {
-                  return enableDays.includes(date.getDay());
-              }],
-              
-              onChange: function (selectedDates, dateStr, instance) {
-            
- 
-    var selectedDate = selectedDates[0];
-    var dayOfWeek = selectedDate.getDay();
-
-
-
-    var selectedWorkingHours = workingHours.find(function (hour) {
-        return hour.day === dayOfWeek;
-    });
-
-
-
-    if (selectedWorkingHours) {
-   
-        instance.set('minTime', selectedWorkingHours.minTime);
- 
-        instance.set('maxTime', selectedWorkingHours.maxTime);
-    } else {
-        instance.set('minTime', null);
-        instance.set('maxTime', null);
-    } 
-    
-  
-    
-}
-          });
-      }
-  }));
-
-
-</script>
-@endscript
-
-<div class="ml-2" wire:loading wire:target="date">
-  <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-      <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
-  </div>
-</div>
-
-@if($date)
-<h1 class="mb-3">Horários Disponíveis:</h1>
-
-<div wire:loading.remove wire:target="date">
-  @php
-  // Obtenha todos os horários agendados no formato 'Y-m-d H:i'
-  $horariosAgendados = $this->barbeiroSelecionado->agendamentos->flatMap(function ($agendamento) {
-      $start = Carbon::parse($agendamento->start_date);
-      $end = Carbon::parse($agendamento->end_date);
-
-      $horarios = [];
-      while ($start < $end) {
-          $horarios[] = $start->format('Y-m-d H:i');
-          $start->addHour(); // Ajuste o intervalo conforme necessário
-      }
-
-      return $horarios;
-  })->toArray();
-@endphp
-
-@foreach($this->barbeiroSelecionado->workingHours as $workingHour)
-  @if($workingHour->day_of_week === $dayOfWeek)
-      @php
-          $startHour = new DateTime($workingHour->start_hour);
-          $endHour = new DateTime($workingHour->end_hour);
-          $interval = new DateInterval('PT1H'); // Intervalo de 1 hora
-          $currentHour = $startHour;
-      @endphp
-
-      @while($currentHour < $endHour)
-          @php
-              $formattedHour = $currentHour->format('H:i');
-              $currentDateTime = Carbon::parse($this->date)->setTime($currentHour->format('H'), $currentHour->format('i'));
-             
-              $isAgendado = in_array($currentDateTime->format('Y-m-d H:i'), $horariosAgendados);
-          @endphp
-
-          @if($isAgendado)
-            
-              <x-badge label="{{ $formattedHour }}" negative />
-          @else
-            
-              <x-badge label="{{ $formattedHour }}" />
-          @endif
-
-          @php
-              $currentHour->add($interval);
-          @endphp
-      @endwhile
-  @endif
-@endforeach
-</div>
-<x-select
-label="Modo de Pagamento"
-placeholder="Selecione um método de pagamento"
-:options="['Pagar Agora', 'Pagar no Salão']"
-class="mt-4"
-autocomplete="off"
-wire:model.blur="payment"
-/>
-@endif
-<div class="ml-2" wire:loading wire:target="payment">
-  <div class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]" role="status">
-      <span class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
-  </div>
-</div>
-@if($payment === 'Pagar Agora' && $this->cortes)
-
-@php 
-  $this->total = 0;
-        foreach($this->cortes as $valor) {
-            $corte = \App\Models\Cortes::findOrFail($valor);
-            $this->total += $corte->preco;
-        }
-        
-@endphp
-
-<div class="mt-3" x-data="paypalIntegration" x-init="initPaypal($refs.button)" x-ref="button" wire:ignore >
-    
-    </div>
-
-    @script 
-<script>
-  Alpine.data('paypalIntegration', () => ({
-    initPaypal(button) {
-   
-
-     
-            paypal.Buttons({
-                createOrder: function (data, actions) {
-                    return actions.order.create({
-                        purchase_units: [
-                            {
-                                amount: {
-                                    value: '{{ $this->total }}',
-                                },
-                            },
-                        ],
-                    });
-                },
-                onApprove: function (data, actions) {
-                    return actions.order.capture().then(function (orderData) {
-                        const transaction = orderData.purchase_units[0].payments.captures[0];
-                        
-                       
-                            Livewire.dispatch('transactionEmit', {
-                                transactionId: transaction.id,
-                            });
-                       
-                    });
-                },
-            }).render(button);
-      
-    },
-}));
-</script>
-    @endscript
-@endif
-@endif
-
-  <x-slot name="footer">
-      <div class="flex justify-between gap-x-4">
-      
-
-          <div class="flex">
-              <x-button flat label="Cancelar" x-on:click="close" />
-              <x-button primary  spinner="AgendarHorario" wire:click="AgendarHorario" label="Agendar"   />
-          </div>
-      </div>
-  </x-slot>
-</form> --}}
 
 
 
@@ -722,7 +468,7 @@ wire:model.blur="payment"
             <div class="mb-6 lg:mb-0">
                 <div class="block rounded-lg bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]">
                     <div class="relative overflow-hidden bg-cover bg-no-repeat">
-                        <img src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbeiro->avatar }}" class="w-full rounded-t-lg max-h-[400px] object-cover" />
+                        <img src="{{ $barbeiro->user->profile_photo_url }}" class="w-full h-[350px] rounded-t-lg  object-cover" />
                         <a href="#!">
                             <div class="absolute top-0 right-0 bottom-0 left-0 h-full w-full overflow-hidden bg-fixed"></div>
                         </a>
@@ -732,7 +478,16 @@ wire:model.blur="payment"
                     </div>
                     <div class="p-6">
                         <h5 class="mb-4 text-lg font-bold">{{ $barbeiro->name }}</h5>
-                        <p class="mb-4 text-neutral-500">{{ $barbeiro->barbearia->nome }}</p>
+                        <p class="mb-3 text-neutral-500">Serviços:  @foreach($barbeiro->cortes as $corte)
+                          @if($loop->index < 3) <!-- Limita a exibição aos 3 primeiros cortes -->
+                           {{ $corte->corte->nome }}
+                          @endif
+                      @endforeach</p>
+                        <p class="mb-3 text-neutral-500">Horários de Trabalho:</p>
+    
+                        @foreach($barbeiro->workingHours as $workingHour)
+                        <p class="mb-3 text-neutral-500">{{ $workingHour->day_of_week->name }}: {{ \Carbon\Carbon::parse($workingHour->start_hour)->format('H:i') }} - {{ \Carbon\Carbon::parse($workingHour->end_hour)->format('H:i') }}</p>
+                        @endforeach
                         <ul class="mx-auto flex list-inside justify-center">
                             <a href="#!" class="px-2">
                                 <!-- GitHub -->
@@ -763,8 +518,10 @@ wire:model.blur="payment"
 </div>
 
 
+
+
 <div id="comentario"  x-intersect = "shownComentario =true" x-intersect:leave = "shownComentario =false" >
-<livewire:comentarios :barbearia="$barbearia"  />
+ <livewire:comentarios :barbearia="$barbearia"  /> 
 </div>
 
 
@@ -774,7 +531,7 @@ wire:model.blur="payment"
   <div class="container px-6 pt-6">
     <!-- Social media icons container -->
     <div class="mb-6 flex justify-center">
-      <a
+   {{--    <a
         href="#!"
         type="button"
         class="m-1 h-9 w-9 rounded-full border-2 border-white uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0"
@@ -870,7 +627,69 @@ wire:model.blur="payment"
           <path
             d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
         </svg>
+      </a> --}}
+      @foreach($barbearia->redes_sociais ?? [] as $index => $redeSocial)
+ 
+    @switch($index)
+        @case('Facebook')
+        <a
+        href="#!"
+        type="button"
+        class="m-1 h-9 w-9 rounded-full border-2 border-white uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0"
+        data-te-ripple-init
+        data-te-ripple-color="light">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="mx-auto h-full w-4"
+          fill="currentColor"
+          viewBox="0 0 24 24">
+          <path
+            d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+        </svg>
       </a>
+        @break
+        @case('Instagram')
+        <a
+        href="#!"
+        type="button"
+        class="m-1 h-9 w-9 rounded-full border-2 border-white uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0"
+        data-te-ripple-init
+        data-te-ripple-color="light">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="mx-auto h-full w-4"
+          fill="currentColor"
+          viewBox="0 0 24 24">
+          <path
+            d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+        </svg>
+      </a>
+            @break
+        @case('Twitter')
+            <a href="#!" type="button" class="m-1 h-9 w-9 rounded-full border-2 border-white uppercase leading-normal text-white transition duration-150 ease-in-out hover:bg-black hover:bg-opacity-5 focus:outline-none focus:ring-0" data-te-ripple-init data-te-ripple-color="light">
+                <!-- SVG do Twitter -->
+            </a>
+            @break
+        <!-- Adicione outros casos conforme necessário -->
+    @endswitch
+@endforeach
+
+
+<button
+  type="button"
+  x-on:click="$openModal('cardModal')"
+  class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+  Button
+</button>
+
+
+<button
+  type="button"
+  wire:click="importarGaleria"
+  class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
+  Button
+</button>
+
     </div>
 
     <!-- Newsletter sign-up form -->
@@ -1010,7 +829,37 @@ wire:model.blur="payment"
     <a class="text-white" href="https://tw-elements.com/">TW elements</a>
   </div>
 </footer>
+<x-modal.card  max-width="3xl" title="Adicionar Rede Social" blur wire:model.defer="cardModal">
+  
+  <x-select
+      class="mb-3"
+      label="Selecionar Redes Sociais"
+      autocomplet="off"
+      multiselect
+      placeholder="Selecionar Redes Sociais"
+      wire:model.blur="redesocial"
+  >
+      <x-select.user-option src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" label="Instagram" value="Instagram" />
+      <x-select.user-option src="https://cdn-icons-png.flaticon.com/512/145/145802.png" label="Facebook" value="Facebook" />
+      <x-select.user-option src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4a6y8M9WPSWOIpkx-XeDBttgxLcV5As2lZfZEuV-ku2k236l7pqNZIFHlftNEKembwzs&usqp=CAU" label="X" value="X" />
+      <x-select.user-option src="https://via.placeholder.com/500" label="Youtube" value="Youtube" />
+  </x-select>
 
+  @foreach($this->redesocial ?? [] as $index => $rede)
+      <x-input label="{{ $rede }} - Link" wire:model="link.{{ $index }}" placeholder="Link"  class="mb-4" />
+  @endforeach
+
+  <x-slot name="footer">
+      <div class="flex justify-between gap-x-4">
+          <x-button flat negative label="Delete" wire:click="delete" />
+
+          <div class="flex">
+              <x-button flat label="Cancelar" x-on:click="close" />
+              <x-button primary label="Salvar" wire:click="save" />
+          </div>
+      </div>
+  </x-slot>
+</x-modal.card>
 @assets 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
@@ -1024,6 +873,6 @@ wire:model.blur="payment"
       // flowbite.Button.initAll();
   }
   </script>
-@endcan
+
 
 </div>
