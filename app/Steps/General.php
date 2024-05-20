@@ -62,7 +62,7 @@ class General extends Step
     /*
      * Step Validation
      */
-/*       public function validate()
+/*      public function validate()
     {
        
 
@@ -70,7 +70,7 @@ class General extends Step
         return [
           
             [
-                'state.cpf'     => ['required', 'string'],
+                'state.cpf' => ['required', 'string', 'unique:barbearias,cpf'], 
                 'state.name'     => ['required', 'string'],
                 'state.cep'           => ['required', 'string', 'min:9', 'max:9', function ($attribute, $value, $fail) {
                     
@@ -135,7 +135,7 @@ class General extends Step
                 
             ],
         ];
-    }   */
+    }    */
 
     /*
      * Step Title

@@ -101,25 +101,19 @@ class Horario extends Step
 
  
 
-    public function validate()
+    /* public function validate()
 {
     $state = $this->livewire->state;
 
     $rules = [];
  
+    $rules['state.dias'] = ['required', function ($attribute, $value, $fail) {
+        if (!in_array(true, $value)) {
+            $fail(__('Pelo menos um dia deve ser selecionado.'));
+        }
+    }];
+     
 
-
-$rules['state.dias.*'] = ['nullable', function ($attribute, $value, $fail) {
-    $enumValues = array_map(function ($case) {
-        return $case->value;
-    }, DaysOfWeek::cases());
-    $attributeParts = explode('.', $attribute);
-    $index = end($attributeParts);
-
-    if (!in_array($index, $enumValues)) {
-        $fail('Os índices da matriz devem ser números correspondentes aos dias da semana.');
-    }
-}];
     foreach ($state['dias'] as $index => $dia) {
          // Agora permitimos valores nulos
 
@@ -173,7 +167,7 @@ $rules['state.dias.*'] = ['nullable', function ($attribute, $value, $fail) {
 
 
     return [$rules, [], []];
-}
+} */
 
     /*
      * Step Title

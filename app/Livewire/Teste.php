@@ -88,33 +88,7 @@ public $selectedBarbearia;
   }
 
 
-  public function teste() {
-    $config = array( // instantiation config params
-        'app_id' => '<FB_APP_ID>', // facebook app id
-        'app_secret' => '<FB_APP_SECRET>', // facebook app secret
-    );
-    
-    // uri facebook will send the user to after they login
-    $redirectUri = 'https://path/to/fb/login/redirect.php';
-    
-    $permissions = array( // permissions to request from the user
-        'instagram_basic',
-        'instagram_content_publish', 
-        'instagram_manage_insights', 
-        'instagram_manage_comments',
-        'pages_show_list', 
-        'ads_management', 
-        'business_management', 
-        'pages_read_engagement'
-    );
-    
-    // instantiate new facebook login
-    $facebookLogin = new FacebookLogin( $config );
-    
-    // display login dialog link
-dd($facebookLogin->getLoginDialogUrl( $redirectUri, $permissions ));
-      
-  }
+  
   
 
 #[Computed]
@@ -206,22 +180,11 @@ public function contar() {
     public function compartilharRede() {
         
     }
-    #[Computed]
-    public function barbeariasordenadas() {
-        return Barbearia::where('nome', 'like', '%' . $this->search . '%')
-            ->get()
-            ->sortByDesc(function ($barbearia) {
-                return $barbearia->barbeiros->pluck('agendamentos')->flatten()->count();
-            });
-    }
+
 
 
     
-    #[Computed]
-    #[On('assinatura-salva')]
-    public function plan() {
-        return Plan::where('user_id', auth()->user()->id)->first();
-    }
+ 
  
   
 
@@ -231,11 +194,7 @@ public function contar() {
  
 
    
-     #[Computed]
-     #[On('barbearia-salva')]
-     public function barbearias() {
-        return Barbearia::latest()->get();
-     }
+   
  
   
     public function render()

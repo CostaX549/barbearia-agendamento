@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Barbearia;
 use App\Steps\General;
+use App\Steps\BarbeariaPayments;
 use Vildanbina\LivewireWizard\WizardComponent;
 use App\Models\User;
 use App\Steps\Horario;
@@ -32,7 +33,7 @@ class UserWizard extends WizardComponent
      // My custom class property
      public $userId;
   
-
+ 
      public array $steps = [
 
      
@@ -40,6 +41,7 @@ class UserWizard extends WizardComponent
        
    
         Horario::class,
+        BarbeariaPayments::class,
         Imagem::class,
    Pagamento::class,
  

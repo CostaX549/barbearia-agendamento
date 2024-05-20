@@ -2,30 +2,35 @@
 
 use App\Http\Controllers\InstagramController;
 use Illuminate\Support\Facades\Route;
-use App\Livewire\Teste;
+use App\Livewire\Cliente\Telas\Teste;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Http\Request;
-use App\Livewire\Agendar;
-use App\Livewire\BarbeariaView;
-use App\Livewire\Gerenciar;
-use App\Livewire\Horarios;
+use App\Livewire\Gerenciar\Agendamentos\Agendar;
+use App\Livewire\Cliente\Telas\BarbeariaView;
+use App\Livewire\Gerenciar\Telas\Gerenciar;
+use App\Livewire\Gerenciar\Barbeiros\Horarios;
 use App\Livewire\Agendamentos;
 use App\Livewire\LandingPage;
-use App\Livewire\Colaborador;
+use App\Livewire\Gerenciar\Telas\Clientes;
+use App\Livewire\Gerenciar\Telas\Colaborador;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\BarbeariaController;
 use App\Http\Controllers\MercadoPago;
 use App\Http\Controllers\Webhooks;
-use App\Livewire\Calendario;
+use App\Livewire\Gerenciar\Barbeiros\Calendario;
 use App\Livewire\Subscribe;
-use App\Livewire\Deletar;
+
 use App\Livewire\Plano;
-use App\Livewire\Services;
+use App\Livewire\Gerenciar\Telas\Services;
 use App\Jobs\VerificarPagamento;
+use App\Livewire\ComprasUsuario;
+use App\Livewire\EstoqueProduto;
+use App\Livewire\Gerenciar\Telas\Promocoes;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -65,7 +70,7 @@ Route::get('/instagram', [InstagramController::class, 'instagram']);
 
 Route::get('/auth/{provider}/redirect', function(string $provider) {
       return Socialite::driver($provider)->redirect();
-});
+})->middleware("guest");
 
 Route::get('/auth/{provider}/callback', function(string $provider) {
        $providerUser = Socialite::driver($provider)->user();
@@ -85,7 +90,7 @@ Route::get('/auth/{provider}/callback', function(string $provider) {
 
        return redirect('/home');
 
-});
+})->middleware("guest");
 
 
 
@@ -96,9 +101,14 @@ Route::prefix('gerenciar/{slug}')->group(function () {
     Route::get('/horarios', Horarios::class)->name('horarios');
     Route::get('/horarios/calendario/{id}', Calendario::class)->name('barbeiro.calendario'); 
     Route::get('/billing', Colaborador::class)->name('barbearia.billing');
-    Route::get('/deletar',Deletar::class)->name('deletar');
+
     Route::get('/services', Services::class)->name('barbearia.services');
-    Route::get('/plano', Plano::class)->name('barbearia.plano');
+    Route::get('/clientes', Clientes::class)->name('barbearia.clientes');
+    Route::get('/promocoes', Promocoes::class)->name('barbearia.promocoes');
+    Route::get('/estoqueCompras', EstoqueProduto::class)->name('barbearia.estoqueCompras');
+    Route::get('/compras', ComprasUsuario::class)->name('barbearia.compras');
+
+ 
 })->middleware("auth");
 
 Route::get('landing', LandingPage::class)->name('landing');

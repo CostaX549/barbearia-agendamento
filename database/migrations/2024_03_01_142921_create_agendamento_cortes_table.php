@@ -18,6 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->foreign("agendamento_id")->references('id')->on('agendamentos')->onDelete("cascade");
             $table->foreign("user_corte_id")->references('id')->on('user_corte')->onDelete("cascade");
+            $table->softDeletes();
         });
     }
 

@@ -24,11 +24,21 @@ class BarbeariaUser extends Model
         'user_id',
     ];
 
+    protected $appends = [
+        'max_date'
+     ];
+
     protected $casts = [
      'price' => PlanTypes::class,
         'payment_method' => PaymentMethods::class,
+        'plan_ends_at' => 'datetime',
+        'payment_methods_allowed' => 'array',
+        'max_date' => 'datetime'
+
         
     ];
+
+   
 
     public function workingHours()
     {
@@ -43,7 +53,29 @@ public function user() {
     return $this->belongsTo(User::class, "user_id");
 }
 
+public function getPayerInformations() {
+    
+}
 
+public function getMaxDateAttribute() {
+    switch ($this->optionMax) {
+        case '15 Dias':
+            return Carbon::now()->addDays(15);
+            break;
+        case '1 Mês':
+            return Carbon::now()->addMonths(1);
+            break;
+        case '3 Meses':
+            return Carbon::now()->addMonths(3);
+            break;
+        case '6 Meses':
+            return Carbon::now()->addMonths(6);
+            break;
+        default:
+            return null;
+            break;
+    }
+}
 
 
 public function barbearia() {
@@ -174,7 +206,7 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
 
         $maxClosingTime = null;
    
-        if ($workingHour && $workingHour->end_hour >= $endDateTime->format('H:i:s')) {
+        if (isset($workingHour) && $workingHour->end_hour >= $endDateTime->format('H:i:s')) {
             $closingTime = Carbon::createFromTimeString($workingHour->end_hour)->format('H:i:s');
             if ($maxClosingTime === null || $closingTime > $maxClosingTime) {
                 $maxClosingTime = $closingTime;
@@ -290,6 +322,10 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
        
     }
     return false;
+}
+
+public function maquininhas() {
+    return $this->hasMany(Maquininha::class);
 }
 
 public function isEndTimeExceeded($date, $endDateTime)

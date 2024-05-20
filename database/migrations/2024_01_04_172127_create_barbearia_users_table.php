@@ -31,10 +31,12 @@ return new class extends Migration
             $table->string("payment_id")->nullable();
             $table->enum('payment_method', $paymentMethodValues)->nullable();
             $table->string("card_id")->nullable();
+      
             $table->enum('price', $planTypeValues)->nullable(); // Usando array_values()
             $table->timestamp('plan_ends_at')->nullable();
             $table->time('interval')->default('01:00:00');
             $table->time('antecedence_time')->default('01:00:00');
+            $table->datetime('maxDate')->nullable();
             $table->unsignedBigInteger("user_id");
             $table->softDeletes();
             $table->foreign('barbearia_id')->references('id')->on('barbearias')->onDelete("cascade");

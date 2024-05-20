@@ -9,4 +9,5 @@ enum PaymentMethods: string
     case credit_card = "Cartão de Crédito";
     case debit_card = "Cartão de Débito";
     case ticket = "Lotérica";
+
 }

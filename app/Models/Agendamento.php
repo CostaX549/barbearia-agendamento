@@ -14,7 +14,7 @@ class Agendamento extends Model
            'start_date' => 'datetime',
            'end_date' => 'datetime'
     ];
-    protected $appends = ['total_price'];
+
     public function user(){
          return $this->belongsTo(BarbeariaUser::class,"barbearia_user_id");
     }
@@ -31,12 +31,12 @@ class Agendamento extends Model
          return $this->belongsTo(User::class,"owner_id");
     }
 
-    public function getTotalPriceAttribute()
-    {
-        $preco = 0;
-        foreach ($this->cortes as $corte) {
-            $preco += $corte->corte->preco;
-        }
-        return $preco;
+    public function maquininha() {
+        return $this->belongsTo(Maquininha::class, "maquininha_id");
     }
+
+    
+
+
+
 }

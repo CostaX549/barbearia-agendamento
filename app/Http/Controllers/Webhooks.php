@@ -38,14 +38,17 @@ class Webhooks extends Controller
      if($response->json()['status'] === 'authorized') {
        
         $barbearia->assinatura_id = $response->json()['id'];
-       
+        $barbearia->plan_ends_at = $response->json()['next_payment_date'];
         $barbearia->save();
         $barbearia->restore();
      }
      if($response->json()['status'] === 'cancelled' || $response->json()['status'] === 'paused' ){
+        if($barbearia->assinatura_id !=null){
         $barbearia->payment_method = null;  
         $barbearia->assinatura_id = null;
+        
         $barbearia->delete();
+        }
      }
 
 
@@ -57,11 +60,12 @@ class Webhooks extends Controller
         'Authorization' => 'Bearer ' . $accessToken,
         'Accept' => 'application/json',
     ])->get("https://api.mercadopago.com/v1/payments/{$request->input("data.id")}");
-    if($response->json()['status'] === 'authorized') {
+    
     $barbearia = BarbeariaUser::withTrashed()->where('id', $response->json()['external_reference'])->first();
 if($response->json()['status']==='authorized'){
     $barbearia->plan_ends_at = Carbon::now()->addMonth();
     $barbearia->restore(); 
+}
 
     if ($response->json()['status'] === 'cancelled') {
         $barbearia->payment_method = null;  
@@ -70,10 +74,10 @@ if($response->json()['status']==='authorized'){
         $barbearia->delete();
     }
     
-}
 
 
-}
+
+
   }
     }
 

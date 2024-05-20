@@ -23,6 +23,7 @@
     <title>{{ $barbearia->nome }}</title>
     <!--     Fonts and icons     -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Font Awesome Icons -->
     <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
@@ -84,12 +85,13 @@
           </li>
 
           <li class="mt-0.5 w-full">
-            <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="../pages/rtl.html">
+            {{-- <a class=" dark:text-white dark:opacity-80 py-2.7 text-sm ease-nav-brand my-0 mx-2 flex items-center whitespace-nowrap px-4 transition-colors" href="../pages/rtl.html">
               <div class="mr-2 flex h-8 w-8 items-center justify-center rounded-lg bg-center stroke-0 text-center xl:p-2.5">
                 <i class="relative top-0 text-sm leading-normal text-red-600 ni ni-world-2"></i>
               </div>
               <span class="ml-1 duration-300 opacity-100 pointer-events-none ease">RTL</span>
-            </a>
+            </a> --}}
+            <x-barbearia-link route="/gerenciar/{{ $barbearia->slug }}/clientes" name="Clientes" :active="request()->routeIs('barbearia.clientes')" icon="ni ni-single-02"/>
           </li>
 
           <li class="w-full mt-4">

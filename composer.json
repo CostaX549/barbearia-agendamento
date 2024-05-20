@@ -10,6 +10,7 @@
     "require": {
         "php": "^8.1",
         "asantibanez/livewire-charts": "^3.0",
+        "filament/filament": "^3.2",
         "google/auth": "*",
         "guzzlehttp/guzzle": "^7.8",
         "imagine/imagine": "^1.3",

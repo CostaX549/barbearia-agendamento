@@ -20,6 +20,7 @@ return new class extends Migration
             $table->time("intervalo")->default('01:00:00');
             $table->foreign("barbearia_id")->references('id')->on('barbearias')->onDelete("cascade");
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

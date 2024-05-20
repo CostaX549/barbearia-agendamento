@@ -11,11 +11,12 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use MercadoPago\MercadoPagoConfig;
 use MercadoPago\Client\Customer\CustomerCardClient;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use Laravel\Cashier\Billable;
 
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable /* implements MustVerifyEmail */
 {
     use Billable;
     use HasApiTokens;
@@ -90,29 +91,28 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getMercadoPagoCards()
     {
         try {
-          
+            // Defina seu token de acesso do MercadoPago
             MercadoPagoConfig::setAccessToken("TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433");
-            
-            
-            $client = new CustomerCardClient();
-            
-         if($this->payer_id) {
-
-       
-            $resposta = $client->list($this->payer_id);
-            $cards = $resposta->data;
-        } else {
-            $cards = [];
-        }
-            
-            return $cards;
+    
+            // Verifique se os cartões estão armazenados em cache
+            $cachedCards = Cache::remember('mercado_pago_cards_' . $this->payer_id, now()->addHours(6), function () {
+                // Se não estiverem em cache, busque do MercadoPago
+                $client = new CustomerCardClient();
+                if ($this->payer_id) {
+                    $resposta = $client->list($this->payer_id);
+                    return $resposta->data;
+                } else {
+                    return [];
+                }
+            });
+    
+            return $cachedCards;
         } catch (\Exception $e) {
             // Se ocorrer uma exceção, capture-a e retorne null
             dd($e);
             return null;
         }
     }
-
 
 
    
@@ -137,5 +137,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function avaliacoes(){
         return   $this->hasMany(Avaliacao::class,"user_id");
+    }
+    public function   clientes(){
+        return   $this->hasMany(Cliente::class,"user_id");
+    }
+
+    public function promocoes(){
+         return $this->belongsToMany(Promocao::class, "user_promocoes","user_id","promocao_id");
     }
 }

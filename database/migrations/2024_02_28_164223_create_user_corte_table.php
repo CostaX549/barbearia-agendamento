@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('barbearia_user_id'); // Recria a coluna barbearia_id
             $table->foreign('barbearia_user_id')->references('id')->on('barbearia_users')->onDelete('cascade');
             $table->foreign("corte_id")->references('id')->on('cortes')->onDelete("cascade");
+            $table->softDeletes();
             $table->timestamps();
         });
     }

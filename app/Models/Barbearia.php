@@ -29,6 +29,10 @@ public function owner() {
         return $this->hasMany(BarbeariaUser::class, "barbearia_id");
     }
 
+    public function estoques() {
+        return $this->hasMany(Estoque::class, "barbearia_id");
+    }
+
 
 
     public function caixas(){
@@ -84,5 +88,17 @@ public function isBarberShopClosed()
 public function respostas(){
     return   $this->hasMany(Resposta::class,"barbearia_id");
 }
-    
+    public function clientes(){
+        return   $this->hasMany(Cliente::class,"barbearia_id");
+    }
+
+    public function promocoes() {
+        return $this->hasMany(Promocao::class);
+    }
+
+    public function compras(){
+         return $this->hasMany(Compras::class,"barbearia_id", "compra_id");
+    }
+
+   
 }

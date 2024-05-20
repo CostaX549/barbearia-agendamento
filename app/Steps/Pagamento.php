@@ -27,6 +27,7 @@ use App\Models\BarbeariaUser;
 use MercadoPago\Net\MPSearchRequest;
 use App\Enums\PlanTypes;
 use App\Livewire\Plano;
+use App\Models\Maquininha;
 
 class Pagamento extends Step
 {
@@ -55,11 +56,11 @@ class Pagamento extends Step
 
           
              
-        $accessToken = 'TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433'; 
+        $accessToken = 'APP_USR-8752356059637759-013112-9f99a4e1b66b20ea9f5c629551fd836b-1660752433'; 
 
 
         MercadoPagoConfig::setAccessToken($accessToken);
-    
+      
 
         $barbearia = new Barbearia;
         $barbearia->nome = $state['name'];
@@ -72,6 +73,9 @@ class Pagamento extends Step
        
         
         $barbearia_user = new BarbeariaUser;
+        $barbearia_user->payment_methods_allowed = $state['payments'];
+
+        
         $barbearia_user->user_id = auth()->user()->id;
     
      
@@ -90,11 +94,19 @@ class Pagamento extends Step
         $barbearia->owner_id = auth()->user()->id;
         $barbearia->slug = $state['slug'];
         $barbearia->cpf = $state['cpf'];
- 
+     
         $barbearia->save();
         $barbearia_user->barbearia_id = $barbearia->id;
         $barbearia_user->save();
+        $maquininha =  new Maquininha;
+        $maquininha->name = $state['maquininhaname'];
+        $maquininha->barbearia_user_id = $barbearia_user->id;
+        $maquininha->taxa_debito = $state['maquininhadebito'];
+        $maquininha->taxa_credito = $state['maquininhacredito'];
+        $maquininha->save();
         $barbearia_user->delete();
+
+        
        
         
 
@@ -168,8 +180,38 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
     } catch (\Exception $e) {
            dd($e);
     }
- 
-  
+
+    $customerResponse = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $accessToken,
+    ])->get('https://api.mercadopago.com/v1/customers/search', [
+        'email' => auth()->user()->email
+    ]);
+
+
+    $customer = json_decode($customerResponse->body());
+
+    // Verifica se o cliente foi encontrado
+    if (empty($customer->results)) {
+        $client_customer = new CustomerClient();
+        $customer = $client_customer->create(["email" => auth()->user()->email]);
+
+    
+        auth()->user()->payer_id = $customer->id;
+        auth()->user()->save();
+    } else {
+       
+        auth()->user()->payer_id = $customer->results[0]->id;
+        auth()->user()->save();
+    }
+
+    $client_card = new CustomerCardClient();
+    try {
+   $response = $client_card->create(auth()->user()->payer_id, ["token" => $formData['token']]);
+} catch (\Exception $e) {
+    dd($e);
+}   
+     $barbearia_user->card_id = $response->id;
+    $barbearia_user->save();
  Redirect::route('barbearia.billing', ['slug' => $barbearia->slug]);
    
   
@@ -179,7 +221,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
     
 
 } else {
-    $preferenceID = '1660752433-f143c091-2454-40f0-9451-128b6ca2824a';
+    $preferenceID = '1660752433-4b938e64-0ad3-4431-9190-ab95d4454ebc';
 
     $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,
@@ -208,13 +250,63 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
         'external_reference' => $barbearia_user->id
     ];
 
+
+    $customerResponse = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $accessToken,
+    ])->get('https://api.mercadopago.com/v1/customers/search', [
+        'email' => auth()->user()->email
+    ]);
+
+    $customer = json_decode($customerResponse->body());
+    $client_customer = new CustomerClient();
+    if (empty($customer->results)) {
+       
+        $customer = $client_customer->create(["email" => auth()->user()->email]);
+       
+    
+        auth()->user()->payer_id = $customer->id;
+        auth()->user()->save();
+    } else {
+       
+        auth()->user()->payer_id = $customer->results[0]->id;
+        auth()->user()->save();
+    }
+
+ 
+   
     if ($formData['payment_method_id'] === 'bolbradesco') {
 
         $paymentData['payer']['identification']['type'] = $formData['payer']['identification']['type'];
 $paymentData['payer']['first_name'] = $formData['payer']['first_name'];
 $paymentData['payer']['last_name'] = $formData['payer']['last_name'];
            $paymentData['payer']['identification']['number'] = $formData['payer']['identification']['number'];
+           $paymentData['payer']['address']['zip_code'] = $formData['payer']['address']['zip_code'];
+           $paymentData['payer']['address']['street_name'] = $formData['payer']['address']['street_name'];
+           $paymentData['payer']['address']['street_number'] = $formData['payer']['address']['street_number'];
+           $paymentData['payer']['address']['neighborhood'] = $formData['payer']['address']['neighborhood'];
+           $paymentData['payer']['address']['city'] = $formData['payer']['address']['city'];
+           $paymentData['payer']['address']['federal_unit'] = $formData['payer']['address']['federal_unit'];
            $paymentData['payment_method_id'] = 'bolbradesco';
+
+            $customer = $client_customer->update(auth()->user()->payer_id, [
+         
+            "first_name" => $formData['payer']['first_name'],
+            "last_name" => $formData['payer']['last_name'],
+           
+            "identification" => array(
+              "type" => "CPF",
+              "number" => "12345678909"
+            ),
+            "default_address" => $formData['payer']['address']['neighborhood'],
+            "address" => array(
+              "city" => $formData['payer']['address']['city'],
+              "zip_code" => $formData['payer']['address']['zip_code'],
+              "street_name" => $formData['payer']['address']['street_name'],
+              "street_number" => $formData['payer']['address']['street_name']
+            )
+          ]); 
+
+
       
     } elseif($formData['payment_method_id'] === 'pec') {
         $paymentData['payer']['identification']['type'] = 'CPF';
@@ -227,19 +319,19 @@ $paymentData['payer']['last_name'] = $formData['payer']['last_name'];
         $paymentData['payment_method_id'] = 'pix';
       
     }
-  
+   
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $accessToken,
             'Content-Type' => 'application/json',
             'X-Idempotency-Key' => $idempotencyKey,
         ])->post("https://api.mercadopago.com/v1/payments?access_token={$accessToken}&preference_id={$preferenceID}", $paymentData);
-
-
+ 
  
 
     
     $barbearia_user->payment_id = $response->json()['id'];
     $barbearia_user->plan_ends_at = $response->json()['date_of_expiration'];
+   
    $barbearia_user->save();
 
    Redirect::route('barbearia.billing', ['slug' => $barbearia->slug]);

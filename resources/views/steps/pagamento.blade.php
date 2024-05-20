@@ -24,7 +24,7 @@ foreach($cards as $card) {
     Alpine.data('mercadoPagoIntegration', () => ({
         selectedPlan: '',
         initMercadoPago() {
-            const mp = new MercadoPago('TEST-ccf01c62-f583-48b5-ab9a-6ce59349afc3', {
+            const mp = new MercadoPago('APP_USR-f1004ea5-890e-45cc-b3b2-f42af7c5bff0', {
                 locale: 'pt-br'
             });
 
@@ -38,7 +38,7 @@ foreach($cards as $card) {
 
           
         
-           customerId: @json(auth()->user()->payer_id),
+        customerId: @json(auth()->user()->payer_id),
            cardsIds:  @json($cardIds),
      
 

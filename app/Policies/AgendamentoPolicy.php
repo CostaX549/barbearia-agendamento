@@ -17,6 +17,6 @@ class AgendamentoPolicy
     }
 
     public function update(User $user, Agendamento $agendamento) {
-        return $user->id === $agendamento->owner_id;
+        return $user->id === $agendamento->owner_id && !$agendamento->trashed();
     }
 }

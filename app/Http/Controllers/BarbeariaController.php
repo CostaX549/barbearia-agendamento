@@ -18,7 +18,14 @@ class BarbeariaController extends Controller
         if (!$barbearia) {
             return response()->json(['error' => 'Barbearia não encontrada'], 404);
         }
-    
-        return response()->json($barbearia);
+
+        // Extrair apenas os dados dos agendamentos
+        $agendamentos = $barbearia->barbeiros->flatMap(function ($barbeiro) {
+            return $barbeiro->agendamentos->filter(function ($agendamento) {
+                return $agendamento->trashed();
+            });
+        });
+
+        return response()->json($agendamentos);
     }
 }

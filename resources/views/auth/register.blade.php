@@ -70,8 +70,9 @@
                 alt="Phone image" />
             </div>
       
-            <!-- Right column container with form -->
+           
             <div class="md:w-8/12 lg:ml-6 lg:w-5/12">
+              <x-validation-errors class="mb-4" />
               <form  action="/register" method="post">
                 @csrf
 

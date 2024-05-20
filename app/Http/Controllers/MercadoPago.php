@@ -427,10 +427,10 @@ $jsonPlanResponse = $planResponse->json();
 
 public function index()
 {
-    $accessToken = 'TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433'; 
+     $accessToken = 'TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433'; 
    
 
-    $response = Http::withHeaders([
+   /*  $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,
         'Content-Type' => 'application/json',
     ])->post('https://api.mercadopago.com/checkout/preferences', [
@@ -447,6 +447,13 @@ public function index()
     ]);
 
     dd($response->json());
+
+    dd($response->json());  */
+
+    $response = Http::withHeaders([
+        'Authorization' => 'Bearer ' . $accessToken,
+        'Accept' => 'application/json',
+    ])->get("https://api.mercadopago.com/preapproval/2c9380848ec6c993018eca6ff0130322");
 
     dd($response->json());
 
