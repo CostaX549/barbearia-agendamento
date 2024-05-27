@@ -78,7 +78,7 @@ return array(
     'MercadoPago\\' => array($vendorDir . '/mercadopago/dx-php/src/MercadoPago'),
     'Masterminds\\' => array($vendorDir . '/masterminds/html5/src'),
     'Livewire\\' => array($vendorDir . '/livewire/livewire/src'),
-    'League\\Uri\\' => array($vendorDir . '/league/uri-interfaces', $vendorDir . '/league/uri'),
+    'League\\Uri\\' => array($vendorDir . '/league/uri', $vendorDir . '/league/uri-interfaces'),
     'League\\OAuth1\\Client\\' => array($vendorDir . '/league/oauth1-client/src'),
     'League\\MimeTypeDetection\\' => array($vendorDir . '/league/mime-type-detection/src'),
     'League\\Flysystem\\Local\\' => array($vendorDir . '/league/flysystem-local'),

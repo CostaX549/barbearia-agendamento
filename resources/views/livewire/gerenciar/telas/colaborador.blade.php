@@ -6,6 +6,8 @@
         <div class="flex flex-wrap -mx-3">
        
        @php 
+             
+             
          $firstCard =  auth()->user()->getMercadoPagoCards()[0] ?? [];
        @endphp
           @if($firstCard)
@@ -196,7 +198,7 @@
                       initStatusScreen() {
                        
                        
-                                  const mp = new MercadoPago('TEST-ccf01c62-f583-48b5-ab9a-6ce59349afc3', {
+                                  const mp = new MercadoPago('APP_USR-6c284546-a6b3-429f-8181-2a69a2c4f764', {
                                       locale: 'pt-br'
                                   });
                                   const bricksBuilder = mp.bricks();
@@ -244,7 +246,7 @@
                       initStatusScreen() {
                        
                        
-                                  const mp = new MercadoPago('TEST-ccf01c62-f583-48b5-ab9a-6ce59349afc3', {
+                                  const mp = new MercadoPago('APP_USR-6c284546-a6b3-429f-8181-2a69a2c4f764', {
                                       locale: 'pt-br'
                                   });
                                   const bricksBuilder = mp.bricks();
@@ -413,7 +415,7 @@
     Alpine.data('mercadoPagoIntegration', () => ({
      
         initMercadoPago() {
-            const mp = new MercadoPago('TEST-ccf01c62-f583-48b5-ab9a-6ce59349afc3', {
+            const mp = new MercadoPago('APP_USR-6c284546-a6b3-429f-8181-2a69a2c4f764', {
                 locale: 'pt-br'
             });
 

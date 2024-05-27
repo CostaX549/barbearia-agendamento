@@ -24,7 +24,7 @@ class BarbeiroEditing extends Component
 
     #[Validate(['horariosFinais.*' => 'required_with:dias.*'], onUpdate: false)]
     public $horariosFinais = [];
-    public string $option = '';
+    public ?string $option = '';
 public $date;
     public $foto;
     public $interval;

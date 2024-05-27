@@ -36,10 +36,10 @@ class Colaborador extends Component
         $this->simpleModal = true;
               $this->selectedBarbeiro =  $barbeiro;
     }
-
+ 
 
     public function editarAssinatura(BarbeariaUser $barbeiro, $formData,$paymentMethod){
-        $accessToken = "TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433";
+        $accessToken = "APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944";
              if($barbeiro->payment_method->value == "Cartão de Crédito" || $barbeiro->payment_method->value == "Cartão de Débito" ){
                           if($paymentMethod == "debit_card" || $paymentMethod == "credit_card" ){
                                   $barbeiro->payment_id = null;
@@ -146,8 +146,8 @@ class Colaborador extends Component
     }
     public function save($cardFormData) {
         try {
-            MercadoPagoConfig::setAccessToken("TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433");
-            $accessToken = "TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433";
+            MercadoPagoConfig::setAccessToken("APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944");
+            $accessToken = "APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944";
             
             $customerResponse = Http::withHeaders([
                 'Authorization' => 'Bearer ' . $accessToken,
@@ -157,6 +157,7 @@ class Colaborador extends Component
     
         
             $customer = json_decode($customerResponse->body());
+             
     
             // Verifica se o cliente foi encontrado
             if (empty($customer->results)) {
@@ -194,7 +195,7 @@ class Colaborador extends Component
     
             foreach ($this->barbearia->barbeiros()->withTrashed()->get() as $barbeiro) {
                 try {
-                    $accessToken = "TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433";
+                    $accessToken = "APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944";
     
                     if ($barbeiro->payment_method?->value === 'PIX' || $barbeiro->payment_method?->value === 'Boleto') {
                         $response = Http::withToken($accessToken)->get('https://api.mercadopago.com/authorized_payments/search', [

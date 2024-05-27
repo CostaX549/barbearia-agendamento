@@ -1,13 +1,15 @@
 
 @php 
- $accessToken = 'TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433'; 
+ $accessToken = 'APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944'; 
 
 
  \MercadoPago\MercadoPagoConfig::setAccessToken($accessToken);
+ if(auth()->user()->payment_id){
 $cards = auth()->user()->getMercadoPagoCards();
 foreach($cards as $card) {
     $cardIds[] = $card->id;
 }
+ }
 @endphp
  
 
@@ -24,7 +26,7 @@ foreach($cards as $card) {
     Alpine.data('mercadoPagoIntegration', () => ({
         selectedPlan: '',
         initMercadoPago() {
-            const mp = new MercadoPago('APP_USR-f1004ea5-890e-45cc-b3b2-f42af7c5bff0', {
+            const mp = new MercadoPago('APP_USR-6c284546-a6b3-429f-8181-2a69a2c4f764', {
                 locale: 'pt-br'
             });
 
@@ -96,7 +98,7 @@ foreach($cards as $card) {
 <script>
     // Função para inicializar o MercadoPago e renderizar o tijolo de pagamento
     async function initMercadoPago() {
-        const mp = new MercadoPago('APP_USR-0eacdb13-ba6e-4623-bf57-30f0edeb7a8f', {
+        const mp = new MercadoPago('APP_USR-6c284546-a6b3-429f-8181-2a69a2c4f764', {
             locale: 'pt-br'
         });
         const bricksBuilder = mp.bricks();

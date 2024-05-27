@@ -30,6 +30,7 @@ use App\Jobs\VerificarPagamento;
 use App\Livewire\ComprasUsuario;
 use App\Livewire\EstoqueProduto;
 use App\Livewire\Gerenciar\Telas\Promocoes;
+use App\Http\Controllers\TokenController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,7 +68,7 @@ Route::get('/instagram', [InstagramController::class, 'instagram']);
 
 
 
-
+Route::post('/nova', [TokenController::class, 'store'])->middleware('auth');
 Route::get('/auth/{provider}/redirect', function(string $provider) {
       return Socialite::driver($provider)->redirect();
 })->middleware("guest");

@@ -61,7 +61,7 @@ class Gerenciar extends Component
         $diferenca = $this->usersToday - $agendamentosSemanaPassada;
     
         $porcentagemAumento = ($agendamentosSemanaPassada != 0) ? ($diferenca / $agendamentosSemanaPassada) * 100 : 0;
-    
+        
         return $porcentagemAumento;
     }
     

@@ -122,13 +122,39 @@
         </div>
         @endif
 
+        @if(!auth()->user()->phone)
+        <x-inputs.maskable
+    label="Maskable Input"
+   
+    wire:model="phone"
+    mask="(##) #####-####"
+    placeholder="Phone number"
+    
+/>
+        @else
+             <p>{{auth()->user()->phone}}</p>
+             @if(!$this->change)
+              <button wire:click="change">Trocar telefone</button>
 
+              @else
+              <x-inputs.maskable
+    label="Maskable Input"
+    mask="(##) #####-####"
+    placeholder="Phone number"
+    
+/>
+                     <button wire:click = "change">Trocar</button>
+                       <button wire:click= "change">Voltar</button>
+                 @endif
+               
+        @endif
       @endif
 
     
     </div>
+        
 
-
+      
       <div
       class="flex flex-shrink-0 flex-wrap items-center justify-end rounded-b-md border-t-2 border-neutral-100 border-opacity-100 p-4 dark:border-opacity-50">
       <button

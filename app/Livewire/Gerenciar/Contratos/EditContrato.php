@@ -15,8 +15,8 @@ class EditContrato extends Component
 
 
     public function editarAssinatura($formData,$paymentMethod){
-      $accessToken = "TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433";
-      MercadoPagoConfig::setAccessToken("TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433");
+      $accessToken = "APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944";
+      MercadoPagoConfig::setAccessToken("APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944");
              /* if($this->barbeiro->payment_method->value == "Cartão de Crédito" || $this->barbeiro->payment_method->value == "Cartão de Débito" ){
                           if($paymentMethod == "debit_card" || $paymentMethod == "credit_card" ){
                                   $this->barbeiro->payment_id = null;
@@ -146,7 +146,7 @@ class EditContrato extends Component
                 ]);
             
             
-                $customer = json_decode($customerResponse->body());
+            $customer = json_decode($customerResponse->body());
             
                 // Verifica se o cliente foi encontrado
                 if (empty($customer->results)) {
@@ -167,9 +167,9 @@ class EditContrato extends Component
                $response = $client_card->create(auth()->user()->payer_id, ["token" => $formData['token']]);
             } catch (\Exception $e) {
                 dd($e);
-            }   
+            }    
             $this->barbeiro->card_id = $response->id ?? null;
-                
+                 
                 $this->barbeiro->save();
              } elseif(($this->barbeiro->payment_method->value == "PIX" || $this->barbeiro->payment_method->value == "Boleto") && ($paymentMethod == "debit_card" || $paymentMethod == "credit_card")) {
                 if (defined(PaymentMethods::class . '::' . $formData['payment_method_id'])) {
@@ -210,7 +210,7 @@ class EditContrato extends Component
         } catch (\Exception $e) {
             dd($e);
         }   
-        $this->barbeiro->card_id = $response->id ?? null;
+        $this->barbeiro->card_id = $response->id ?? null; 
             
             $this->barbeiro->save();
              } elseif(($this->barbeiro->payment_method->value == "Cartão de Crédito" || $this->barbeiro->payment_method->value == "Cartão de Débito")  && ($paymentMethod == "ticket" || $paymentMethod == "bank_transfer")) {
@@ -234,7 +234,7 @@ class EditContrato extends Component
                     
                 ]);
 
-                $customerResponse = Http::withHeaders([
+                 $customerResponse = Http::withHeaders([
                     'Authorization' => 'Bearer ' . $accessToken,
                 ])->get('https://api.mercadopago.com/v1/customers/search', [
                     'email' => auth()->user()->email
@@ -253,7 +253,7 @@ class EditContrato extends Component
                    
                     auth()->user()->payer_id = $customer->results[0]->id;
                     auth()->user()->save();
-                }
+                } 
                if($paymentMethod == "ticket") {
                $client_customer->update(auth()->user()->payer_id, [
          

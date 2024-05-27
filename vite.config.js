@@ -12,15 +12,7 @@ export default defineConfig({
         }),
     ],
 
-    watch: {
-        usePolling: true,
-        origin: 'http://192.168.0.72'
-    },
-    server: {
-        hmr: {
-            host: '192.168.0.72'
-        }
-    }
+  
 
 
 });

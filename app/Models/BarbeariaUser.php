@@ -26,6 +26,7 @@ class BarbeariaUser extends Model
 
     protected $appends = [
         'max_date'
+
      ];
 
     protected $casts = [
@@ -123,6 +124,8 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
     foreach ($specificDateEntries as $specificDateEntry) {
         $startHour = Carbon::parse($specificDateEntry->start_date);
         $endHour = Carbon::parse($specificDateEntry->end_date);
+
+        //De forma automatica
         $currentHour = clone $startHour;
 
         while ($currentHour < $endHour) {

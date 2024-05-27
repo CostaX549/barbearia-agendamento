@@ -43,14 +43,27 @@ class AgendarBarbearia extends Component
     #[Validate('required')]    
     public   $paymentMethod;
 
+    #[Validate('max:15')]   
+   public $phone;
 
+    public $change = false;
+   
 
-  
+    public function change(){
+         if($this->change==false){
+            $this->change=true;
+         }else{
+            $this->change=false;
+         }
+    }
+    
+   
+ 
     #[Computed]
     public function barbeiros() {
         return $this->barbearia->barbeiros;
     }
-
+  
     public function updatedBarbeiroModel($value) {
 
   $this->reset('date', 'cortes');
@@ -81,11 +94,17 @@ class AgendarBarbearia extends Component
 
      $this->authorize('agendar', $this->barbearia);
      $this->authorize('authenticated', auth()->user());
-  
+     if($this->phone){
+               
+        auth()->user()->phone = $this->phone;
+        auth()->user()->save();
+ }
+    
+          if(!auth()->user()->phone){
+                  return session()->flash('error','Telefone no primeiro agendamento é necessário');
+          }
      $this->validate();
-     $existingAgendamentoBarbearia = Agendamento
- 
-     ::where('barbearia_user_id',$this->barbeiroSelecionado->id)
+     $existingAgendamentoBarbearia = Agendamento::where('barbearia_user_id',$this->barbeiroSelecionado->id)
      ->where('start_date', Carbon::createFromFormat('d-m-Y H:i', $this->date))
      ->first();
    
@@ -190,8 +209,8 @@ class AgendarBarbearia extends Component
         return false;
     }
 
-  
-
+        
+     
  
   
      $this->saveAgendamento($agendamento, $end_date_clone);

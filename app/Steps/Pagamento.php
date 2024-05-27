@@ -56,7 +56,7 @@ class Pagamento extends Step
 
           
              
-        $accessToken = 'APP_USR-8752356059637759-013112-9f99a4e1b66b20ea9f5c629551fd836b-1660752433'; 
+        $accessToken = 'APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944'; 
 
 
         MercadoPagoConfig::setAccessToken($accessToken);
@@ -155,7 +155,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
         
         
      
-   'preapproval_plan_id' => '2c9380848dc7c710018dd27f7a900723',
+   'preapproval_plan_id' => '2c9380848fa6c953018fb793b05702e7',
 
       
         
@@ -221,7 +221,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
     
 
 } else {
-    $preferenceID = '1660752433-4b938e64-0ad3-4431-9190-ab95d4454ebc';
+    $preferenceID = '1644143944-a0ead566-60cf-4dd3-a40d-a57dc92ba2a3';
 
     $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,
@@ -230,7 +230,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
     
     
     $preco = $response->json();
-    
+     
  
     $idempotencyKey = uniqid();
     
@@ -251,7 +251,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
     ];
 
 
-    $customerResponse = Http::withHeaders([
+     $customerResponse = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,
     ])->get('https://api.mercadopago.com/v1/customers/search', [
         'email' => auth()->user()->email
@@ -271,7 +271,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
         auth()->user()->payer_id = $customer->results[0]->id;
         auth()->user()->save();
     }
-
+ 
  
    
     if ($formData['payment_method_id'] === 'bolbradesco') {

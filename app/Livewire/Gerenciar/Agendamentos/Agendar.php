@@ -259,66 +259,12 @@ public function EventoConcluido($id){
 }
     public function render()
     {     
-        $agendamentos = [];
-
-        foreach ($this->barbeiro->agendamentos as $agendamento) {
-            $startDate = Carbon::createFromFormat('Y-m-d H:i:s', $agendamento->start_date);
-            $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $agendamento->end_date);
-
-    
-            $agendamentos[] =  [
-             
-                'id' => $agendamento->id,
-                'title' => 'Agendamento',
-                'start' => $startDate->toIso8601String(),
-                'end' => $endDate->toIso8601String(),
-            ];
-        }
-
         
-        foreach($this->barbeiro->specificDates->where('status', 'adicionar') as $specific) {
-            $startDate = Carbon::createFromFormat('Y-m-d H:i:s', $specific->start_date);
-            $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $specific->end_date);
-
-            $agendamentos[] = [
-                'start' => $startDate->toIso8601String(),
-                'end' => $endDate->toIso8601String(),
-                'display' => 'background',
-      
-                
-             
-            
-            ];
-        }
-
-        foreach($this->barbeiro->specificDates->where('status', 'remover') as $specific) {
-            $startDate = Carbon::createFromFormat('Y-m-d H:i:s', $specific->start_date);
-            $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $specific->end_date);
-
-            $agendamentos[] = [
-                'start' => $startDate->toIso8601String(),
-                'end' => $endDate->toIso8601String(),
-                'display' => 'background',
-                'color' => 'lightgrey', 
-            
-            ];
-        } 
-        $horarios = [];
-        
-        // Loop sobre os horários de trabalho do barbeiro
-        foreach ($this->barbeiro->workingHours as $workingHour) {
-            // Adicionar o horário atual ao array de horários
-            $horarios[] = [
-                'daysOfWeek' => [$workingHour->day_of_week->value],
-                'startTime' => $workingHour->start_hour,
-                'endTime' => $workingHour->end_hour
-            ];
-        }
         
         // Converter o array de horários para JSON
    
        
-        return view('livewire.gerenciar.agendamentos.agendar', ['agendamentos' => $agendamentos , "jsonHorarios" => $horarios])->layout('components.layouts.barbearia', [
+        return view('livewire.gerenciar.agendamentos.agendar')->layout('components.layouts.barbearia', [
             'barbearia' => $this->barbearia
         ]);
     }

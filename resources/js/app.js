@@ -23,6 +23,15 @@ import {
 
     
  import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
+ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
+
+
+
+
+
+
  
 // Register any Alpine directives, components, or plugins here...
  
@@ -70,23 +79,3 @@ Livewire.on("abrir-modal", (id) => {
 });
  
  
-
-
-
-
-
-
-/* document.getElementById('agendarButton').addEventListener('click', () => {
-
-
-  const triggerEl = document.querySelector('#myTab a[href="#pills-contact8"]');
-  
- triggerEl.click(); // Select tab by name
-}); */
-
-
-
-
-
-
-
