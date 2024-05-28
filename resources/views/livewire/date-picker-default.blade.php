@@ -28,15 +28,15 @@
     date: '',
       
       initDatePicker(datepickerRef) {
-          var enableDays = {!! json_encode($this->barbeiroSelecionado->workingHours->pluck('day_of_week')->toArray())  !!};
-          var addDays = {!! $this->barbeiroSelecionado->specificDates->where("status", "adicionar")->pluck('start_date')->map(function($date) {
+          var enableDays = {!! json_encode($this->barbeiroSelecionado?->workingHours->pluck('day_of_week')->toArray())  !!};
+          var addDays = {!! $this->barbeiroSelecionado?->specificDates->where("status", "adicionar")->pluck('start_date')->map(function($date) {
 return \Carbon\Carbon::parse($date)->format('d-m-Y');
 })->toJson() !!};
-var maxDate = {!! json_encode($barbeiroSelecionado->max_date) !!};
+var maxDate = {!! json_encode($barbeiroSelecionado?->max_date) !!};
 
 var formattedDatesJson = {!! json_encode($this->formattedDates)  !!};
 var workingHours = {!! json_encode(
-    $this->barbeiroSelecionado->workingHours->map(function($workingHour) {
+    $this->barbeiroSelecionado?->workingHours->map(function($workingHour) {
         $startHour = \Carbon\Carbon::parse($workingHour->start_hour);
         $endHour = \Carbon\Carbon::parse($workingHour->end_hour);
         
@@ -62,7 +62,7 @@ var workingHours = {!! json_encode(
         ];
     })
 ) !!};
-var removeDays = {!! $this->barbeiroSelecionado->specificDates->where("status", "remover")->pluck('start_date')->map(function($date) {
+var removeDays = {!! $this->barbeiroSelecionado?->specificDates->where("status", "remover")->pluck('start_date')->map(function($date) {
 return \Carbon\Carbon::parse($date)->format('d-m-Y');
 })->toJson() !!};
 

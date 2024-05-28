@@ -66,7 +66,7 @@
   @if($this->opcao == "cronograma")
       <livewire:gerenciar.barbeiros.calendario  wire:ignore :id="$barbeiros" />
   @else
-      <livewire:date-picker-default wire:model.live="date"  :formattedDates="$formattedDates"  :barbeiroSelecionado="$barbeiro"  :key="$barbeiro->id" />
+      <livewire:date-picker-default wire:model.live="date"  :formattedDates="$formattedDates"  :barbeiroSelecionado="$barbeiro"  :key="$barbeiro?->id" />
   @endif
  
              

@@ -188,6 +188,14 @@
                                 // Se desejar, você pode adicionar algum código aqui após a atualização do evento
                             });
                         },
+                        eventClick: function(data) {
+              
+               @this.aparecerAgendamento(
+                  data.event.id
+               )
+                
+               
+            },
                         businessHours: @json($jsonHorarios)
                     });
 
@@ -200,5 +208,28 @@
     }}));
     </script>
   @endscript
-
+  <x-modal wire:model.defer="modalAparecer">
+    @if($this->selectedAgendamento)
+    <x-card title="{{ $this->selectedAgendamento?->start_date }}">
+       
+        <p class="text-gray-600">
+        Usuário: {{ $this->selectedAgendamento->owner->name }}
+    </p>
+    <p class="text-gray-600">
+        Telefone: 
+        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $this->selectedAgendamento->owner->phone) }}" target="_blank" class="text-blue-500">
+            {{ $this->selectedAgendamento->owner->phone }}
+        </a>
+    </p>
+     
+ 
+        <x-slot name="footer">
+            <div class="flex justify-end gap-x-4">
+                <x-button flat label="Cancel" x-on:click="close" />
+                <x-button primary label="I Agree" />
+            </div>
+        </x-slot>
+    </x-card>
+    @endif
+</x-modal>
 </div>

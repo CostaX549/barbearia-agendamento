@@ -35,28 +35,24 @@ class ConcluirAgendamentos implements ShouldQueue
 
         foreach($agendamentos as $agendamento) {
          
-            foreach($agendamento->barbearia as $index => $maquina){
-                if (isset($agendamento->barbearia->faturas[$index])) {
-                    
-                    $faturas = $agendamento->barbearia->faturas[$index];
-                    
-                  
-                    foreach ($faturas as $metodo => $percentual) {
-                       
-                        if ($metodo == $agendamento->paymentMethod) {
-
-                                   $precoFinal =  $agendamento->price*($agendamento->price * $percentual/100);
-                           
-                        }
-                    }
-                }
-              }
-              $agendamento->fatura_price = $precoFinal;
+              
+    if ($agendamento->payment_method == 'Cartão de Crédito' && isset($agendamento->maquininha->taxa_credito)) {
+        $agendamento->fatura_price = $agendamento->total_price - ($agendamento->maquininha->taxa_credito/100 * $agendamento->total_price);
+       
+    } elseif($agendamento->payment_method == 'Cartão de Débito' && isset($agendamento->maquininha->taxa_debito)) {
+        $agendamento->fatura_price = $agendamento->total_price - ($agendamento->maquininha->taxa_debito/100 * $agendamento->total_price);
+    } else {
+       $agendamento->fatura_price = $agendamento->total_price;
+    }
+             
                $agendamento->save();
-               $cliente = new Cliente();
-               $cliente->user_id = $agendamento->owner_id;
-               $cliente->barbearia_id = $agendamento->barbearia->id;
-                $cliente->save();
+               $cliente = Cliente::where('user_id', $agendamento->owner_id)->first();
+               if(!$cliente) {
+                 $cliente = new Cliente();
+                 $cliente->user_id = $agendamento->owner_id;
+                 $cliente->barbearia_id = $agendamento->barbeiros()->first()->barbearia->id;
+                  $cliente->save();
+               }
          
           
 

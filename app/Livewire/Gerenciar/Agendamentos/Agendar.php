@@ -49,7 +49,7 @@ class Agendar extends Component
           
        $this->barbeiro =$this->barbearia->barbeiros()->where("id",$this->barbeiros)->first();
 
-       $this->date = Carbon::parse($this->barbearia->barbeiros->where("id", $this->barbeiros)->first()?->agendamentos()->where('start_date', '>=', Carbon::now())->orderBy("start_date", "asc")->first()->start_date)->format('d-m-Y H:i');
+       $this->date = Carbon::parse($this->barbearia->barbeiros->where("id", $this->barbeiros)->first()?->agendamentos()->where('start_date', '>=', Carbon::now())->orderBy("start_date", "asc")->first()?->start_date)->format('d-m-Y H:i');
      
 
       

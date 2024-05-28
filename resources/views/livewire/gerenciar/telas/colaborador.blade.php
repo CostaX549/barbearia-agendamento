@@ -222,7 +222,7 @@
                                                   // Callback chamado quando o Brick estiver pronto
                                               },
                                               onError: (error) => {
-                                                  // Callback chamado para todos os casos de erro do Brick
+                                                 console.log(error)
                                               },
                                           },
                                       };

@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\ConcluirAgendamentos;
 use Illuminate\Console\Scheduling\Schedule;
 use App\Jobs\VerificarPagamento;
 use App\Jobs\NotificationJob;
@@ -16,6 +17,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->job(new VerificarPagamento())->dailyAt('8:00');
         $schedule->job(new NotificationJob())->everyMinute();
+        $schedule->job(new ConcluirAgendamentos())->everyMinute();
         
     }
     /**

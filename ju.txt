@@ -300,7 +300,7 @@ AWS_USE_PATH_STYLE_ENDPOIT=true
 
 MERCADOPAGO_ACCESS_TOKEN=
 
-
+sail down --rmi all -v
 
 
 

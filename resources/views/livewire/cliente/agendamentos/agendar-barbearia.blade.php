@@ -124,7 +124,7 @@
 
         @if(!auth()->user()->phone)
         <x-inputs.maskable
-    label="Maskable Input"
+    label="Adicione o Telefone apenas uma vez"
    
     wire:model="phone"
     mask="(##) #####-####"
@@ -138,7 +138,7 @@
 
               @else
               <x-inputs.maskable
-    label="Maskable Input"
+    label="Troque seu telefone"
     mask="(##) #####-####"
     placeholder="Phone number"
     

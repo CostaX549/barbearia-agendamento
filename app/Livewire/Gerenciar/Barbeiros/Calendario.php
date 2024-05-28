@@ -30,6 +30,8 @@ class Calendario extends Component
     public $horaFinal;
     public $dentroDosHorarios;
     public $horarios;
+    public  $selectedAgendamento;
+    public $modalAparecer;
 
  
     protected $listeners = ['opcaoAtualizada' => 'handleOpcaoAtualizada'];
@@ -93,6 +95,11 @@ class Calendario extends Component
   
      
 
+    }
+
+    public function aparecerAgendamento(Agendamento $agendamento) {
+        $this->selectedAgendamento = $agendamento;
+        $this->modalAparecer = true;
     }
 
     public function add(){

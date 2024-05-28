@@ -23,8 +23,7 @@ import {
 
     
  import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
- import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-messaging.js";
+
 
 
 
