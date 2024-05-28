@@ -24,6 +24,11 @@ import {
     
  import { Livewire, Alpine } from '../../vendor/livewire/livewire/dist/livewire.esm';
 
+ 
+ 
+ 
+ 
+ 
 
 
 
@@ -76,5 +81,4 @@ Livewire.on("abrir-modal", (id) => {
   const modal = new Modal(myModalEl);
   modal.show();
 });
- 
  

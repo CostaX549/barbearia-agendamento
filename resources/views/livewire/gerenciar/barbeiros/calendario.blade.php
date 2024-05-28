@@ -217,7 +217,7 @@
     </p>
     <p class="text-gray-600">
         Telefone: 
-        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $this->selectedAgendamento->owner->phone) }}" target="_blank" class="text-blue-500">
+        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '',55 . $this->selectedAgendamento->owner->phone) }}" target="_blank" class="text-blue-500">
             {{ $this->selectedAgendamento->owner->phone }}
         </a>
     </p>

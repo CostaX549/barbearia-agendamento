@@ -43,7 +43,7 @@
   </head>
   @livewireStyles
   @wireUiScripts
-  <link rel="stylesheet" href="/build/assets/app-omw0tLrk.css ">
+  <link rel="stylesheet" href="/build/assets/app-BIMwwtZQ.css  ">
 
   <body class="m-0 font-sans text-base antialiased font-normal dark:bg-slate-900 leading-default bg-gray-50 text-slate-500">
     <div class="absolute w-full bg-blue-500 dark:hidden min-h-75"></div>
@@ -297,7 +297,7 @@
   <script src="{{ asset('/sw.js') }}">
 
   </script>
-  <script src="{{ asset('build/assets/app-v3VqPkE0.js ')}}" defer></script>
+  <script src="{{ asset('build/assets/app-v3VqPkE0.js  ')}}" defer></script>
   <script>
   
   if (!navigator.serviceWorker.controller) {
