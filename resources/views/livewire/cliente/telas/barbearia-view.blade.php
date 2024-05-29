@@ -129,14 +129,17 @@
             </li>
           </ul>
         </div>
-        <button data-collapse-toggle="navbar-user" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
+        <button     data-te-collapse-init    data-te-target="#navbarSupportedContent2"
+        aria-controls="navbarSupportedContent2"
+        aria-expanded="false"
+        aria-label="Toggle navigation" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
               <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
           </svg>
       </button>
     </div>
-    <div class="items-center justify-between hidden w-full lg:mr-32 md:flex md:w-auto md:order-1" id="navbar-user">
+    <div class="items-center justify-between hidden w-full lg:mr-32 md:flex md:w-auto md:order-1"     id="navbarSupportedContent2"  data-te-collapse-item >
       <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
         <li>
           <a href="#home"   data-te-duration="1000"  data-te-easing="easeInOutQuart"  class=" linkSmooth block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" 
@@ -679,13 +682,14 @@ Galeria Completa
 @endforeach
 
 
+@can('create', $barbearia)
  <button
   type="button"
   x-on:click="$openModal('cardModal')"
   class="inline-block rounded bg-primary px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]">
   Button
 </button>
-
+@endcan
 
 {{-- <button
   type="button"
@@ -833,6 +837,7 @@ Galeria Completa
     <a class="text-white" href="https://tw-elements.com/">TW elements</a>
   </div>
 </footer>
+@can('create',$barbearia)
 <x-modal.card  max-width="3xl" title="Adicionar Rede Social" blur wire:model.defer="cardModal">
   
   <x-select
@@ -849,6 +854,7 @@ Galeria Completa
       <x-select.user-option src="https://via.placeholder.com/500" label="Youtube" value="Youtube" />
   </x-select>
 
+
   @foreach($this->redesocial ?? [] as $index => $rede)
       <x-input label="{{ $rede }} - Link" wire:model="link.{{ $index }}" placeholder="Link"  class="mb-4" />
   @endforeach
@@ -864,6 +870,7 @@ Galeria Completa
       </div>
   </x-slot>
 </x-modal.card>
+@endcan
 @assets 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
