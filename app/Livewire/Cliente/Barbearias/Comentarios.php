@@ -6,8 +6,7 @@ namespace App\Livewire\Cliente\Barbearias;
 use Livewire\Component;
 use Livewire\Attributes\{On, Computed};
 use App\Models\Avaliacao;
-use App\Models\Resposta;
-use App\Models\Barbeiros;
+
 
 class Comentarios extends Component
 {
@@ -17,16 +16,29 @@ class Comentarios extends Component
     public $resposta;
     public $all = false;
 
-    #[Computed]
-    public function podeResponder(){
-              return Barbeiros::where("barberia_id",$this->barberia->id);
-    }
+   
     #[Computed]
     public function avaliacoes() {
 
         
         
         return $this->barbearia->avaliacoes;
+    }
+    #[Computed]
+    public function media(){
+              $total = 0;
+             $qtde = $this->barbearia->avaliacoes->count();
+            
+             foreach($this->barbearia->avaliacoes as $ava){
+                     $total+=$ava->qtd;
+             }
+
+             if ($qtde > 0) {
+               
+                return $total /$qtde ;
+            } else {
+                return 0; 
+            }
     }
 
     public function seeAll() {

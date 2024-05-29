@@ -17,7 +17,7 @@
 
     @livewireStyles
     @wireUiScripts
-    <link rel="stylesheet" href="/build/assets/app-BIMwwtZQ.css ">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 
  

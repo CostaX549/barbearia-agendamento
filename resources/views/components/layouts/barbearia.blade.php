@@ -38,7 +38,7 @@
     <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
 
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
-
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
  
   </head>
   @livewireStyles
