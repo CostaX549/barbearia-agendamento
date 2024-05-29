@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
    <wireui:scripts />
         <!-- Scripts -->
-        <link rel="stylesheet" href="/build/assets/app-omw0tLrk.css ">
+        <link rel="stylesheet" href="/build/assets/app-BIMwwtZQ.css ">
 
         <!-- Styles -->
         @livewireStyles

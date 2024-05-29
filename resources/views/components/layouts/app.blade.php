@@ -17,7 +17,7 @@
 
     @livewireStyles
     @wireUiScripts
-    <link rel="stylesheet" href="/build/assets/app-omw0tLrk.css ">
+    <link rel="stylesheet" href="/build/assets/app-BIMwwtZQ.css ">
 
 
  
@@ -176,8 +176,7 @@ console.log("Service worker has been registered for scope: " + reg.scope);
 
 </script>
 
-<script src="{{ asset('build/assets/app-v3VqPkE0.js ')}}" defer></script>
-
+<script src="{{ asset('build/assets/app-v3VqPkE0.js  ')}}" defer></script>
 
     </body>
 </html>
