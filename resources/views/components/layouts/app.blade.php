@@ -10,6 +10,7 @@
         <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
 
 <link rel="manifest" href="{{ asset('/manifest.json') }}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
     </head>
 
 
@@ -152,6 +153,9 @@
 <script src="https://www.paypal.com/sdk/js?client-id=AeWnrfIe0iqFrKZxVGGhbn9l9SwdgUAO90LJB-bP8i3ubeHdC7LzH2b7zjHeHSxODvp775m_-1cztzVQ&currency=BRL"></script>
  
 
+
+
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js" defer></script>
 <script src="{{ asset('/sw.js') }}">
 
 </script>

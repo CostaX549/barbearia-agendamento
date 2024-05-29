@@ -3,28 +3,19 @@
     Métodos de pagamento e suas faturas na máquina eletrônica
   </label>
 
-  <x-select
-    label="Métodos de pagamento aceitos na barbearia"
-    placeholder="Selecionar métodos"
-    wire:ignore 
-    wire:model.blur="state.payments"
+ 
   
-   
-    class="mb-3"
-    multiselect
-    autocomplete="off"
-  > 
-  @foreach(["Cartão de Crédito", "Cartão de Débito", "Dinheiro", "Pix", "Boleto"] as $option)
-  <x-select.option value="{{$option}}" label={{$option}}/>
-   
-@endforeach
-</x-select>
 
-  <select wire:model.live="state.payments" multiple>
-    @foreach(["Cartão de Crédito", "Cartão de Débito", "Dinheiro", "Pix", "Boleto"] as $option)
-        <option value="{{$option}}">{{$option}}</option>
+<ul class="w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+    @foreach(["Cartão de Crédito", "Cartão de Débito", "Dinheiro", "Pix", "Boleto"] as $tech)
+    <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
+        <div class="flex items-center ps-3">
+            <input    wire:model.blur="state.payments" id="{{ strtolower($tech) }}-checkbox" type="checkbox" value="{{ $tech }}" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500">
+            <label for="{{ strtolower($tech) }}-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $tech }}</label>
+        </div>
+    </li>
     @endforeach
-</select>
+</ul>
 
 
   @if(in_array('Cartão de Crédito', $this->state['payments']) || in_array('Cartão de Débito', $this->state['payments']))

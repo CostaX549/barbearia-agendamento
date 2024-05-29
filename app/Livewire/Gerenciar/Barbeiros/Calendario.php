@@ -37,14 +37,14 @@ class Calendario extends Component
     protected $listeners = ['opcaoAtualizada' => 'handleOpcaoAtualizada'];
 
     public function mount($id) {
-        $this->barbeiro = BarbeariaUser::findOrFail($id);
+        $this->barbeiro = BarbeariaUser::whereNull("deleted_at")->where("id", $id)->first();
       
 
         // Inicializar um array vazio para armazenar os horários de trabalho
         $horarios = [];
         
         // Loop sobre os horários de trabalho do barbeiro
-        foreach ($this->barbeiro->workingHours as $workingHour) {
+        foreach ($this->barbeiro->workingHours ?? [] as $workingHour) {
             // Adicionar o horário atual ao array de horários
             $horarios[] = [
                 'daysOfWeek' => [$workingHour->day_of_week->value],
@@ -150,7 +150,7 @@ class Calendario extends Component
         $user = auth()->user();
         $agendamentos = [];
 
-        foreach ($this->barbeiro->agendamentos as $agendamento) {
+        foreach ($this->barbeiro->agendamentos ?? [] as $agendamento) {
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', $agendamento->start_date);
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $agendamento->end_date);
 
@@ -165,7 +165,7 @@ class Calendario extends Component
         }
 
         
-        foreach($this->barbeiro->specificDates->where('status', 'adicionar') as $specific) {
+        foreach($this->barbeiro?->specificDates->where('status', 'adicionar') ?? [] as $specific) {
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', $specific->start_date);
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $specific->end_date);
 
@@ -180,7 +180,7 @@ class Calendario extends Component
             ];
         }
 
-        foreach($this->barbeiro->specificDates->where('status', 'remover') as $specific) {
+        foreach($this->barbeiro?->specificDates->where('status', 'remover') ?? [] as $specific) {
             $startDate = Carbon::createFromFormat('Y-m-d H:i:s', $specific->start_date);
             $endDate = Carbon::createFromFormat('Y-m-d H:i:s', $specific->end_date);
 

@@ -138,20 +138,17 @@ class Gerenciar extends Component
                 $totalOntem += $agendamento->fatura_price;
             }
         }
-             
+    
         $diferenca = $this->totalhoje - $totalOntem;
-
-      
-        if ($this->totalhoje == 0) {
-          
-            return "0";
+    
+        if ($this->totalhoje == 0 || $totalOntem == 0) {
+            return "0";  // Ou outra mensagem ou valor que faça sentido para a sua aplicação
         }
-        
+    
         $aumentoPercentual = ($diferenca / $totalOntem) * 100;
-        
+    
         return number_format($aumentoPercentual, 2);
     }
-    
     #[Computed]
     public function totalMes()
     {
