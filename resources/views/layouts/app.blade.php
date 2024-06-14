@@ -10,12 +10,13 @@
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-   <wireui:scripts />
+
         <!-- Scripts -->
-       <link rel="stylesheet" href="/build/assets/app-1TPuloap.css">
+       <link rel="stylesheet" href="/build/assets/app-hZRdyQdx.css ">
 
         <!-- Styles -->
         @livewireStyles
+        <wireui:scripts />
     </head>
     <body class="font-sans antialiased">
         <x-banner />

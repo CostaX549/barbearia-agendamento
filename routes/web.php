@@ -97,6 +97,9 @@ Route::get('/auth/{provider}/callback', function(string $provider) {
 
 
 Route::prefix('gerenciar/{slug}')->group(function () {
+    Route::middleware("admin")->group(function () {
+
+  
     Route::get('/', Gerenciar::class)->name('gerenciar');
     Route::get('/agendamentos', Agendar::class)->name('barbearia.agendamentos');
     Route::get('/horarios', Horarios::class)->name('horarios');
@@ -108,7 +111,7 @@ Route::prefix('gerenciar/{slug}')->group(function () {
     Route::get('/promocoes', Promocoes::class)->name('barbearia.promocoes');
     Route::get('/estoqueCompras', EstoqueProduto::class)->name('barbearia.estoqueCompras');
     Route::get('/compras', ComprasUsuario::class)->name('barbearia.compras');
-
+});
  
 })->middleware("auth");
 

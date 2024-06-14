@@ -112,7 +112,8 @@ class Colaborador extends Component
              }
     }
 
-    public function edit(BarbeariaUser $barbeiro) {
+    public function edit($id) {
+        $barbeiro = BarbeariaUser::where("id",$id)->withTrashed()->first();
             $this->isEditing = $barbeiro;
 
     }

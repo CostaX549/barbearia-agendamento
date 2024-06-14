@@ -57,40 +57,7 @@
                     </td>
                 </tr>
                 @endforeach
-              {{--   <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Microsoft Surface Pro
-                    </th>
-                    <td class="px-6 py-4">
-                        White
-                    </td>
-                    <td class="px-6 py-4">
-                        Laptop PC
-                    </td>
-                    <td class="px-6 py-4">
-                        $1999
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                    </td>
-                </tr>
-                <tr class="bg-white dark:bg-gray-800">
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                        Magic Mouse 2
-                    </th>
-                    <td class="px-6 py-4">
-                        Black
-                    </td>
-                    <td class="px-6 py-4">
-                        Accessories
-                    </td>
-                    <td class="px-6 py-4">
-                        $99
-                    </td>
-                    <td class="px-6 py-4 text-right">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                    </td>
-                </tr> --}}
+
             </tbody>
         </table>
 
@@ -98,18 +65,21 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <x-input label="Nome"  wire:model="cortename" placeholder="Nome do corte" />
                 <x-inputs.currency label="Preço" prefix="R$" thousands="." decimal="," wire:model="currency" />
-         
+
                 <div class="col-span-1 sm:col-span-2">
                     <x-input label="Descrição" wire:model="cortedescricao" placeholder="Descrição do corte" />
+                   @session('error')
+                     <p class="text-red-500">{{  session("error") }}</p>
+                    @endsession
                 </div>
-         
-             
+
+
             </div>
-         
+
             <x-slot name="footer">
                 <div class="flex justify-between gap-x-4">
-           
-         
+
+
                     <div class="flex">
                         <x-button flat label="Cancelar" x-on:click="close" />
                         <x-button wire:click="criarCorte({{ $barbearia->id }})" spinner primary label="Criar"  />
@@ -118,16 +88,16 @@
             </x-slot>
         </x-modal.card>
 
-        
+
     </div>
-    
+
     <button
     type="button"
     x-on:click="$openModal('corteModal')"
     class="inline-block rounded bg-primary px-6 mt-5 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-primary-600 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-    
+
     >
-    
+
   Adicionar corte
   </button>
 </div>

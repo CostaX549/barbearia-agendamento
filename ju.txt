@@ -304,6 +304,9 @@ sail down --rmi all -v
 
 @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+public/build/assets/app-fyuDn1ut.css  256.66 kB │ gzip:  33.75 kB
+public/build/assets/app-v3VqPkE0.js   461.38 kB │ gzip: 135.34 kB
+
 
 
 
