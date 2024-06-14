@@ -14,10 +14,9 @@ export default {
         './resources/views/**/*.blade.php',
         "./node_modules/tw-elements/dist/js/**/*.js",
         "./vendor/vildanbina/livewire-wizard/resources/views/*.blade.php",
-        "./vendor/wireui/wireui/src/*.php",
-        "./vendor/wireui/wireui/ts/**/*.ts",
-        "./vendor/wireui/wireui/src/WireUi/**/*.php",
-        "./vendor/wireui/wireui/src/Components/**/*.php",
+        './vendor/wireui/wireui/resources/**/*.blade.php',
+        './vendor/wireui/wireui/ts/**/*.ts',
+        './vendor/wireui/wireui/src/View/**/*.php'
        
         
     ],

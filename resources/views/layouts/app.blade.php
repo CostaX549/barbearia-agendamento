@@ -12,7 +12,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-       <link rel="stylesheet" href="/build/assets/app-hZRdyQdx.css ">
+       <link rel="stylesheet" href="/build/assets/app-H3wy4wfz.css">
 
         <!-- Styles -->
         @livewireStyles

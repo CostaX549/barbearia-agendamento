@@ -14,7 +14,7 @@ class EditContrato extends Component
     public BarbeariaUser $barbeiro;
 
        public function mount(){
-                $this->$barbeiro = BarbeariaUser::where("id",$this->barbeiro->id)->withTrashed()->first();
+                $this->barbeiro = BarbeariaUser::where("id",$this->barbeiro->id)->withTrashed()->first();
        }
     public function editarAssinatura($formData,$paymentMethod){
       $accessToken = "APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944";

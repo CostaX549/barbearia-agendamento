@@ -40,8 +40,8 @@
     <link rel="manifest" href="{{ asset('/manifest.json') }}">
 
 
-    <link rel="stylesheet" href="/build/assets/app-hZRdyQdx.css">
-    
+    <link rel="stylesheet" href="/build/assets/app-H3wy4wfz.css">
+
     @livewireStyles
     <wireui:scripts />
   </head>
