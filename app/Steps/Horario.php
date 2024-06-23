@@ -101,7 +101,7 @@ class Horario extends Step
 
  
 
-    /* public function validate()
+    public function validate()
 {
     $state = $this->livewire->state;
 
@@ -167,7 +167,7 @@ class Horario extends Step
 
 
     return [$rules, [], []];
-} */
+} 
 
     /*
      * Step Title

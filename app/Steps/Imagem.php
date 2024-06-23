@@ -40,11 +40,11 @@ class Imagem extends Step
     /*
      * Step Validation
      */
-/*     public function validate()
+     public function validate()
     {
         return [
             [
-                'state.imagem'     => ['nullable'],
+                'state.imagem'     => ['required'],
                
             ],
             [],
@@ -53,7 +53,7 @@ class Imagem extends Step
                
             ],
         ];
-    } */
+    } 
 
 
    

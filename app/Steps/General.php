@@ -62,80 +62,36 @@ class General extends Step
     /*
      * Step Validation
      */
-/*      public function validate()
+    public function validate()
     {
-       
-
-
         return [
-          
             [
                 'state.cpf' => ['required', 'string', 'unique:barbearias,cpf'], 
-                'state.name'     => ['required', 'string'],
-                'state.cep'           => ['required', 'string', 'min:9', 'max:9', function ($attribute, $value, $fail) {
-                    
-                    $this->resposta = Http::get("https://viacep.com.br/ws/{$value}/json/");
-    
-                
-                    if (!$this->resposta || isset($this->resposta['erro'])) {
-                        $fail(__('Cep Inválido'));
-                    }
-                }],
-                'state.bairro'    => ['required', 'string',   function ($attribute, $value, $fail) {
-                    if(isset($this->resposta['erro'])) {
-                       return false;
-                    } else {
-                    $expectedBairro = $this->resposta['bairro'] ?? null;
-                    if ($expectedBairro !== $value) {
-                        $fail(__('Bairro Inválido. Esperado: ' . $expectedBairro));
-                    }
-                }
-                 
-                }],
-                'state.cidade'    => ['required', 'string', function ($attribute, $value, $fail) {
-                    if(isset($this->resposta['erro'])) {
-                        return;
-                    }
-                    $expectedCidade = $this->resposta['localidade'] ?? null;
-                    if ($expectedCidade !== $value) {
-                        $fail(__('Cidade Inválida. Esperado: ' . $expectedCidade));
-                    }    
-             }],
-                'state.estado'    => ['required', 'string', function ($attribute, $value, $fail) {
-                    if(isset($this->resposta['erro'])) {
-                        return;
-                    }
-                    $expectedEstado = $this->resposta['uf'] ?? null;
-                    if ($expectedEstado !== $value) {
-                        $fail(__('Estado Inválido. Esperado: ' . $expectedEstado));
-                    }    
-             }],
-                'state.complemento'    => ['required', 'string',],
-                'state.rua'  => ['required', 'string', function ($attribute, $value, $fail) {
-                    if(isset($this->resposta['erro'])) {
-                        return;
-                    }
-                    $expectedRua = $this->resposta['logradouro'] ?? null;
-                    if ($expectedRua !== $value) {
-                        $fail(__('Rua Inválida. Esperado: ' . $expectedRua));
-                    }    
-             }],
-                'state.slug'         => ['required', 'string', 'unique:barbearias,slug'],
+                'state.name' => ['required', 'string'],
+                'state.bairro' => ['required', 'string'],
+                'state.cidade' => ['required', 'string'],
+                'state.estado' => ['required', 'string'],
+                'state.complemento' => ['required', 'string'],
+                'state.rua' => ['required', 'string'],
+                'state.slug' => ['required', 'string', 'unique:barbearias,slug'],
+                'state.cep' => ['required', 'string'],
+            
             ],
             [],
             [
-                'state.name'     => __('Nome'),
-                'state.bairro'    => __('Bairro'),
-                'state.cep'    => __('Cep'),
-                'state.estado'    => __('Estado'),
-                'state.complemento'    => __('Complemento'),
-                'state.rua'    => __('Rua'),
-                'state.slug'    => __('URL'),
+                'state.cpf' => __("CPF"),
+                'state.name' => __('Nome'),
+                'state.bairro' => __('Bairro'),
+                'state.estado' => __('Estado'),
+                'state.complemento' => __('Complemento'),
+                'state.rua' => __('Rua'),
+                'state.slug' => __('URL'),
                 'state.cidade' => __('Cidade'),
-                
+                'state.cep' => __('CEP')
             ],
         ];
-    }    */
+    }
+    
 
     /*
      * Step Title

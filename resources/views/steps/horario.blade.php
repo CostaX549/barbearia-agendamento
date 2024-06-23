@@ -29,7 +29,7 @@
                 <x-time-picker
                 id="{{ strtolower($dia) }}-final"
                 wire:model="state.intervaloInicial.{{ $index }}"
-                label="Horário Final"
+                label="Horário Inicial"
              
                 placeholder="22:30"
                 format="24"
