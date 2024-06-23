@@ -18,9 +18,12 @@ use WireUi\Traits\Actions;
  use Google\Auth\Credentials\ServiceAccountCredentials;
 use Google\Auth\HttpHandler\HttpHandlerFactory; 
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Title;
 
 
 use Carbon\Carbon;
+
+
 class Teste extends Component
 
 {
@@ -195,11 +198,11 @@ public function contar() {
 
    
    
- 
-  
+   
+    #[Title("Página Principal")]
     public function render()
     {
-   
+        
  
         return view('livewire.teste');
     }

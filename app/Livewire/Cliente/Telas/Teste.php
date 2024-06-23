@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Http;
 use Livewire\WithFileUploads;
 use Livewire\Attributes\Computed;
-use Livewire\Attributes\{Validate, On, Session, Url};
+use Livewire\Attributes\{Validate, On, Session, Url, Title};
 use App\Models\Barbearia;
 use App\Models\Plan;
 use Instagram\FacebookLogin\FacebookLogin;
@@ -196,7 +196,7 @@ public function contar() {
    
    
  
-  
+  #[Title("Página Principal")]
     public function render()
     {
    

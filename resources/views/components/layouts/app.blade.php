@@ -7,7 +7,9 @@
         <title>{{ $title ?? 'Page Title' }}</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <link rel="apple-touch-icon" href="{{ asset('logo.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('barbearia.png') }}">
+        <link rel="icon" href="{{ asset('barbearia.png') }}">
+
 
 <link rel="manifest" href="{{ asset('/manifest.json') }}">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />

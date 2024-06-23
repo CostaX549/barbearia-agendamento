@@ -20,7 +20,7 @@
           aria-controls="offcanvasExample"
           data-te-ripple-init
           data-te-ripple-color="light">
-        <img src="/barbershop.avif"  class="w-[100px]"alt="">
+        <img src="/barbearia.png"  class="w-[100px]"alt="">
       </a>
           <ul
           class="flex gap-2"
@@ -246,7 +246,7 @@ data-te-navbar-ref>
     aria-controls="offcanvasExample"
     data-te-ripple-init
     data-te-ripple-color="light">
-    <img src="{{ asset('vecteezy_barbershop-logo-vector_11874742.jpg') }}" class="w-[180px] h-[40px] object-cover"  alt="Flowbite Logo" />
+    <img src="{{ asset('barbearia.png') }}" class="w-[180px] h-[40px] object-cover"  alt="Flowbite Logo" />
 </a>
   </div>
   <!-- Hamburger button for mobile view -->

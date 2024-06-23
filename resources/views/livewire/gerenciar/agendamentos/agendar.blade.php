@@ -210,7 +210,7 @@
               </thead>
               <tbody class="border-t">
                 
-                @foreach($this->agendamentosFiltrados ?? [] as $agendamento)
+                @forelse($this->agendamentosFiltrados ?? [] as $agendamento)
                 <tr>
                   <td class="p-2 align-middle bg-transparent{{ !$loop->last ? ' border-b dark:border-white/40' : '' }} whitespace-nowrap shadow-transparent">
                       <div class="flex px-2">
@@ -254,7 +254,20 @@
                   </td>
               </tr>
                 
-                @endforeach
+                @empty 
+                  <tr >
+                  <td class="p-2 align-center bg-transparent whitespace-nowrap shadow-transparent">
+                      <div class="flex px-2">
+                          <div>
+                            <i class="relative top-0 text-sm leading-normal text-blue-500 ni ni-calendar-grid-58 mr-2"></i>
+                          </div>
+                          <div class="my-auto">
+                              <h6 class="mb-0 text-sm leading-normal dark:text-white">Nenhum agendamento encontrado.</h6>
+                          </div>
+                      </div>
+                  </td>
+                  </tr>
+                @endforelse
 
               </tbody>
               <div class="flex justify-center pb-5">
@@ -290,7 +303,7 @@
                 </tr>
               </thead>
               <tbody class="border-t">
-                @foreach($this->maquininhasFiltradas ?? [] as $maquininha)
+                @forelse($this->maquininhasFiltradas ?? [] as $maquininha)
                 <tr>
                   <td class="p-2 align-middle bg-transparent{{ !$loop->last ? ' border-b dark:border-white/40' : '' }} whitespace-nowrap shadow-transparent">
                       <div class="flex px-2">
@@ -321,8 +334,22 @@
                       </button>
                   </td>
               </tr>
-                
-                @endforeach
+
+              @empty 
+
+                <tr >
+                  <td class="p-2 align-center bg-transparent whitespace-nowrap shadow-transparent">
+                      <div class="flex px-2">
+                          <div>
+                            <i class="relative top-0 text-sm leading-normal text-blue-500 ni ni-calendar-grid-58 mr-2"></i>
+                          </div>
+                          <div class="my-auto">
+                              <h6 class="mb-0 text-sm leading-normal dark:text-white">Nenhuma maquininha encontrada.</h6>
+                          </div>
+                      </div>
+                  </td>
+                  </tr>
+                @endforelse
 
               </tbody>
               <div class="flex justify-center pb-5">
@@ -358,7 +385,7 @@
                 </tr>
               </thead>
               <tbody class="border-t">
-                @foreach($this->faturas ?? [] as $agendamento)
+                @forelse($this->faturas ?? [] as $agendamento)
                 <tr>
                   <td class="p-2 align-middle bg-transparent{{ !$loop->last ? ' border-b dark:border-white/40' : '' }} whitespace-nowrap shadow-transparent">
                       <div class="flex px-2">
@@ -393,8 +420,20 @@
                       </button>
                   </td>
               </tr>
-                
-                @endforeach
+                @empty
+                <tr >
+                  <td class="p-2 align-center bg-transparent whitespace-nowrap shadow-transparent">
+                      <div class="flex px-2">
+                          <div>
+                            <i class="relative top-0 text-sm leading-normal text-blue-500 ni ni-calendar-grid-58 mr-2"></i>
+                          </div>
+                          <div class="my-auto">
+                              <h6 class="mb-0 text-sm leading-normal dark:text-white">Nenhuma fatura encontrada.</h6>
+                          </div>
+                      </div>
+                  </td>
+                  </tr>
+                @endforelse
 
               </tbody>
               <div class="flex justify-center pb-5">

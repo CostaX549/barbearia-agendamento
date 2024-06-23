@@ -121,7 +121,7 @@
             </span>
         </div>
         @endif
-
+<div class="mt-3">
         @if(!auth()->user()->phone)
         <x-inputs.maskable
     label="Adicione o Telefone apenas uma vez"
@@ -146,10 +146,10 @@
                      <button wire:click = "change">Trocar</button>
                        <button wire:click= "change">Voltar</button>
                  @endif
+      </div>
                
         @endif
       @endif
-
     
     </div>
         

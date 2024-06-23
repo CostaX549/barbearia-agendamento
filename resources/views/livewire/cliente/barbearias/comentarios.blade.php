@@ -44,7 +44,7 @@
   
  
 @foreach($this->avaliacoes as $avaliacao)
-<article >
+<article wire:key="{{ $avaliacao->id}}">
   <div class="flex items-center mb-4 ">
       <img class="w-10 h-10 me-4 rounded-full" src="{{ $avaliacao->user->profile_photo_url }}" alt="">
       <div class="font-medium dark:text-white">

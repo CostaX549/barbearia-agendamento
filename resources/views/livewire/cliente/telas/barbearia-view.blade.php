@@ -100,7 +100,7 @@
 <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="/home" class="flex items-center space-x-3 rtl:space-x-reverse" wire:navigate>
-        <img src="{{ asset('vecteezy_barbershop-logo-vector_11874742.jpg') }}" class="w-[180px] h-[40px] object-cover"  alt="Flowbite Logo" />
+        <img src="{{ asset('barbearia.png') }}" class="w-[180px] h-[40px] object-cover"  alt="Flowbite Logo" />
    
     </a>
     <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">

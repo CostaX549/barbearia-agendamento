@@ -267,7 +267,7 @@ public array $cortes = [];
 public function render()
 {
 
-    return view('livewire.cliente.telas.barbearia-view');
+    return view('livewire.cliente.telas.barbearia-view')->title($this->barbearia->nome);
 }
 
 
