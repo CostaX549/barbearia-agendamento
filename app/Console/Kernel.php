@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
         $schedule->job(new VerificarPagamento())->dailyAt('8:00');
         $schedule->job(new NotificationJob())->everyMinute();
         $schedule->job(new ConcluirAgendamentos())->everyMinute();
-        
+
     }
     /**
      * Register the commands for the application.

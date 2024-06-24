@@ -7,6 +7,8 @@ use App\Models\Barbearia;
 use App\Models\Cortes;
 use App\Models\UserCorte;
 use App\Models\BarbeariaUser;
+use Carbon\Carbon;
+
 class Services extends Component
 {
 
@@ -15,6 +17,8 @@ class Services extends Component
     public $cortename;
     public $cortedescricao;
     public $currency;
+
+    public $corteduration = '01:00';
 
     public function mount($slug)
     {
@@ -28,6 +32,7 @@ class Services extends Component
         $corte->nome = $this->cortename;
         $corte->descricao = $this->cortedescricao;
         $corte->preco = $this->currency;
+        $corte->intervalo = Carbon::parse($this->corteduration)->format("H:i:s");
         $corte->barbearia_id = $barbearia->id;
 
         $userCorte = new UserCorte();
@@ -35,9 +40,11 @@ class Services extends Component
         $corte->save();
         $userCorte->corte_id = $corte->id;
 
-     
+
         $userCorte->save();
         $this->dispatch('corte-salvo');
+        $this->reset("cortename", "cortedescricao", "currency");
+        $this->corteduration = "01:00";
         } else {
            session()->flash("error", "Pague seu barbeiro para concluir a criação do corte");
         }

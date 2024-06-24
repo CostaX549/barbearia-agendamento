@@ -58,23 +58,23 @@
           </li>
           <li  class="flex-auto text-center">
             <a
-           
+
               href="/meus-agendamentos"
               wire:navigate
               class="my-2  block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-black data-[te-nav-active]:text-black"
-              
-              
-            
-             
-              
+
+
+
+
+
               >Agenda</a
             >
           </li>
-         
-        
-        
-        
-        
+
+
+
+
+
            @if(auth()->user()->barbearias->count()>0)
            <li wire:ignore.self role="presentation" class="flex-auto text-center">
             <a
@@ -88,11 +88,11 @@
               aria-selected="false"
               >Suas Barbearias</a
             >
-          </li>    
+          </li>
            @endif
-          
 
-          
+
+
           <!-- Button Mobile Nav -->
           <button
             class="md:hidden rounded-lg focus:outline-none focus:shadow-outline"
@@ -135,7 +135,7 @@
           class="flex-col flex-grow pb-4 md:pb-0 hidden md:flex md:justify-end md:flex-row bg-white"
         >
 
-        
+
           <a
             class="flex items-center px-3 py-1 mt-2 text-lg font-semibold text-primary rounded-lg md:mt-0 hover:text-gray-900 focus:text-gray-900 hover:bg-gray-200 focus:bg-gray-200 focus:outline-none focus:shadow-outline"
             href="#"
@@ -143,7 +143,7 @@
             <i class="fas fa-envelope"></i>
           </a>
 
-          
+
           <div
             @click.away="open = false"
             class="relative"
@@ -231,7 +231,7 @@
     </div> --}}
     <!-- End Navbar -->
 
-    <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com --> 
+    <!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->
 <!-- Main navigation container -->
 <nav
 class="sticky top-0 flex w-full z-10 flex-nowrap items-center justify-between bg-[#FBFBFB] py-2 text-neutral-500 shadow-lg hover:text-neutral-700 focus:text-neutral-700 dark:bg-neutral-600 lg:flex-wrap lg:justify-start lg:py-4"
@@ -279,15 +279,15 @@ data-te-navbar-ref>
     id="navbarSupportedContent2"
     data-te-collapse-item>
     <!-- Left links -->
- 
+
     <ul
     id="myTab"
     class="ml-5 flex list-none flex-col flex-wrap pl-0 md:flex-row"
     role="tablist"
     data-te-nav-ref>
     <li role="presentation">
-   
-    
+
+
       <a
         href="#pills-home7"
         class="my-2 block rounded bg-neutral-100 px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 data-[te-nav-active]:!bg-neutral-800 data-[te-nav-active]:text-neutral-50 dark:bg-neutral-700 dark:text-white dark:data-[te-nav-active]:!bg-neutral-900 dark:data-[te-nav-active]:text-neutral-50 md:mr-4"
@@ -319,7 +319,7 @@ data-te-navbar-ref>
         >Crie sua barbearia</a
       >
     </li>
-  
+
     <li role="presentation">
       <a
         href="#pills-contact7"
@@ -342,7 +342,7 @@ data-te-navbar-ref>
         href="#pills-contact8"
         class="my-2 block rounded bg-neutral-100 px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 data-[te-nav-active]:!bg-neutral-800 data-[te-nav-active]:text-neutral-50 dark:bg-neutral-700 dark:text-white dark:data-[te-nav-active]:!bg-neutral-900 dark:data-[te-nav-active]:text-neutral-50 md:mr-4"
         id="pills-contact-tab8"
-        
+
         data-te-toggle="pill"
         data-te-target="#pills-contact8"
         @if($tab === 'pills-contact8') data-te-nav-active @endif
@@ -355,23 +355,23 @@ data-te-navbar-ref>
       >
     </li>
 
-   
+
 
   </ul>
 
   </div>
 
   <div class="relative"  data-te-dropdown-position="dropstart">
-    
+
     <button
       class="hidden lg:flex items-center whitespace-nowrap rounded bg-black px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-zinc-950 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-zinc-950 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-black active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
      @if($contagem > 0)
       wire:click="contar"
-      
+
       @endif
       type="button"
       wire:ignore.self
-      
+
       id="dropdownMenuButton2"
       data-te-dropdown-toggle-ref
       aria-expanded="false"
@@ -393,7 +393,7 @@ data-te-navbar-ref>
       @if($contagem > 0)
       <span class="notification-dot">{{ $contagem }}</span>
       @endif
-    </button> 
+    </button>
     <ul
     wire:ignore.self
       class="absolute z-[1000] right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
@@ -403,7 +403,7 @@ data-te-navbar-ref>
       @forelse($this->notifications as $b)
       @if($b)
       <li>
-      
+
         <img
     class="rounded-t-lg  object-cover "
     src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $b->imagem }}"
@@ -411,11 +411,11 @@ data-te-navbar-ref>
     alt="" />
 
       <p class="p-2"> {{$b->nome}}</p>
-        
-       
+
+
         <ul
         id="selected-value-example"
-        
+
         class="my-1 flex list-none gap-1 p-0"
         data-te-rating-init>
         <li>
@@ -504,7 +504,7 @@ data-te-navbar-ref>
           </span>
         </li>
       </ul>
-    
+
       <button
       id="botaoAvaliar"
       data-barbearia-id="{{$b->id}}"
@@ -512,11 +512,11 @@ data-te-navbar-ref>
       class="inline-block  w-full bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]">
       Avaliar
     </button>
-     
+
       </li>
       @endif
-      @empty 
-     
+      @empty
+
 
     @endforelse
 
@@ -524,31 +524,31 @@ data-te-navbar-ref>
    @forelse($this->notificationsNearEvents as $agendamento)
     <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl max-w-30" >
       <div class="p-6">
-     
-    
+
+
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"   class="w-12 h-12 mb-4 text-gray-900">
           <path stroke-linecap="round" stroke-linejoin="round" d="m7.848 8.25 1.536.887M7.848 8.25a3 3 0 1 1-5.196-3 3 3 0 0 1 5.196 3Zm1.536.887a2.165 2.165 0 0 1 1.083 1.839c.005.351.054.695.14 1.024M9.384 9.137l2.077 1.199M7.848 15.75l1.536-.887m-1.536.887a3 3 0 1 1-5.196 3 3 3 0 0 1 5.196-3Zm1.536-.887a2.165 2.165 0 0 0 1.083-1.838c.005-.352.054-.695.14-1.025m-1.223 2.863 2.077-1.199m0-3.328a4.323 4.323 0 0 1 2.068-1.379l5.325-1.628a4.5 4.5 0 0 1 2.48-.044l.803.215-7.794 4.5m-2.882-1.664A4.33 4.33 0 0 0 10.607 12m3.736 0 7.794 4.5-.802.215a4.5 4.5 0 0 1-2.48-.043l-5.326-1.629a4.324 4.324 0 0 1-2.068-1.379M14.343 12l-2.882 1.664" />
         </svg>
-        
+
         <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
          {{ $agendamento->owner->name }}
         </h5>
         <p class="block font-sans text-base antialiased font-semibold leading-relaxed text-inherit">
           Cortes: @foreach($agendamento->cortes as $corte)  {{ $corte->nome }}      @endforeach
         </p>
-        
+
         <p class="block font-sans text-base antialiased font-semibold leading-relaxed text-inherit">
           @php
           $diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
           $diaSemana = $diasDaSemana[date('w', strtotime($agendamento->start_date))];
           @endphp
-          
+
           Dia: {{ \Carbon\Carbon::parse($agendamento->start_date)->format('d/m/Y H:i') }} - {{ $diaSemana }}
         </p>
-       
+
       </div>
       <div class="p-6 pl-2 pt-0">
-       
+
           <button
          id="agendarButton"
             class="flex items-center gap-2 px-4 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
@@ -559,23 +559,23 @@ data-te-navbar-ref>
               <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
             </svg>
           </button>
-   
-      </div>
-    </div> 
-   @empty
-       
 
-    @endforelse 
+      </div>
+    </div>
+   @empty
+
+
+    @endforelse
     </ul>
 
-  
+
   </div>
 
 
    <form action="/logout" method="post">
       @csrf
       <button type="submit">Sair</button>
-</form>  
+</form>
 
 
 
@@ -623,19 +623,19 @@ data-te-navbar-ref>
   </li>
   <li  class="flex-auto text-center">
     <a
-   
+
       href="/meus-agendamentos"
       wire:navigate
       class="my-2  block border-x-0 border-b-2 border-t-0 border-transparent px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 hover:isolate hover:border-transparent hover:bg-neutral-100 focus:isolate focus:border-transparent data-[te-nav-active]:border-black data-[te-nav-active]:text-black"
-      
-      
-    
-     
-      
+
+
+
+
+
       >Agenda</a
     >
   </li>
- 
+
 
 
 
@@ -653,12 +653,12 @@ data-te-navbar-ref>
       aria-selected="false"
       >Suas Barbearias</a
     >
-  </li>    
+  </li>
    @endif
-  
+
 </ul> --}}
 
-<!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com --> 
+<!-- TW Elements is free under AGPL, with commercial license required for specific uses. See more details: https://tw-elements.com/license/ and contact us for queries at tailwind@mdbootstrap.com -->
 
 
 <!--Tabs content-->
@@ -685,7 +685,7 @@ data-te-navbar-ref>
     wire:ignore.self
     @if($tab === 'pills-profile7') data-te-tab-active @endif
     >
-   
+
 
 
 {{-- @can('inscrito', $this->plan)
@@ -697,10 +697,10 @@ data-te-navbar-ref>
     </div>
 
       <div class="block  m-auto w-[80%] max-sm:w-[100%] rounded-lg bg-[hsla(0,0%,100%,0.7)]  lg:px-6 py-12 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-[hsla(0,0%,5%,0.7)] dark:shadow-black/20 md:py-16 md:px-12 lg:-mt-[100px] mt-[2px] lg:backdrop-blur-md  " >
-       
-       
+
+
           <livewire:user-wizard user-id="3"/>
-        
+
 
     </div>
   </section>
@@ -710,7 +710,7 @@ data-te-navbar-ref>
 {{-- @else
 
       <livewire:assinatura />
-     
+
 @endcan --}}
 
 
@@ -724,7 +724,7 @@ data-te-navbar-ref>
     aria-labelledby="tabs-profile-tab01"
     @if($tab === 'pills-contact7') data-te-tab-active @endif
     wire:ignore.self
-    >  
+    >
     <div class="grid  grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 p-5 ">
         @foreach(auth()->user()->barbeariasOwned as $barbearia)
         <div
@@ -752,42 +752,42 @@ data-te-navbar-ref>
           </h5>
           <p class="mb-2 text-base text-neutral-600">
            Cep:   {{ $barbearia->cep }}
-         
-          
+
+
           </p>
           <p class="mb-2 text-base text-neutral-600">
-           
+
             Rua:   {{ $barbearia->rua }}
            </p>
            <p class="mb-2 text-base text-neutral-600">
-           
+
             Cidade:   {{ $barbearia->cidade }}
            </p>
-        
+
            <p class="mb-4 text-base text-neutral-600">
-           
+
             Estado:   {{ $barbearia->estado }}
            </p>
           <a
           type="button"
           data-te-ripple-init
           data-te-ripple-color="light"
-          href="/{{$barbearia->slug}}"
-          wire:navigate
+          href="/gerenciar/{{$barbearia->slug}}"
+      
           class="rounded bg-black px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-gray-900 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-gray-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-black active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]">
-         Ver Barbearia
+         Gerenciar Barbearia
         </a>
         </div>
         </div>
         @endforeach
-  
+
     </div>
           </div>
-       
-       
- 
 
-   
+
+
+
+
   {{--   <div
     class="bg-neutral-100 p-12 text-center text-neutral-700">
     <h2 class="mb-4 text-4xl font-semibold">Barbearia</h2>
@@ -809,7 +809,7 @@ data-te-navbar-ref>
   aria-labelledby="tabs-profile-tab01"
   @if($tab === 'pills-contact8') data-te-tab-active @endif
   wire:ignore.self
-  >  
+  >
        <livewire:cliente.agendamentos.agendamentos >
   </div>
 
@@ -835,21 +835,21 @@ import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.
     measurementId: "G-3VPXJXJWVQ"
   };
 
- 
 
 
 
 
 
 
-  
-
-  
-
- 
 
 
-     
+
+
+
+
+
+
+
   const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
@@ -889,8 +889,8 @@ navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration 
     });
 });
 
-    
-       
 
-</script> 
+
+
+</script>
 </div>

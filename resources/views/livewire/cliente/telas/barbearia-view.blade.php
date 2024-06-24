@@ -9,7 +9,7 @@
 
 <!-- Container for demo purpose -->
 
- 
+
 
 {{--   <!-- Navbar -->
   <nav
@@ -66,7 +66,7 @@
               href="#galeria"
               data-te-smooth-scroll-init
               data-te-easing="easeInOutQuart"
-       
+
               >Galeria</a
             >
           </li>
@@ -95,13 +95,13 @@
     </div>
   </nav> --}}
 
-  
+
 
 <nav class="bg-white dark:bg-gray-900 fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
   <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
     <a href="/home" class="flex items-center space-x-3 rtl:space-x-reverse" wire:navigate>
         <img src="{{ asset('barbearia.png') }}" class="w-[180px] h-[40px] object-cover"  alt="Flowbite Logo" />
-   
+
     </a>
     <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
         <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false" data-dropdown-toggle="user-dropdown" data-dropdown-placement="bottom">
@@ -142,13 +142,13 @@
     <div class="items-center justify-between hidden w-full lg:mr-32 md:flex md:w-auto md:order-1"     id="navbarSupportedContent2"  data-te-collapse-item >
       <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
         <li>
-          <a href="#home"   data-te-duration="1000"  data-te-easing="easeInOutQuart"  class=" linkSmooth block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" 
+          <a href="#home"   data-te-duration="1000"  data-te-easing="easeInOutQuart"  class=" linkSmooth block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
           :class="{ 'block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500': shownHome}"
           aria-current="page">Home</a>
         </li>
         <li>
-          <a href="#galeria"  data-te-duration="1000"  data-te-easing="easeInOutQuart" 
-          class="linkSmooth block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700" 
+          <a href="#galeria"  data-te-duration="1000"  data-te-easing="easeInOutQuart"
+          class="linkSmooth block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700  dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700"
           :class="{ 'block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500': shown}"
           aria-current="page">Galeria</a>
         </li>
@@ -178,13 +178,13 @@ x-intersect="shownHome = true;"
       background-image: url('https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/6c082904e4c74374b352ad53b2b2a8be-_1_-_1_-min.webp');
       height: 850px;
 
-    
+
     "
-    
+
     >
 {{--     Versão Homem: https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/6c082904e4c74374b352ad53b2b2a8be-_1_-_1_-min.webp
     Versão Mulher: salao de beleza 76ee1d75-c173-4ac8-9b66-26ef60913419 (1).png --}}
-    <div 
+    <div
 =
       class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-fixed"
       style="background-color: rgba(0, 0, 0, 0.6)">
@@ -199,7 +199,7 @@ x-intersect="shownHome = true;"
             class="rounded border-2 border-neutral-50 px-7 pb-[8px] pt-[10px] text-sm font-medium uppercase leading-normal text-neutral-50 transition duration-150 ease-in-out hover:border-neutral-100 hover:bg-neutral-500 hover:bg-opacity-10 hover:text-neutral-100 focus:border-neutral-100 focus:text-neutral-100 focus:outline-none focus:ring-0 active:border-neutral-200 active:text-neutral-200 dark:hover:bg-neutral-100 dark:hover:bg-opacity-10"
             data-te-ripple-init
             data-te-ripple-color="light"
-          
+
             >
        AGENDAR AGORA
           </button>
@@ -256,16 +256,16 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
 
 
       <div class="col-span-1 sm:col-span-2">
-       
+
       </div>
 
       <div class="col-span-1 sm:col-span-2 cursor-pointer bg-gray-100 rounded-xl shadow-md h-72 flex items-center justify-center">
-       
+
             <label for="fotos" class="flex flex-col items-center justify-center cursor-pointer">
               <x-icon name="cloud-upload" class="w-16 h-16 text-blue-600" />
               <p class="text-blue-600">Click or drop files here</p>
             </label>
-        
+
       </div>
   </div>
   <input type="file" id="fotos" multiple wire:model="fotos"  class="sr-only">
@@ -295,7 +295,7 @@ class="flex flex-col space-y-5 lg:flex-row lg:space-x-5 lg:space-y-0">
 <div
   data-te-lightbox-init
   x-intersect="shown = true"
-  x-intersect:leave="shown = false" 
+  x-intersect:leave="shown = false"
   :class="shown ? 'transition translate-x-none opacity-1 duration-1000' : 'transition translate-x-3/4 opacity-0 duration-1000'"
   x-transition:leave="transition ease-in duration-1000"
   x-transition:leave-start="opacity-1 translate-x-none"
@@ -379,11 +379,11 @@ Galeria Completa
               @if(isset($galeria['media_url']))
               <img  src="{{ $galeria['media_url'] }}"   data-te-caption="{{ $galeria['caption'] }}" data-te-img="{{ $galeria['media_url'] }}" class="w-[400px]  object-cover align-middle transition duration-300 ease-linear" />
               @else
-              
-              <img  src="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}"   data-te-caption="{{ $galeria['descricao'] }}" data-te-img="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}" class="w-full max-h-[250px]    object-cover align-middle transition duration-300 ease-linear" />
+
+              <img  src="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}"   data-te-caption="{{ $galeria['descricao'] }}" data-te-img="https://barbearia-agendamento-2024.s3.amazonaws.com/{{ $galeria['foto'] }}" class="w-full max-h-[200px]    object-cover align-middle transition duration-300 ease-linear" />
               @endif
           </div>
-       @endforeach   
+       @endforeach
     </div>
       </div>
     </div>
@@ -487,7 +487,7 @@ Galeria Completa
                           @endif
                       @endforeach</p>
                         <p class="mb-3 text-neutral-500">Horários de Trabalho:</p>
-    
+
                         @foreach($barbeiro->workingHours as $workingHour)
                         <p class="mb-3 text-neutral-500">{{ $workingHour->day_of_week->name }}: {{ \Carbon\Carbon::parse($workingHour->start_hour)->format('H:i') }} - {{ \Carbon\Carbon::parse($workingHour->end_hour)->format('H:i') }}</p>
                         @endforeach
@@ -523,9 +523,6 @@ Galeria Completa
 
 
 
-<div id="comentario"  x-intersect = "shownComentario =true" x-intersect:leave = "shownComentario =false" >
- <livewire:cliente.barbearias.comentarios :barbearia="$barbearia"  /> 
-</div>
 
 
 
@@ -534,9 +531,9 @@ Galeria Completa
   <div class="container px-6 pt-6">
     <!-- Social media icons container -->
     <div class="mb-6 flex justify-center">
-  
+
       @foreach($barbearia->redes_sociais ?? [] as $index => $redeSocial)
- 
+
     @switch($index)
         @case('Facebook')
         <a
@@ -736,14 +733,14 @@ Galeria Completa
   <!-- Copyright section -->
   <div
     class="w-full p-4 text-center"
-    style="background-color: rgba(0, 0, 0, 0.2)">
+   ">
     © 2023 Copyright:
-    <a class="text-white" href="https://tw-elements.com/">TW elements</a>
+    <a class="text-white" href="https://tw-elements.com/">BarberConnect</a>
   </div>
 </footer>
 @can('create',$barbearia)
 <x-modal.card  max-width="3xl" title="Adicionar Rede Social" blur wire:model.defer="cardModal">
-  
+
   <x-select
       class="mb-3"
       label="Selecionar Redes Sociais"
@@ -775,12 +772,12 @@ Galeria Completa
   </x-slot>
 </x-modal.card>
 @endcan
-@assets 
+@assets
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
 @endassets
 
- 
+
 
   <script type="module">
 
@@ -819,7 +816,7 @@ import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.
 
 
 
-   
+
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
@@ -860,12 +857,12 @@ navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration 
 });
 
 
-</script> 
+</script>
 
 
 
 
-  
+
 
 
 </div>

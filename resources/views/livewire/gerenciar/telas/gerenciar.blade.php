@@ -17,15 +17,15 @@
                       <p class="mb-0 font-sans text-sm font-semibold leading-normal uppercase dark:text-white dark:opacity-60">Ganhos de Hoje</p>
                       <h5 class="mb-2 font-bold dark:text-white">R${{ $this->totalhoje }}</h5>
 
-                      
+
                       <p class="mb-0 dark:text-white dark:opacity-60">
-                      
+
                         @if($this->diferencapercentual > 0)
                         <span class="text-sm font-bold leading-normal text-emerald-500">{{ $this->diferencapercentual }}%</span>
                         @else
                         <span class="text-sm font-bold leading-normal text-red-500">{{ $this->diferencapercentual }}%</span>
                         @endif
-                   
+
                         desde ontem
                       </p>
                     </div>
@@ -59,13 +59,13 @@
                       </p>
                     </div>
                   </div>
-                
+
                   <div class="px-3 text-right basis-1/3">
                     <div class="inline-block w-12 h-12 text-center rounded-circle bg-gradient-to-tl from-red-600 to-orange-600">
                       <i class="ni leading-none ni-world text-lg relative top-3.5 text-white"></i>
                     </div>
                   </div>
-                 
+
                 </div>
               </div>
             </div>
@@ -83,7 +83,7 @@
                       <p class="mb-0 dark:text-white dark:opacity-60">
                         @if( $this->usersLastQuarterComparison['porcentagem_aumento'] < 0)
                         <span class="text-sm font-bold leading-normal text-red-600">{{ $this->usersLastQuarterComparison['porcentagem_aumento'] }}</span>
-                        @else 
+                        @else
                         <span class="text-sm font-bold leading-normal text-emerald-500">{{ $this->usersLastQuarterComparison['porcentagem_aumento'] }}%</span>
                         @endif
                        desde o último trimestre
@@ -112,7 +112,7 @@
                       <p class="mb-0 dark:text-white dark:opacity-60">
                         @if( $this->totalMes['diferenca'] < 0)
                         <span class="text-sm font-bold leading-normal text-red-600">{{ $this->totalMes['diferenca'] }}</span>
-                        @else 
+                        @else
                         <span class="text-sm font-bold leading-normal text-emerald-500">{{ $this->totalMes['diferenca'] }}%</span>
                         @endif
                         desde o último mês
@@ -131,7 +131,7 @@
         </div>
 
         <!-- cards row 2 -->
-    
+
         <div class="flex flex-col justify-center mt-6 -mx-3">
           <div class="w-full max-w-full px-3 mt-0 lg:w-7/12 lg:flex-none mb-6">
             <div class="border-black/12.5 dark:bg-slate-850 dark:shadow-dark-xl shadow-xl relative z-20 flex min-w-0 flex-col break-words rounded-2xl border-0 border-solid bg-white bg-clip-border">
@@ -145,7 +145,7 @@
               <div class="flex-auto p-4">
                 <div>
                   <canvas id="chart-line" height="300"></canvas>
-                  
+
                 </div>
               </div>
             </div>
@@ -162,19 +162,19 @@
               <div class="flex-auto p-4">
                 <div>
                   <canvas id="chart-sales" height="300"></canvas>
-                  
+
                 </div>
               </div>
             </div>
           </div>
-         
-        
-           
-        
-        
-      
 
-        
+
+
+
+
+
+
+
 
         <!-- cards row 3 -->
 
@@ -199,7 +199,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                               <path stroke-linecap="round" stroke-linejoin="round" d="m7.848 8.25 1.536.887M7.848 8.25a3 3 0 1 1-5.196-3 3 3 0 0 1 5.196 3Zm1.536.887a2.165 2.165 0 0 1 1.083 1.839c.005.351.054.695.14 1.024M9.384 9.137l2.077 1.199M7.848 15.75l1.536-.887m-1.536.887a3 3 0 1 1-5.196 3 3 3 0 0 1 5.196-3Zm1.536-.887a2.165 2.165 0 0 0 1.083-1.838c.005-.352.054-.695.14-1.025m-1.223 2.863 2.077-1.199m0-3.328a4.323 4.323 0 0 1 2.068-1.379l5.325-1.628a4.5 4.5 0 0 1 2.48-.044l.803.215-7.794 4.5m-2.882-1.664A4.33 4.33 0 0 0 10.607 12m3.736 0 7.794 4.5-.802.215a4.5 4.5 0 0 1-2.48-.043l-5.326-1.629a4.324 4.324 0 0 1-2.068-1.379M14.343 12l-2.882 1.664" />
                             </svg>
-                            
+
                           </div>
                           <div class="ml-6">
                             <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Serviço:</p>
@@ -219,14 +219,9 @@
                           <h6 class="mb-0 text-sm leading-normal dark:text-white">R${{ $corte->corte->agendamentos()->onlyTrashed()->count() * $corte->corte->preco }}</h6>
                         </div>
                       </td>
-                      <td class="p-2 text-sm leading-normal align-middle bg-transparent border-b whitespace-nowrap dark:border-white/40">
-                        <div class="flex-1 text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Bounce:</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">29.9%</h6>
-                        </div>
-                      </td>
+                     
                     </tr>
-                    @else 
+                    @else
                     <tr>
                       <td class="p-2 align-middle bg-transparent  w-3/10 whitespace-nowrap dark:border-white/40">
                         <div class="flex items-center px-2 py-1">
@@ -234,7 +229,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                               <path stroke-linecap="round" stroke-linejoin="round" d="m7.848 8.25 1.536.887M7.848 8.25a3 3 0 1 1-5.196-3 3 3 0 0 1 5.196 3Zm1.536.887a2.165 2.165 0 0 1 1.083 1.839c.005.351.054.695.14 1.024M9.384 9.137l2.077 1.199M7.848 15.75l1.536-.887m-1.536.887a3 3 0 1 1-5.196 3 3 3 0 0 1 5.196-3Zm1.536-.887a2.165 2.165 0 0 0 1.083-1.838c.005-.352.054-.695.14-1.025m-1.223 2.863 2.077-1.199m0-3.328a4.323 4.323 0 0 1 2.068-1.379l5.325-1.628a4.5 4.5 0 0 1 2.48-.044l.803.215-7.794 4.5m-2.882-1.664A4.33 4.33 0 0 0 10.607 12m3.736 0 7.794 4.5-.802.215a4.5 4.5 0 0 1-2.48-.043l-5.326-1.629a4.324 4.324 0 0 1-2.068-1.379M14.343 12l-2.882 1.664" />
                             </svg>
-                            
+
                           </div>
                           <div class="ml-6">
                             <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Serviço:</p>
@@ -254,29 +249,24 @@
                           <h6 class="mb-0 text-sm leading-normal dark:text-white">R${{ $corte->corte->agendamentos()->onlyTrashed()->count() * $corte->corte->preco }}</h6>
                         </div>
                       </td>
-                      <td class="p-2 text-sm leading-normal align-middle bg-transparent whitespace-nowrap dark:border-white/40">
-                        <div class="flex-1 text-center">
-                          <p class="mb-0 text-xs font-semibold leading-tight dark:text-white dark:opacity-60">Bounce:</p>
-                          <h6 class="mb-0 text-sm leading-normal dark:text-white">29.9%</h6>
-                        </div>
-                      </td>
+
                     </tr>
 
                     @endif
                     @endforeach
                     @endforeach
-                  
+
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
-          
+
             </div>
           </div>
         </div>
 
-     
+
 </div>
 <script type="module">
 
@@ -315,7 +305,7 @@ import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.7.
 
 
 
-   
+
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
@@ -356,7 +346,7 @@ navigator.serviceWorker.register("/firebase-messaging-sw.js").then(registration 
 });
 
 
-</script> 
+</script>
 
 
 </div>

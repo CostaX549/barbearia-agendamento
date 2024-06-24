@@ -36,10 +36,10 @@ class BarbeariaUser extends Model
         'payment_methods_allowed' => 'array',
         'max_date' => 'datetime'
 
-        
+
     ];
 
-   
+
 
     public function workingHours()
     {
@@ -55,7 +55,7 @@ public function user() {
 }
 
 public function getPayerInformations() {
-    
+
 }
 
 public function getMaxDateAttribute() {
@@ -115,7 +115,7 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
      $intervalMinutes = $this->getIntervalInMinutes();
     $antecedeTime = $this->antecedence_time;
     list($hours, $minutes, $seconds) = explode(':', $antecedeTime);
-    $antecedeTimeInMinutes = ($hours * 60) + $minutes; 
+    $antecedeTimeInMinutes = ($hours * 60) + $minutes;
 
     $now = Carbon::now()->addMinutes($antecedeTimeInMinutes);
 
@@ -130,7 +130,7 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
 
         while ($currentHour < $endHour) {
             $currentDateTime = Carbon::parse($specificDate)->setTime($currentHour->hour, $currentHour->minute);
-            $color = $this->getTimeColor($currentDateTime, $removedDates, $selectedAgendamento, $now);
+            $color = $this->getTimeColor($currentDateTime, $removedDates,  $now, $selectedAgendamento);
             $availableTimes[] = ['time' => $currentDateTime, 'color' => $color];
 
             $currentHour->addMinutes($intervalMinutes);
@@ -141,20 +141,20 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
         $startHour = Carbon::parse($workingHour->start_hour);
         $endHour = Carbon::parse($workingHour->end_hour);
         $currentHour = clone $startHour;
-  
+
         while ($currentHour < $endHour) {
             $currentDateTime = Carbon::parse($specificDate)->setTime($currentHour->hour, $currentHour->minute);
-            $color = $this->getTimeColor($currentDateTime, $removedDates, $selectedAgendamento, $now);
+            $color = $this->getTimeColor($currentDateTime, $removedDates,  $now, $selectedAgendamento);
             $availableTimes[] = ['time' => $currentDateTime, 'color' => $color];
-         
-         
-          
+
+
+
             $currentHour->addMinutes($intervalMinutes);
         }
 
-   
-          
-      
+
+
+
     }
 
     $formatadoData = $specificDateFormatted->format('Y-m-d');
@@ -163,30 +163,30 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
         return Carbon::parse($agendamento->start_date)->format('Y-m-d') === $formatadoData;
     });
 
-  
 
-  
+
+
 
     foreach ($agendamentosFiltrados as $agendamento) {
         $endDateTime = Carbon::parse($agendamento->end_date);
         $startDateTime = Carbon::parse($agendamento->start_date);
-        
-  
-      
-       
+
+
+
+
         $existingTimes = array_column($availableTimes, 'time');
-        $color = $this->getTimeColor($startDateTime, $removedDates, $selectedAgendamento, $now);
+        $color = $this->getTimeColor($startDateTime, $removedDates,  $now, $selectedAgendamento);
 
 
-      
-        
+
+
         $formattedExistingTimes = array_map(function($time) {
             return $time->format('Y-m-d H:i:s');
         }, $existingTimes);
-        
+
         $formattedEndDateTime = $endDateTime->format('Y-m-d H:i:s');
         $formattedStartDateTime = $startDateTime->format('Y-m-d H:i:s');
-    
+
         $alreadyAdded = false;
         foreach ($formattedExistingTimes as $existingTime) {
             if ($formattedEndDateTime == $existingTime  ) {
@@ -205,17 +205,17 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
             }
         }
 
-       
+
 
         $maxClosingTime = null;
-   
+
         if (isset($workingHour) && $workingHour->end_hour >= $endDateTime->format('H:i:s')) {
             $closingTime = Carbon::createFromTimeString($workingHour->end_hour)->format('H:i:s');
             if ($maxClosingTime === null || $closingTime > $maxClosingTime) {
                 $maxClosingTime = $closingTime;
             }
         }
-        
+
         // Verificar as datas específicas
         foreach ($specificDateEntries as $specificDate) {
             $endDate = Carbon::parse($specificDate->end_date)->format('H:i:s');
@@ -227,9 +227,9 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
         if (!$alreadyAdded && $maxClosingTime > $endDateTime->format('H:i:s')) {
 
             $availableTimes[] = ['time' => $endDateTime, 'color' => $color];
-          
-       
-        } 
+
+
+        }
 
 
 
@@ -237,13 +237,13 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
             $availableTimes[] = ['time' => $startDateTime, 'color' => $color];
         }
 
-       
+
         foreach ($availableTimes as &$availableTime) {
             $existingTime = $availableTime['time']->format('Y-m-d H:i:s');
-        
+
             if ($existingTime == $formattedEndDateTime && !$this->isTimeScheduled($formattedEndDateTime)) {
                 $availableTime['color'] = ''; // Define a cor como vazia
-            } 
+            }
 
             if($existingTime == $formattedEndDateTime && $this->isTimeScheduled($formattedEndDateTime)) {
 
@@ -254,34 +254,34 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
                         $availableTime['color'] = 'red';
                     }
                 } else {
-                    $availableTime['color'] = 'red'; 
+                    $availableTime['color'] = 'red';
                 }
-                
-              
+
+
             }
 
-           
 
-          
+
+
         }
-        
+
     }
-    
+
 
     usort($availableTimes, function ($a, $b) {
         return $a['time'] <=> $b['time'];
     });
-    
+
     return $availableTimes;
 }
 
  // Função para obter a cor do horário
- public function getTimeColor($currentDateTime, $removedDates, $selectedAgendamento = null, $now)
+ public function getTimeColor($currentDateTime, $removedDates,  $now, $selectedAgendamento = null)
  {
      if ($currentDateTime < $now) {
-         return 'red'; 
+         return 'red';
      }
- 
+
      foreach ($this->agendamentos as $horarioAgendado) {
          $startHorarioAgendado = Carbon::parse($horarioAgendado->start_date);
          $endHorarioAgendado = Carbon::parse($horarioAgendado->end_date);
@@ -294,35 +294,35 @@ public function getAllAvailableTimes($specificDate, $selectedAgendamento = null)
              }
          }
      }
- 
+
      foreach ($removedDates as $removedDate) {
          $startHorarioRemovido = Carbon::parse($removedDate->start_date);
          $endHorarioRemovido = Carbon::parse($removedDate->end_date);
- 
+
          if ($currentDateTime >= $startHorarioRemovido && $currentDateTime < $endHorarioRemovido) {
              return 'red'; // Retorna 'red' se o horário estiver removido
          }
      }
- 
+
      return ''; // Retorna vazio se o horário estiver disponível
  }
 
 
  public function isTimeScheduled($currentDateTime, $selectedAgendamento = null)
 {
-   
+
     foreach ($this->agendamentos as $horarioAgendado) {
         $startHorarioAgendado = Carbon::parse($horarioAgendado->start_date)->format('Y-m-d H:i:s');
 
-       
- 
+
+
         if ($currentDateTime === $startHorarioAgendado) {
-  
+
             return true;
             break;
         }
 
-       
+
     }
     return false;
 }
@@ -351,7 +351,7 @@ public function isEndTimeExceeded($date, $endDateTime)
             $maxClosingTime = $closingTime;
         }
     }
-  
+
     // Verifica se existem datas específicas definidas para o dia específico
     $specificDates = $this->specificDates()
                           ->whereDate('start_date', $specificDateFormatted->format('Y-m-d'))

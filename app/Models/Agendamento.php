@@ -35,7 +35,7 @@ class Agendamento extends Model
         return $this->belongsTo(Maquininha::class, "maquininha_id");
     }
 
-    
+
 
 
 

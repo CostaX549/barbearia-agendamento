@@ -31,54 +31,53 @@ class NotificationJob implements ShouldQueue
      */
     public function handle(): void
     {
-        
-        $agendamentos = Agendamento::whereHas('owner', function($query) {
-            $query->whereNotNull('token');
-        })->get();
-             
-        
-               foreach($agendamentos as $agendamento){
-           
+        try {
+            $agendamentos = Agendamento::whereHas('owner', function ($query) {
+                $query->whereNotNull('token');
+            })->get();
+
+            foreach ($agendamentos as $agendamento) {
                 $start_date = Carbon::createFromFormat('Y-m-d H:i:s', $agendamento->start_date);
                 $now = Carbon::now();
-             
-                if ($start_date->diffInMinutes($now) <= 60) {
-                    
-                    $firebaseToken = $agendamento->user->token;
 
-                   
+                if ($start_date->diffInMinutes($now) <= 60) {
+                    $firebaseToken = $agendamento->owner->token;
+
                     $pvKeyPath = public_path('pvKey.json');
                     $credential = new ServiceAccountCredentials(
-                       "https://www.googleapis.com/auth/firebase.messaging",
-                       json_decode(file_get_contents($pvKeyPath), true)
-                   );
-                   
-                   $token = $credential->fetchAuthToken(HttpHandlerFactory::build());
-                
-                    $start_date = Carbon::createFromFormat('Y-m-d H:i:s', $agendamento->start_date);
-                    $start_date_formatted = $start_date->format('d/m/Y H:i'); 
-                 
-                  Http::withHeaders([
-                       'Content-Type' => 'application/json',
-                       'Authorization' => 'Bearer '.$token['acess_token']
-                   ])->post('https://fcm.googleapis.com/v1/projects/barbearia-agendamento-7fe43/messages:send', [
-                       "message" => [
-                           "token" => $firebaseToken,
-                           "notification" => [
-                               "title" => "Falta uma Hora para o seu corte !",
-                               "body" => "Data: ". $start_date_formatted,
-                               "image" => "http://localhost/storage/" . $agendamento->barbeiro->barbearia->imagem
-                           ],
-                           "webpush" => [
-                               "fcm_options" => [
-                                   "link" => "http://localhost/home"
-                               ]
-                           ]
-                       ]
-                   ]);
-               
+                        "https://www.googleapis.com/auth/firebase.messaging",
+                        json_decode(file_get_contents($pvKeyPath), true)
+                    );
+
+                    $token = $credential->fetchAuthToken(HttpHandlerFactory::build());
+
+                    $start_date_formatted = $start_date->format('d/m/Y H:i');
+
+                    Http::withHeaders([
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . $token['access_token']
+                    ])->post('https://fcm.googleapis.com/v1/projects/barbearia-agendamento-7fe43/messages:send', [
+                        "message" => [
+                            "token" => $firebaseToken,
+                            "notification" => [
+                                "title" => "Falta uma Hora para o seu agendamento!",
+                                "body" => "Data: " . $start_date_formatted,
+                                "image" => "https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/" . $agendamento->colaborador->barbearia->imagem
+                            ],
+                            "webpush" => [
+                                "fcm_options" => [
+                                    "link" => "http://localhost/home?tab=pills-contact8"
+                                ]
+                            ]
+                        ]
+                    ]);
+                }
             }
-               }
-         
+        } catch (\Exception $e) {
+            Log::error('Error in NotificationJob: ' . $e->getMessage(), [
+                'exception' => $e,
+                'stack' => $e->getTraceAsString()
+            ]);
+        }
     }
 }
