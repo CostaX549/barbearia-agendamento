@@ -69,8 +69,8 @@
                 class="w-full"
                 alt="Phone image" />
             </div>
-      
-           
+
+
             <div class="md:w-8/12 lg:ml-6 lg:w-5/12">
               <x-validation-errors class="mb-4" />
               <form  action="/register" method="post">
@@ -83,12 +83,12 @@
                 <div class="relative mb-6">
                     <input type="text" class="peer py-3 pe-0  block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 text-xl focus:border-t-transparent focus:border-x-transparent focus:border-b-black focus:ring-0 disabled:opacity-50 disabled:pointer-events-none" placeholder="Email" name="email" :value="old('email')">
                 </div>
-      
+
                 <!-- Password input -->
                 <div class="relative mb-6">
                     <input type="password" class="peer py-3 pe-0  block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 text-xl focus:border-t-transparent focus:border-x-transparent focus:border-b-black focus:ring-0 disabled:opacity-50 disabled:pointer-events-none" placeholder="Senha" name="password" required autocomplete="new-password" >
                 </div>
-                
+
                 <div class="relative mb-6">
                     <input type="password" class="peer py-3 pe-0  block w-full bg-transparent border-t-transparent border-b-2 border-x-transparent border-b-gray-200 text-xl focus:border-t-transparent focus:border-x-transparent focus:border-b-black focus:ring-0 disabled:opacity-50 disabled:pointer-events-none" placeholder="Confirmar senha" name="password_confirmation" required autocomplete="new-password" >
                 </div>
@@ -104,18 +104,18 @@
                     <label
                       class="inline-block pl-[0.15rem] hover:cursor-pointer"
                       for="exampleCheck3">
-                      Remember me
+                      Lembrar-me
                     </label>
                   </div>
-      
+
                   <!-- Forgot password link -->
                   <a
                     href="/forgot-password"
                     class="text-red-700 transition duration-150 ease-in-out hover:text-red-600 focus:text-red-600 active:text-red-700 dark:text-primary-400 dark:hover:text-primary-500 dark:focus:text-primary-500 dark:active:text-primary-600"
-                    >Forgot password?</a
+                    >Esqueceu a senha?</a
                   >
                 </div>
-      
+
                 <!-- Submit button -->
                 <button
                   type="submit"
@@ -124,16 +124,19 @@
                   data-te-ripple-color="light">
                  Registrar
                 </button>
-      
+
                 <!-- Divider -->
                 <div
                   class="my-4 flex items-center before:mt-0.5 before:flex-1 before:border-t before:border-neutral-300 after:mt-0.5 after:flex-1 after:border-t after:border-neutral-300">
                   <p
                     class="mx-4 mb-0 text-center font-semibold dark:text-neutral-200">
-                    OR
+                    OU
                   </p>
                 </div>
-      
+                <a class="mb-3 flex w-full items-center justify-center rounded bg-black px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-black hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" style="background-color: #000000" href="/login"  role="button" data-te-ripple-init data-te-ripple-color="light">
+
+                    Login
+                    </a>
                 <!-- Social login buttons -->
                 <a class="mb-3 flex w-full items-center justify-center rounded bg-black px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-black hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" style="background-color: #000000" href="/auth/google/redirect" role="button" data-te-ripple-init data-te-ripple-color="light">
                     <!-- Facebook -->
@@ -142,7 +145,7 @@
                     </svg>
                     Continue com google
                 </a>
-    
+
                  <!-- Social login buttons -->
                  <a class="mb-3 flex w-full items-center justify-center rounded bg-black px-7 pb-2.5 pt-3 text-center text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-black hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-primary-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-primary-700 active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]" style="background-color: #000000" href="/auth/google/redirect" role="button" data-te-ripple-init data-te-ripple-color="light">
                     <!-- Facebook -->
@@ -157,8 +160,10 @@
                 </svg>
                     Continue com twitter
                 </a>
-              
-                 
+
+
+
+
               </form>
             </div>
           </div>

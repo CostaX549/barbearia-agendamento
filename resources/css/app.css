@@ -19,7 +19,7 @@
     top: 0px;
     right: -5px;
   transform: translateY(-50%);
-   
+
   }
 
   .flatpickr-calendar .flatpickr-day.selected {
@@ -28,4 +28,9 @@
     border-color: #ffffff; /* Cor da borda branca */
 }
 
-
+input:-internal-autofill-selected {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: light-dark(rgb(255, 0, 85), rgba(70, 90, 126, 0.4)) !important;
+    color: fieldtext !important;
+}
