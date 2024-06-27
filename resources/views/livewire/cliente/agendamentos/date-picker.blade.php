@@ -171,7 +171,7 @@ onChange: function (selectedDates, dateStr, instance) {
 
 
           });
-      }
+      },
 
       updateFlatpickrDate(newDate) {
 
@@ -180,7 +180,7 @@ onChange: function (selectedDates, dateStr, instance) {
 
           if (flatpickrInstance) {
 
-              flatpickrInstance.setDate(newDate, true); 
+              flatpickrInstance.setDate(newDate, true);
           }
       }
   }));
