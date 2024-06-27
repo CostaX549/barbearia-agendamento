@@ -34,7 +34,7 @@ return [
     'google' => [
          'client_id' => env('GOOGLE_CLIENT_ID'),
          'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-         'redirect' => "http://localhost:80/auth/google/callback"
+         'redirect' => "https://www.barberconnect.xyz/auth/google/callback"
     ],
     'paypal'=>[
          'id'=>env('PAYPAL_ID'),
