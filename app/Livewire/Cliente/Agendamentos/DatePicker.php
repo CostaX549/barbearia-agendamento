@@ -45,7 +45,7 @@ class DatePicker extends Component
 
             $this->dateChanged = $datetime->format('d-m-Y');
         } else {
-            $this->date = Carbon::now()->format('d-m-Y H:i');
+            $this->date = Carbon::now()->format('d-m-Y');
             $datetime = Carbon::parse($this->date);
             $this->dateChanged = $datetime->format('d-m-Y');
         }
