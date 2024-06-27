@@ -32,7 +32,7 @@
     @if ($color === 'red')
         <x-badge label="{{ $time['time']->format('H:i') }}" negative />
     @elseif($color === '')
-    <x-badge label="{!! $time['time']->format('H:i') !!}" x-on:click="updateFlatpickrDate('{{ $time['time']->toDateTimeString() }}')" />
+    <x-badge label="{!! $time['time']->format('H:i') !!}"  />
     @else
     <x-badge  label="{{ $time['time']->format('H:i') }}" black />
     @endif
@@ -171,18 +171,9 @@ onChange: function (selectedDates, dateStr, instance) {
 
 
           });
-      },
-
-      updateFlatpickrDate(newDate) {
-
-          const flatpickrInstance = flatpickr($refs.datepicker2);
-
-
-          if (flatpickrInstance) {
-
-              flatpickrInstance.setDate(newDate, true);
-          }
       }
+
+
   }));
 
 
