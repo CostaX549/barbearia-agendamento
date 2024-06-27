@@ -22,15 +22,15 @@ use App\Models\User;
 class AgendarBarbearia extends Component
 {
     public  $barbearia = null;
-    
+
     #[Validate(['cortes' => 'filled', 'cortes.*' => 'required'])]
     public array $cortes = [];
-    
-    #[Validate('required')]    
+
+    #[Validate('required')]
     public string $date = '';
-    
+
     public ?BarbeariaUser $barbeiroSelecionado = null;
-    
+
     #[Validate('required')]
     public ?int $barbeiroModel = null;
 
@@ -40,14 +40,14 @@ class AgendarBarbearia extends Component
 
     public  $cliente;
 
-    #[Validate('required')]    
+    #[Validate('required')]
     public   $paymentMethod;
 
-    #[Validate('max:15')]   
+    #[Validate('max:15')]
    public $phone;
 
     public $change = false;
-   
+
 
     public function change(){
          if($this->change==false){
@@ -56,27 +56,27 @@ class AgendarBarbearia extends Component
             $this->change=false;
          }
     }
-    
-   
- 
+
+
+
     #[Computed]
     public function barbeiros() {
         return $this->barbearia->barbeiros;
     }
-  
+
     public function updatedBarbeiroModel($value) {
 
   $this->reset('date', 'cortes');
   $this->dispatch('teste');
         if($value) {
         $this->barbeiroSelecionado = BarbeariaUser::findOrFail($value);
-        
-   
+
+
 
 
         $specificDates = $this->barbeiroSelecionado->specificDates->where("status", "adicionar");
 
-    
+
 
         foreach ($specificDates as $specificDate) {
             $this->formattedDates[\Carbon\Carbon::parse($specificDate->start_date)->format('Y-m-d')] = [
@@ -84,7 +84,7 @@ class AgendarBarbearia extends Component
                 'maxTime' => \Carbon\Carbon::parse($specificDate->end_date)->format('H:i')
             ];
         }
-        
+
         }
     }
 
@@ -95,11 +95,11 @@ class AgendarBarbearia extends Component
      $this->authorize('agendar', $this->barbearia);
      $this->authorize('authenticated', auth()->user());
      if($this->phone){
-               
+
         auth()->user()->phone = $this->phone;
         auth()->user()->save();
  }
-    
+
           if(!auth()->user()->phone){
                   return session()->flash('error','Telefone no primeiro agendamento é necessário');
           }
@@ -107,7 +107,7 @@ class AgendarBarbearia extends Component
      $existingAgendamentoBarbearia = Agendamento::where('barbearia_user_id',$this->barbeiroSelecionado->id)
      ->where('start_date', Carbon::createFromFormat('d-m-Y H:i', $this->date))
      ->first();
-   
+
 
  if ($existingAgendamentoBarbearia) {
      session()->flash('error', 'Já existe um agendamento para este horário.');
@@ -115,8 +115,8 @@ class AgendarBarbearia extends Component
      return false;
  }
 
- 
-     
+
+
      $agendamento = new Agendamento;
 
      if($this->cliente && !$this->cliente->user_id) {
@@ -126,33 +126,33 @@ class AgendarBarbearia extends Component
      } else {
         $agendamento->owner_id = auth()->user()->id;
      }
- 
+
      $agendamento->barbearia_user_id = $this->barbeiroSelecionado->id;
-     
+
      $agendamento->start_date = Carbon::createFromFormat('d-m-Y H:i', $this->date);
      $agendamento->payment_method = $this->paymentMethod;
      $agendamento->maquininha_id = $this->barbeiroSelecionado->maquininhas->first()->id;
-     $intervalInMinutesTotal = 0; 
+     $intervalInMinutesTotal = 0;
      foreach ($this->cortes as $corteId) {
          $this->corteSelecionado = UserCorte::findOrFail($corteId)->corte;
          $intervalInMinutesTotal += $this->convertTimeToMinutes($this->corteSelecionado->intervalo);
      }
 
 
- 
+
      $end_date_clone = $agendamento->start_date->clone()->addMinutes($intervalInMinutesTotal);
- 
+
 
 
      $eventosAgendados = $this->barbeiroSelecionado->agendamentos;
-  
-   
+
+
      foreach ($eventosAgendados as $appointment) {
-    
- 
+
+
          $existingStartTime = Carbon::parse($appointment->start_date);
          $existingEndTime = Carbon::parse($appointment->end_date);
-         
+
          if (Carbon::parse($this->date) < $existingEndTime && $end_date_clone > $existingStartTime) {
              session()->flash('error', 'Tente diminuir o número de cortes, pois o seu agendamento esta sobrepondo horários já agendados.');
              $this->dispatch('mostrar');
@@ -169,13 +169,13 @@ class AgendarBarbearia extends Component
         $endHorarioRemovido = Carbon::parse($removedDate->end_date);
 
         if (Carbon::parse($this->date) < $endHorarioRemovido && $end_date_clone > $startHorarioRemovido) {
-       
+
             session()->flash('error', 'Tente diminuir o número de cortes, pois o seu agendamento esta sobrepondo a horários removidos pelo barbeiro.');
             $this->dispatch('mostrar');
             return false;
         }
     }
- 
+
     $availableTimes = $this->barbeiroSelecionado->getAllAvailableTimes($this->date);
 
     // Filtrar apenas os horários disponíveis sem cor atribuída
@@ -183,7 +183,7 @@ class AgendarBarbearia extends Component
         return $availableTime['color'] === '';
     });
 
-    
+
     $selectedDateTime = Carbon::createFromFormat('d-m-Y H:i', $this->date);
     $isTimeAvailable = false;
 
@@ -209,35 +209,35 @@ class AgendarBarbearia extends Component
         return false;
     }
 
-        
-     
- 
-  
+
+
+
+
      $this->saveAgendamento($agendamento, $end_date_clone);
      if(!$this->cliente) {
      $this->redirect('/home?tab=pills-contact8');
      } else {
-      
+
         $this->barbeiroModel = null;
         $this->dispatch('refrigerar');
         $this->dispatch('cancelarEditmode');
      }
-   
+
      if($this->cliente?->user_id) {
         $firebaseToken = $this->cliente->user->token;
      } elseif($agendamento->owner_id) {
-        $firebaseToken = auth()->user()->token;  
+        $firebaseToken = auth()->user()->token;
      }
-   
-  
+
+
         $pvKeyPath = public_path('pvKey.json');
         $credential = new ServiceAccountCredentials(
            "https://www.googleapis.com/auth/firebase.messaging",
            json_decode(file_get_contents($pvKeyPath), true)
        );
-       
+
        $token = $credential->fetchAuthToken(HttpHandlerFactory::build());
-   
+
    try {
          Http::withHeaders([
            'Content-Type' => 'application/json',
@@ -252,7 +252,7 @@ class AgendarBarbearia extends Component
                ],
                "webpush" => [
                    "fcm_options" => [
-                       "link" => "http://localhost/home?tab=pills-contact8"
+                       "link" => "https://barberconnect.xyz/home?tab=pills-contact8"
                    ]
                ]
            ]
@@ -260,24 +260,24 @@ class AgendarBarbearia extends Component
     } catch(\Exception $e) {
         dd($e);
     }
-   
- 
-   
 
-   
-   
 
- 
-    
+
+
+
+
+
+
+
  }
- 
+
  #[Computed]
  public function clienteComPromocao(){
              $cliente = $this->barbearia->promocoes->clientes->where("user_id", auth()->user()->id);
 
 
              return  $cliente;
-            
+
  }
 
 
@@ -287,7 +287,7 @@ class AgendarBarbearia extends Component
 
 
              return  $cliente;
-            
+
  }
 
 
@@ -297,13 +297,13 @@ class AgendarBarbearia extends Component
 
 
              return  $corteComPromocao;
-            
+
  }
 
 
 
 
- 
+
 
 
  private function saveAgendamento($agendamento, $end_date_clone)
@@ -317,11 +317,11 @@ class AgendarBarbearia extends Component
     $agendamento->total_price = $total;
      $agendamento->end_date = $end_date_clone;
      $agendamento->save();
-  
+
      $agendamento->cortes()->attach($this->cortes);
      /*       $total = 0;
        foreach($this->cortes as $corte){
-                  
+
                    foreach($corte->promocoes as $promocao){
                           if($promocao &&  $this->clienteComPromocao() || $this->usuarioComPromocao() && $this->selectedPromocao ){
                                      $total+= $corte->preco * ($promocao->desconto/100*$corte->preco);
@@ -332,12 +332,12 @@ class AgendarBarbearia extends Component
                    }
        } */
 
-    
-              
-    
+
+
+
      $userId = auth()->id();
      $cacheKey = "agendamentos_{$userId}";
- 
+
      // Limpar o cache para a chave específica
      Cache::forget($cacheKey);
      $this->dispatch('agendamento-salvo');
@@ -347,13 +347,13 @@ class AgendarBarbearia extends Component
     private function convertTimeToMinutes($time)
     {
         list($hours, $minutes, $seconds) = explode(':', $time);
-    
+
         return $hours * 60 + $minutes + $seconds / 60;
     }
 
     public function render()
     {
-        
+
         return view('livewire.cliente.agendamentos.agendar-barbearia');
     }
 }

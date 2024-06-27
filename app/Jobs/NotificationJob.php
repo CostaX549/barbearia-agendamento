@@ -66,7 +66,7 @@ class NotificationJob implements ShouldQueue
                             ],
                             "webpush" => [
                                 "fcm_options" => [
-                                    "link" => "http://localhost/home?tab=pills-contact8"
+                                    "link" => "https://barberconnect.xyz/home?tab=pills-contact8"
                                 ]
                             ]
                         ]

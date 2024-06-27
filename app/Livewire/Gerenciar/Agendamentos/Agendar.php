@@ -21,7 +21,7 @@ class Agendar extends Component
 {
 
     use WithPagination;
-    
+
     public $editarModal;
     public $barbearia;
     public $simpleModal;
@@ -40,54 +40,54 @@ class Agendar extends Component
   public $opcao;
   public $opcaoCrono;
   public $livewireKey = 'calendario_default';
-    
+
     public function mount($slug) {
         $this->barbearia = Barbearia::where('slug', $slug)->firstOrFail();
-               
-         
+
+
         $this->barbeiros = $this->barbearia->barbeiros()->withTrashed()->first()->id;
-          
+
        $this->barbeiro =$this->barbearia->barbeiros()->where("id",$this->barbeiros)->first();
 
        $this->date = Carbon::parse($this->barbearia->barbeiros->where("id", $this->barbeiros)->first()?->agendamentos()->where('start_date', '>=', Carbon::now())->orderBy("start_date", "asc")->first()?->start_date)->format('d-m-Y H:i');
-     
 
-      
+
+
 }
 
 
  public function updatedBarbeiroSelecionado($value){
-                     
+
     $this->barbeiro =  $this->barbearia->barbeiros()->where("id",$value)->first();
-                
+
  }
 
 public function selectedAgendamento(Agendamento $agendamento){
     $this->editarModal = true;
     $this->agendamentoSelecionado =$agendamento;
-    
+
      $this->barbeiroSelecionado =  $this->agendamentoSelecionado->colaborador->id;
      $this->barbeiro = $this->agendamentoSelecionado->colaborador;
 }
 
 #[Computed]
 public function agendamentosFiltrados()
-{       
+{
 
-      
+
     return $this->barbearia->barbeiros->where("id", $this->barbeiros)->first()?->agendamentos()->whereDate("start_date",Carbon::parse($this->date))->withTrashed()->paginate(10);
 }
 
 #[Computed]
 public function maquininhasFiltradas()
-{       
+{
     return $this->barbearia->barbeiros->where("id", $this->barbeiros)->first()?->maquininhas()->get();
 }
 
 
 #[Computed]
 public function faturas()
-{       
+{
     return $this->barbearia->barbeiros->where("id", $this->barbeiros)->first()?->agendamentos()->onlyTrashed()->get();
 }
 
@@ -106,8 +106,8 @@ $this->adicionarMetodos = true;
 
  public function concluir(Agendamento $agendamento) {
     $agendamento->delete();
-    
-  
+
+
     $agendamento = Agendamento::withTrashed()->find($agendamento->id);
 
     $firebaseToken = $agendamento->owner?->token;
@@ -116,7 +116,7 @@ $this->adicionarMetodos = true;
        "https://www.googleapis.com/auth/firebase.messaging",
        json_decode(file_get_contents($pvKeyPath), true)
    );
-   
+
    $token = $credential->fetchAuthToken(HttpHandlerFactory::build());
 
 
@@ -134,28 +134,28 @@ $this->adicionarMetodos = true;
             ],
             "webpush" => [
                 "fcm_options" => [
-                    "link" => "http://localhost/home?tab=pills-contact8"
+                    "link" => "https://barberconnect.xyz/home?tab=pills-contact8"
                 ]
             ]
         ]
     ]);
 } catch (\Exception $e) {
- 
+
 }
-    
 
 
-    
+
+
     if ($agendamento->payment_method == 'Cartão de Crédito' && isset($agendamento->maquininha->taxa_credito)) {
         $agendamento->fatura_price = $agendamento->total_price - ($agendamento->maquininha->taxa_credito/100 * $agendamento->total_price);
-       
+
     } elseif($agendamento->payment_method == 'Cartão de Débito' && isset($agendamento->maquininha->taxa_debito)) {
         $agendamento->fatura_price = $agendamento->total_price - ($agendamento->maquininha->taxa_debito/100 * $agendamento->total_price);
     } else {
        $agendamento->fatura_price = $agendamento->total_price;
     }
-        
-  
+
+
                $agendamento->save();
       $cliente = Cliente::where('user_id', $agendamento->owner_id)->first();
       if(!$cliente) {
@@ -165,9 +165,9 @@ $this->adicionarMetodos = true;
          $cliente->save();
       }
 
-  
 
-    
+
+
 }
 
 public function cancelar($id) {
@@ -185,9 +185,9 @@ public function deletar($id){
 public function editar(Agendamento $agendamento){
     $agendamento = Agendamento::withTrashed()->find($agendamento->id);
 
-     
+
         $agendamento->cortes->sync($this->servicosAdd);
-          
+
          if($this->produtos){
              foreach($this->produtos as $produto){
                   $produto = Produto::where("id",$produto->id);
@@ -205,39 +205,39 @@ public function editar(Agendamento $agendamento){
 
          $produto->save();
          $compra->save();
-        
-        
 
-    
+
+
+
  }
 #[Computed]
 public function agendamentos()
 {
     $barbeiros = $this->barbearia->barbeiros;
 
-    
+
 
  return  \App\Models\Agendamento::query()
-        ->whereIn('barbearia_user_id', $barbeiros->pluck('id')) 
+        ->whereIn('barbearia_user_id', $barbeiros->pluck('id'))
         ->when($this->option === 'Em breve', function ($query) {
             return $query
-     
+
                         ->where('status',0);
-                
-              
+
+
         })
         ->when($this->option === 'Em atraso', function ($query) {
             return $query
-               
+
                 ->where('end_date', '<', Carbon::now())
                 ->where('status', 0);
         })
         ->when($this->option === 'Concluída', function ($query) {
             return $query
-               
+
                 ->where('status', 1);
         })
-      
+
         ->get();
 
 
@@ -254,16 +254,16 @@ public function EventoConcluido($id){
        $evento->status = 1;
 
        $evento->save();
-       
+
 
 }
     public function render()
-    {     
-        
-        
+    {
+
+
         // Converter o array de horários para JSON
-   
-       
+
+
         return view('livewire.gerenciar.agendamentos.agendar')->layout('components.layouts.barbearia', [
             'barbearia' => $this->barbearia
         ]);
