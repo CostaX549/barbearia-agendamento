@@ -32,7 +32,7 @@
     @if ($color === 'red')
         <x-badge label="{{ $time['time']->format('H:i') }}" negative />
     @elseif($color === '')
-    <x-badge  label="{{ $time['time']->format('H:i') }}"  x-on:click="$wire.setDate({{ $time['time'] }})" />
+    <x-badge  label="{{ $time['time']->format('H:i') }}"  x-on:click="$wire.setDate({{ $time['time']->format('H:i') }})" />
     @else
     <x-badge  label="{{ $time['time']->format('H:i') }}" black />
     @endif
