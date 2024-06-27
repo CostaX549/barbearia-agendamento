@@ -40,7 +40,7 @@ class NotificationJob implements ShouldQueue
                 $start_date = Carbon::createFromFormat('Y-m-d H:i:s', $agendamento->start_date);
                 $now = Carbon::now();
 
-                if ($start_date->diffInMinutes($now) <= 60) {
+                if ($start_date->diffInMinutes($now) == 60) {
                     $firebaseToken = $agendamento->owner->token;
 
                     $pvKeyPath = public_path('pvKey.json');

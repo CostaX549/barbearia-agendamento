@@ -1,6 +1,6 @@
 {
     "name": "BarberConnect",
-    "short_name": "LPT",
+    "short_name": "BC",
     "start_url": "/index.php",
     "background_color": "#000000",
     "description": "Aplicativo de Agendamento para Barbeiros",
