@@ -124,7 +124,7 @@ public function agendamentosFiltrados()
             ],
             "webpush" => [
                 "fcm_options" => [
-                    "link" => "https://barberconnect.xyz/home?tab=pills-contact8"
+                    "link" => "https://www.barberconnect.xyz/home?tab=pills-contact8"
                 ]
             ]
         ]
