@@ -1,9 +1,9 @@
 @use(Carbon\Carbon)
 
-<div >
+<div  x-data="bob" >
 
 
-    <div  x-data="bob" x-init="initDatePicker($refs.datepicker2)"  wire:ignore>
+    <div  x-init="initDatePicker($refs.datepicker2)"  wire:ignore>
         <div class="mb-4">
             <x-input type="text"  x-ref="datepicker2" wire:model.live="date" label="Data" placeholder="Selecione uma data" />
         </div>
@@ -32,7 +32,7 @@
     @if ($color === 'red')
         <x-badge label="{{ $time['time']->format('H:i') }}" negative />
     @elseif($color === '')
-    <x-badge label="{!! $time['time']->format('H:i') !!}" x-on:click="$wire.setDate('{{ $time['time']->format('H:i') }}')" />
+    <x-badge label="{!! $time['time']->format('H:i') !!}" x-on:click="updateFlatpickrDate('{{ $time['time']->toDateTimeString() }}')" />
     @else
     <x-badge  label="{{ $time['time']->format('H:i') }}" black />
     @endif
@@ -171,6 +171,17 @@ onChange: function (selectedDates, dateStr, instance) {
 
 
           });
+      }
+
+      updateFlatpickrDate(newDate) {
+
+          const flatpickrInstance = flatpickr($refs.datepicker2);
+
+
+          if (flatpickrInstance) {
+
+              flatpickrInstance.setDate(newDate, true); 
+          }
       }
   }));
 

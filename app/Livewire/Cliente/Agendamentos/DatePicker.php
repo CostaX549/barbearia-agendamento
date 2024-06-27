@@ -46,11 +46,7 @@ class DatePicker extends Component
         }
     }
 
-    public function setDate($time)
-    {
-       $timeFormatted = Carbon::parse($time)->format('H:i');
-        $this->date = Carbon::parse($this->dateChanged)->setTimeFromTimeString($timeFormatted);
-    }
+   
     public function updatedDate($value)
     {
 
