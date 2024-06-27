@@ -26,13 +26,21 @@
       @foreach ($this->barbeiroSelecionado->getAllAvailableTimes($this->date, $this->selectedAgendamento) as $time)
 
     @php
-
+  $formattedTime = $time['time']->format('H:i');
         $color = $time['color'];
+
     @endphp
+
     @if ($color === 'red')
         <x-badge label="{{ $time['time']->format('H:i') }}" negative />
     @elseif($color === '')
-    <x-badge label="{!! $time['time']->format('H:i') !!}"  />
+
+    <x-badge label="{!! $time['time']->format('H:i') !!}"
+        x-on:click="$wire.setDate('{{ $time['time']->format('H:i') }}')"
+     :class="$selectedTime === $time['time']->format('H:i') ? 'bg-primary text-white cursor-pointer' : 'cursor-pointer'"
+       />
+
+
     @else
     <x-badge  label="{{ $time['time']->format('H:i') }}" black />
     @endif
@@ -105,14 +113,14 @@ nextMonth.setMonth(nextMonth.getMonth() + 1);
 
 
           flatpickr(datepickerRef, {
-              enableTime: true,
-              dateFormat: 'd-m-Y H:i',
+
+              dateFormat: 'd-m-Y',
               inline: true,
               defaultDate: @json($date),
               maxDate: maxDate,
 
 
-              minuteIncrement: 30,
+
               locale: 'pt',
 
               minDate: 'today',

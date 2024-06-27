@@ -94,6 +94,14 @@ class AgendarBarbearia extends Component
 
      $this->authorize('agendar', $this->barbearia);
      $this->authorize('authenticated', auth()->user());
+
+     try {
+        Carbon::createFromFormat('d-m-Y H:i', $this->date);
+    } catch (\Exception $e) {
+        session()->flash('error', 'Selecione um horário');
+        $this->dispatch('mostrar');
+        return;
+    }
      if($this->phone){
 
         auth()->user()->phone = $this->phone;
@@ -114,6 +122,8 @@ class AgendarBarbearia extends Component
      $this->dispatch('mostrar');
      return false;
  }
+
+
 
 
 
