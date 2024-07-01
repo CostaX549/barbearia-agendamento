@@ -47,7 +47,7 @@ class  BarbeariaPayments extends Step{
 
        public function icon(): string
        {
-           return 'banknotes';
+           return 'currency-dollar';
        }
     public function title(): string
     {
