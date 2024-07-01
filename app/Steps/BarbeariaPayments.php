@@ -10,10 +10,10 @@ use Illuminate\Support\Facades\Http;
 class  BarbeariaPayments extends Step{
 
 
-    
+
     protected string $view = 'steps.payments';
 
-   
+
 
     public function mount() {
         $this->mergeState([
@@ -21,14 +21,14 @@ class  BarbeariaPayments extends Step{
              'maquininhaname'=> '',
              'maquininhadebito' => 0,
              'maquininhacredito' => 0
-           
+
              ]);
        }
 
-      
-       
-        
-       
+
+
+
+
 
        public function validate()
        {
@@ -39,13 +39,18 @@ class  BarbeariaPayments extends Step{
             'state.payments.string' => 'O método de pagamento deve ser uma string.',
             'state.maquina.required' => 'O nome da máquina é obrigatório.',
             'state.maquina.string' => 'O nome da máquina deve ser uma string.',
-            
+
         ]
         ];
-        
+
+       }
+
+       public function icon(): string
+       {
+           return 'banknotes';
        }
     public function title(): string
     {
-        return __('BarbeariaPayments');
+        return __('Métodos');
     }
 }
