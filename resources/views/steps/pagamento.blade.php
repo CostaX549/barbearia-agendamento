@@ -4,12 +4,12 @@
 
 
  \MercadoPago\MercadoPagoConfig::setAccessToken($accessToken);
- if(auth()->user()->payment_id){
+
 $cards = auth()->user()->getMercadoPagoCards();
 foreach($cards as $card) {
     $cardIds[] = $card->id;
 }
- }
+
 @endphp
 
 
