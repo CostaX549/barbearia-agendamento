@@ -241,7 +241,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
 
         'payer' => [
 
-            'email' => auth(),
+            'email' => $formData['payer']['email'],
 
         ],
 
