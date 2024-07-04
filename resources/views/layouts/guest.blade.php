@@ -11,6 +11,10 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
         <link rel="icon" href="{{ asset('barbearia.png') }}">
+        <link rel="apple-touch-icon" href="{{ asset('barbearia.png') }}">
+
+
+        <link rel="manifest" href="{{ asset('/manifest.json') }}">
         <!-- Scripts -->
       <link rel="stylesheet" href="/build/assets/app-H3wy4wfz.css">
 
@@ -23,5 +27,29 @@
         </div>
 
         @livewireScriptConfig
+
+        <script src="{{ asset('/sw.js') }}">
+
+        </script>
+
+        <script src="/build/assets/app-v3VqPkE0.js " defer></script>
+
+        <script>
+
+        if (!navigator.serviceWorker.controller) {
+
+        navigator.serviceWorker.register("/sw.js").
+
+        then(function (reg) {
+
+        console.log("Service worker has been registered for scope: " + reg.scope);
+
+        });
+
+        }
+
+        </script>
     </body>
+
+
 </html>

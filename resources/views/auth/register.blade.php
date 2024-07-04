@@ -65,7 +65,7 @@
             <!-- Left column container with background-->
             <div class="mb-12 md:mb-0 md:w-8/12 lg:w-6/12">
               <img
-                src="/barbershop.avif"
+                src="/barbershop.png"
                 class="w-full"
                 alt="Phone image" />
             </div>
