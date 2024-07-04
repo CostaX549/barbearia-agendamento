@@ -1,6 +1,6 @@
 
-@php 
- $accessToken = 'APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944'; 
+@php
+ $accessToken = 'APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944';
 
 
  \MercadoPago\MercadoPagoConfig::setAccessToken($accessToken);
@@ -11,7 +11,7 @@ foreach($cards as $card) {
 }
  }
 @endphp
- 
+
 
   <div id="paymentBrick_container" wire:ignore x-data="mercadoPagoIntegration" x-init="initMercadoPago()">
 
@@ -19,7 +19,7 @@ foreach($cards as $card) {
 
 
 
-  
+
 @script
 <script>
 
@@ -38,15 +38,15 @@ foreach($cards as $card) {
 /*   preferenceId: "1642165427-578edade-19d7-4033-a68d-52846af975ab", */
                     payer: {
 
-          
-        
+
+
         customerId: @json(auth()->user()->payer_id),
            cardsIds:  @json($cardIds),
-     
+
 
                         firstName: "",
                         lastName: "",
-                        email: "test_user_1498281909@testuser.com",
+                        email: @json(auth()->user()->email),
                     },
                 },
                 customization: {
@@ -56,14 +56,14 @@ foreach($cards as $card) {
                         },
                     },
                     paymentMethods: {
-                     
+
                         creditCard: "all",
                         debitCard: "all",
                         ticket: "all",
                         bankTransfer: "all",
                         atm: "all",
              /*      mercadoPago: "all", */
-             
+
                         maxInstallments: 1
                     },
                 },
@@ -73,14 +73,14 @@ foreach($cards as $card) {
                         // Aqui você pode omitir carregamentos do seu site, por exemplo.
                     },
                     onSubmit: ({ selectedPaymentMethod, formData }) => {
-                       
+
                      @this.save(
-                        
+
                       formData,
                          selectedPaymentMethod,
                         this.selectedPlan
-                         
-                    
+
+
                      );
                     },
                     onError: (error) => {
@@ -102,7 +102,7 @@ foreach($cards as $card) {
             locale: 'pt-br'
         });
         const bricksBuilder = mp.bricks();
-        
+
         try {
             const settings = {
                 initialization: {
@@ -162,7 +162,7 @@ foreach($cards as $card) {
     }
 
     // Chame a função initMercadoPago se o elemento paymentBrick_container ainda não foi inicializado
-   
+
         const initialized = document.getElementById("paymentBrick_container").dataset.initialized;
         if (!initialized) {
             initMercadoPago();
@@ -170,6 +170,6 @@ foreach($cards as $card) {
         document.getElementById("paymentBrick_container").addEventListener("", function() {
           location.reload();
     });
-    
+
 </script>
  --}}
