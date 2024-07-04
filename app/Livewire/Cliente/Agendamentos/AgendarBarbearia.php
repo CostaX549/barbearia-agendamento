@@ -239,7 +239,7 @@ class AgendarBarbearia extends Component
         $firebaseToken = auth()->user()->token;
      }
 
-
+      $barbeiroToken = $this->barbeiroSelecionado->user->token;
         $pvKeyPath = public_path('pvKey.json');
         $credential = new ServiceAccountCredentials(
            "https://www.googleapis.com/auth/firebase.messaging",
@@ -267,6 +267,24 @@ class AgendarBarbearia extends Component
                ]
            ]
        ]);
+       Http::withHeaders([
+        'Content-Type' => 'application/json',
+        'Authorization' => 'Bearer '. $token['access_token']
+    ])->post('https://fcm.googleapis.com/v1/projects/barbearia-agendamento-7fe43/messages:send', [
+        "message" => [
+            "token" => $barbeiroToken,
+            "notification" => [
+                "title" => "Um novo agendamento foi criado para você.",
+                "body" => "Data: ". $agendamento->start_date->format('d/m/Y H:i'),
+                "image" => "https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/" . $this->barbeiroSelecionado->barbearia->imagem
+            ],
+            "webpush" => [
+                "fcm_options" => [
+                    "link" => "https://www.barberconnect.xyz/gerenciar/{$this->barbeiroSelecionado->barbearia->slug}/agendamentos"
+                ]
+            ]
+        ]
+    ]);
     } catch(\Exception $e) {
         dd($e);
     }
