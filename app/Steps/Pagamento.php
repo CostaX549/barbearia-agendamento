@@ -159,7 +159,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
 
 
 
-         'payer_email'=> $formData['payer']['email'],
+         'payer_email'=> auth()->user()->email,
 
           'card_token_id' => $formData['token'],
 
@@ -208,7 +208,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
     try {
    $response = $client_card->create(auth()->user()->payer_id, ["token" => $formData['token']]);
 } catch (\Exception $e) {
-    dd($e);
+    Redirect::route('barbearia.billing', ['slug' => $barbearia->slug]);
 }
      $barbearia_user->card_id = $response->id;
     $barbearia_user->save();
@@ -241,7 +241,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
 
         'payer' => [
 
-            'email' => $formData['payer']['email'],
+            'email' => auth(),
 
         ],
 
