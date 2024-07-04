@@ -22,20 +22,20 @@ use MercadoPago\Resources\PreApproval as ResourcesPreApproval;
 
 class MercadoPago extends Controller
 {
-  
+
    /*  function createPreferenceRequest($items, $payer): array
     {
         $paymentMethods = [
             "excluded_payment_methods" => [],
             "installments" => 12,
             "default_installments" => 1,
-         
+
             "installments" => 1, // Número padrão de parcelas
             "default_payment_method_id" => null, // Método de pagamento padrão
         ];
-    
-     
-    
+
+
+
         $backUrls = array(
             'success' => route('dashboard'),
             'failure' => route('home')
@@ -81,12 +81,12 @@ class MercadoPago extends Controller
 
     $existingCustomers = $searchResponse->json()['results'];
 
-   
-   
-   
+
+
+
 
     if (!empty($existingCustomers)) {
-        
+
         $customer_email = $existingCustomers[0]['email'];
     } else {
 
@@ -99,34 +99,34 @@ class MercadoPago extends Controller
         $customer_email = $userResponse->json()['email'];
     }
 
-  
+
     $planData = [
-       
-       
+
+
         'reason' => 'Barbearia',
-      
+
         'description' => 'Assinatura Mensal',
         'external_reference' => 'PLANO_001',
         'auto_recurring' => [
             'frequency' => 1,
             'frequency_type' => 'months',
             'transaction_amount' => 19.99,
-            
+
             'currency_id' => 'BRL',
             'free_trial' => [
                 'frequency' => 1,
                 'frequency_type' => 'months',
             ],
-          
+
         ],
-        'application_fee' => 0.99, 
-        
+        'application_fee' => 0.99,
+
 
         'payer_email' => $customer_email,
-    
+
      'back_url' =>  'http://jp2xhh0o8r.laravel-sail.site:8080/dashboard',
 
-    
+
     ];
 
     // Criação do plano
@@ -138,13 +138,13 @@ class MercadoPago extends Controller
 
 dd($planResponse->json());
     $initPoint = $planResponse->json()['init_point'];
-   
-    
+
+
     return redirect()->away($initPoint);
-     
-    }   
+
+    }
  */
- 
+
      protected function authenticate()
     {
         // Getting the access token from .env file (create your own function)
@@ -154,7 +154,7 @@ dd($planResponse->json());
         // (Optional) Set the runtime enviroment to LOCAL if you want to test on localhost
         // Default value is set to SERVER
         MercadoPagoConfig::setRuntimeEnviroment(MercadoPagoConfig::LOCAL);
-    } 
+    }
 /*   function createPreferenceRequest($items, $payer): array
 {
     $paymentMethods = [
@@ -229,7 +229,7 @@ public function index()
         // Useful props you could use from this object is 'init_point' (URL to Checkout Pro) or the 'id'
         return   redirect($preference->sandbox_init_point);
     } catch (MPApiException $error) {
-    
+
         return null;
     }
 } */
@@ -241,13 +241,13 @@ public function pagar(Request $request) {
     MercadoPagoConfig::setAccessToken($accessToken);
 
 
-  
-
- 
-  
 
 
-  
+
+
+
+
+
 
 
     $client = new PreApprovalPlanClient();
@@ -266,18 +266,18 @@ public function pagar(Request $request) {
             ],
         ],
 
-    
+
         'application_fee' => 0.99,
-   
+
         'back_url' => 'https://mercadopago.com.br',
-    
+
     ];
     $responsePlan = $client->create($planData);
 
-    
-   
-      
-        
+
+
+
+
     $curl = curl_init();
 
 // Defina as opções da solicitação cURL
@@ -310,10 +310,10 @@ curl_close($curl);
 $obj = json_decode($response);
 dd($obj);
 
-      
-    
-        
-    
+
+
+
+
 }
 
 public function criar() {
@@ -323,7 +323,7 @@ public function criar() {
         'access_token' => 'IGQWRQaF9QZADVpOU4zd0dPMVBoUTJXTi1NRW9BNXZAQdjh5NlFiSWY4MnhQb052XzFBOEg2YmdEU0REMkZA2ZA0QzMnI0dmNFMHU1TEROWFRTc2NuV3JETWMwZAE81TUtSYjJ6OHlOblZAfSlBsYjg4WG9aVmxmNHY2QjdGQ19OaHJPMXU5ZAwZDZD'
     ]);
 
-  
+
     if ($response->successful()) {
         // A solicitação foi bem-sucedida, você pode acessar os dados da resposta
         dd($response->json());
@@ -343,7 +343,7 @@ public function criar() {
 
  public function createPreapprovalRequest(): array
 {
- 
+
 
 
 
@@ -353,37 +353,37 @@ public function criar() {
     ];
 
     $user = auth()->user();
-   
+
 
 $accessToken = 'TEST-4528145694266395-011813-76b485df71f80a98e8d91e4c222c02bc-1644184890';
     $createPlanUrl = 'https://api.mercadopago.com/preapproval_plan';
-      
+
     $planData = [
-       
-       
+
+
         'reason' => 'Barbearia',
-    
+
         'description' => 'Assinatura Mensal',
         'external_reference' => $user->id,
         'auto_recurring' => [
             'frequency' => 1,
             'frequency_type' => 'months',
             'transaction_amount' => 19.99,
-            
+
             'currency_id' => 'BRL',
             'free_trial' => [
                 'frequency' => 1,
                 'frequency_type' => 'months',
             ],
-          
+
         ],
 
-    
-        'application_fee' => 0.99, 
-        
+
+        'application_fee' => 0.99,
+
 
         'payer_email' =>    $user->email,
-    
+
      'back_url' =>  'https://mercadopago.com.br',
 
      'payment_methods_allowed' => [
@@ -391,21 +391,21 @@ $accessToken = 'TEST-4528145694266395-011813-76b485df71f80a98e8d91e4c222c02bc-16
         'payment_types' => [
             [
                 'id' => 'credit_card',
-            
+
             ],
 
-           
+
         ],
-       
+
         'payment_methods' => [
             [
                 'id' => 'pix',
             ],
-         
+
         ],
     ],
 
-    
+
     ];
 
 
@@ -423,27 +423,27 @@ $jsonPlanResponse = $planResponse->json();
 
 
     return $jsonPlanResponse;
-} 
+}
 
 public function index()
 {
-     $accessToken = 'TEST-8752356059637759-013112-141508c4f33f8637c374126ff1fc0586-1660752433'; 
-   
+    $accessToken = 'APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944'; 
+
 
    /*  $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,
         'Content-Type' => 'application/json',
     ])->post('https://api.mercadopago.com/checkout/preferences', [
-        'items' => [ 
+        'items' => [
             [
                 'title' => 'Barbearia',
                 'description' => 'Barbearia',
                 'quantity' => 1,
-           
-                'unit_price' => 15, 
+
+                'unit_price' => 15,
             ]
         ],
-        
+
     ]);
 
     dd($response->json());
@@ -453,11 +453,11 @@ public function index()
     $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,
         'Accept' => 'application/json',
-    ])->get("https://api.mercadopago.com/preapproval/2c9380848ec6c993018eca6ff0130322");
+    ])->get("https://api.mercadopago.com/preapproval_plan/2c9380849075726001907b4af1280234");
 
     dd($response->json());
 
-}  
+}
 
 
 
@@ -465,5 +465,5 @@ public function index()
 
 
 
- 
+
 
