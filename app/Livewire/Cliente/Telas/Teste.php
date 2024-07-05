@@ -94,7 +94,7 @@ public $selectedBarbearia;
 #[Computed]
 #[On('avaliacao-salva')]
  public function notifications() {
-    $barbearia = auth()->user()->eventos
+    $barbearia = auth()->user()->eventos()
     ->withTrashed()
     ->pluck('colaborador.barbearia')
 
