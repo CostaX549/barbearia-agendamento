@@ -103,7 +103,7 @@ public $selectedBarbearia;
     ->unique();
 
 
-    dd($barbearia);
+   
 
     $eventos = auth()->user()->eventos->where('start_date','>',Carbon::now());
 
