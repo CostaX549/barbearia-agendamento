@@ -549,26 +549,23 @@ data-te-navbar-ref>
       </div>
       <div class="p-6 pl-2 pt-0">
 
-          <a
-          id="agendarButton"
-          href="#pills-contact8"
-          data-te-toggle="pill"
-          data-te-target="#pills-contact8"
+        <li role="presentation">
+            <a
+              href="#pills-contact8"
+              class="my-2 block rounded bg-neutral-100 px-7 pb-3.5 pt-4 text-xs font-medium uppercase leading-tight text-neutral-500 data-[te-nav-active]:!bg-neutral-800 data-[te-nav-active]:text-neutral-50 dark:bg-neutral-700 dark:text-white dark:data-[te-nav-active]:!bg-neutral-900 dark:data-[te-nav-active]:text-neutral-50 md:mr-4"
+              id="agendarButton"
 
-          role="tab"
-      wire:click="selecionarTab('pills-contact8')"
-          aria-controls="pills-contact8"
-          aria-selected="false"
-          wire:ignore.self
-
-            class="flex items-center gap-2 px-4 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
-          >
-         Ver agenda
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-              stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
-            </svg>
-        </a>
+              data-te-toggle="pill"
+              data-te-target="#pills-contact8"
+              @if($tab === 'pills-contact8') data-te-nav-active @endif
+              role="tab"
+          wire:click="selecionarTab('pills-contact8')"
+              aria-controls="pills-contact8"
+              aria-selected="false"
+              wire:ignore.self
+              >Agenda</a
+            >
+          </li>
 
       </div>
     </div>
