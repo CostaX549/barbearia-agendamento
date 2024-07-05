@@ -103,7 +103,7 @@ public $selectedBarbearia;
     ->unique();
 
 
-   
+
 
     $eventos = auth()->user()->eventos->where('start_date','>',Carbon::now());
 
@@ -161,7 +161,7 @@ public function contar() {
 
         if(!$existsAvaliacao){
           $avaliacao = new Avaliacao;
-
+         
           $avaliacao->qtd = $valor;
           $avaliacao->user_id = auth()->user()->id;
           $avaliacao->barbearia_id = $id;
