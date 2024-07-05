@@ -412,7 +412,6 @@ data-te-navbar-ref>
 
       <p class="p-2"> {{$b->nome}}</p>
 
-
       <div class=" w-[500px] m-auto px-3 mb-2 mt-6">
         <ul id="selected-value-example" class="ratingStar my-1 flex list-none gap-1 p-0">
             <template x-for="(rating, index) in ratings" :key="index">
@@ -439,7 +438,12 @@ data-te-navbar-ref>
                 </li>
             </template>
         </ul>
-
+        <textarea
+            class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white"
+            wire:model="comment"
+            placeholder="Avaliação"
+            required>
+        </textarea>
     </div>
     <div class="w-full flex justify-center mb-12 px-3 my-3">
         <button
@@ -451,43 +455,43 @@ data-te-navbar-ref>
             Avalie a Barbearia
         </button>
     </div>
-</div>
-@script
-<script>
+</li>
+    @script
+    <script>
 
-        Alpine.data('avaliacaoData', () => ({
-            ratings: [
-                { title: 'Bad' },
-                { title: 'Poor' },
-                { title: 'Okay' },
-                { title: 'Good' },
-                { title: 'Excellent' }
-            ],
-            selectedRating: 0,
+            Alpine.data('avaliacaoData', () => ({
+                ratings: [
+                    { title: 'Bad' },
+                    { title: 'Poor' },
+                    { title: 'Okay' },
+                    { title: 'Good' },
+                    { title: 'Excellent' }
+                ],
+                selectedRating: 0,
 
-            selectRating(value) {
-                this.selectedRating = value;
-                // Trigger custom event
-                this.$dispatch('onSelect.te.rating', { value: this.selectedRating });
-            },
-            handleSelectRating(value) {
-                this.selectedRating = value;
-            },
-            submitAvaliacao() {
-                let barbeariaId = document.getElementById('botaoAvaliar').getAttribute('data-barbearia-id');
-                console.log('Barbearia ID:', barbeariaId);
-                Livewire.dispatch('avaliar', {
-                    valor: this.selectedRating,
-                    id: barbeariaId,
+                selectRating(value) {
+                    this.selectedRating = value;
+                    // Trigger custom event
+                    this.$dispatch('onSelect.te.rating', { value: this.selectedRating });
+                },
+                handleSelectRating(value) {
+                    this.selectedRating = value;
+                },
+                submitAvaliacao() {
+                    let barbeariaId = document.getElementById('botaoAvaliar').getAttribute('data-barbearia-id');
+                    console.log('Barbearia ID:', barbeariaId);
+                    Livewire.dispatch('avaliar', {
+                        valor: this.selectedRating,
+                        id: barbeariaId,
 
-                });
-            }
-        }));
+                    });
+                }
+            }));
 
-</script>
-@endscript
+    </script>
+    @endscript
 
-      </li>
+
       @endif
       @empty
 
