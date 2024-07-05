@@ -100,6 +100,8 @@ public $selectedBarbearia;
 
     ->unique();
 
+    dd($barbearia);
+
     $eventos = auth()->user()->eventos->where('start_date','>',Carbon::now());
 
 $barbeariasAvaliadas = \App\Models\Avaliacao::where('user_id', auth()->user()->id)
