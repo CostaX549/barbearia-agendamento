@@ -396,7 +396,7 @@ data-te-navbar-ref>
     </button>
     <ul
     wire:ignore.self
-      class="absolute z-[1000] right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
+      class="absolute z-[100] right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
       aria-labelledby="dropdownMenuButton2"
       data-te-dropdown-menu-ref>
 
@@ -773,7 +773,7 @@ data-te-navbar-ref>
           data-te-ripple-init
           data-te-ripple-color="light"
           href="/gerenciar/{{$barbearia->slug}}"
-      
+
           class="rounded bg-black px-7 pb-2.5 pt-3 text-sm font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-gray-900 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-gray-600 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-black active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)]">
          Gerenciar Barbearia
         </a>

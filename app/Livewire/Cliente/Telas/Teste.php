@@ -16,7 +16,7 @@ use Instagram\FacebookLogin\FacebookLogin;
 use WireUi\Traits\Actions;
 
  use Google\Auth\Credentials\ServiceAccountCredentials;
-use Google\Auth\HttpHandler\HttpHandlerFactory; 
+use Google\Auth\HttpHandler\HttpHandlerFactory;
 use Illuminate\Support\Facades\Log;
 
 
@@ -43,7 +43,7 @@ class Teste extends Component
     #[Validate('required|string|unique:barbearias')]
     public string $slug = '';
     #[Url]
-    
+
 public $tab = 'pills-home7';
 public $compartilharModal;
 public $selectedBarbearia;
@@ -56,50 +56,50 @@ public $selectedBarbearia;
 
     #[Validate('required|string')]
     public string $complemento = '';
-    
+
     public $barbearia;
     public $estrela;
     #[Computed]
     #[On('agendamento-editado')]
     public function notificationsNearEvents() {
         $user = auth()->user();
-        
+
         $eventos = $user->eventos->filter(function ($evento) {
-            
+
             return now()->diffInMinutes($evento->start_date) <= 60;
         });
-  
+
         return $eventos;
     }
   /*   #[Computed]
     #[On('avaliacao-salva')]
      public function notificationsEvents() {
-       
+
         $eventos = auth()->user()->eventos->where('start_date','>',Carbon::now());
-    
-   
-    
+
+
+
        return  $eventos;
      }
  */
   public function selecionarTab($tab) {
-    
+
     $this->tab = $tab;
   }
 
 
-  
-  
+
+
 
 #[Computed]
 #[On('avaliacao-salva')]
  public function notifications() {
     $barbearia = auth()->user()->eventos
-    ->where('status', 1)
+    ->whereNotNull('deleted_at')
     ->pluck('barbeiro.barbearia')
 
     ->unique();
-    
+
     $eventos = auth()->user()->eventos->where('start_date','>',Carbon::now());
 
 $barbeariasAvaliadas = \App\Models\Avaliacao::where('user_id', auth()->user()->id)
@@ -111,18 +111,18 @@ $barbeariasAvaliadas = \App\Models\Avaliacao::where('user_id', auth()->user()->i
  public function mount()
  {
     if(session('status')) {
-    
+
     $this->dispatch('agendamento');
     }
     $contagemEventos = $this->notificationsNearEvents->count();
      foreach ($this->notificationsNearEvents as $event) {
          if ($event->read === 1) {
-             $contagemEventos = 0; 
+             $contagemEventos = 0;
          }
      }
-         
 
-        
+
+
      $this->contagem = $this->notifications->count() + $contagemEventos;
  }
 
@@ -133,7 +133,7 @@ $barbeariasAvaliadas = \App\Models\Avaliacao::where('user_id', auth()->user()->i
     $user->save();
  }
 
- 
+
 
  public function clicar() {
     $existingPlano = Plan::where('user_id', auth()->user()->id)->first();
@@ -156,7 +156,7 @@ public function contar() {
 
         if(!$existsAvaliacao){
           $avaliacao = new Avaliacao;
-          
+
           $avaliacao->qtd = $valor;
           $avaliacao->user_id = auth()->user()->id;
           $avaliacao->barbearia_id = $id;
@@ -169,38 +169,38 @@ public function contar() {
              $existsAvaliacao->save();
         }
     }
- 
- 
-    
+
+
+
     public function compartilhar($barbeariaId) {
-        
+
         $this->selectedBarbearia = Barbearia::findOrFail($barbeariaId);
     }
 
     public function compartilharRede() {
-        
+
     }
 
 
 
-    
- 
- 
-  
 
 
 
 
- 
 
-   
-   
- 
+
+
+
+
+
+
+
+
   #[Title("Página Principal")]
     public function render()
     {
-   
- 
+
+
         return view('livewire.cliente.telas.teste');
     }
 
