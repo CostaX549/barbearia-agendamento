@@ -405,14 +405,14 @@ data-te-navbar-ref>
       <li x-data="avaliacaoData()" wire:key="barbeariaavaliacao-{{ $b->id }}">
 
         <img
-    class="rounded-t-lg  object-cover w-full "
+    class="rounded-t-lg  object-cover w-full max-w-[500px] "
     src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $b->imagem }}"
- 
+
     alt="" />
 
       <p class="p-2"> {{$b->nome}}</p>
 
-      <div class=" w-[500px] m-auto px-3 mb-2 mt-6">
+      <div class=" w-[500px] m-auto px-3 mb-2 mt-6 z-10">
         <ul id="selected-value-example" class="ratingStar my-1 flex list-none gap-1 p-0">
             <template x-for="(rating, index) in ratings" :key="index">
                 <li>
