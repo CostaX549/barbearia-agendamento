@@ -396,7 +396,7 @@ data-te-navbar-ref>
     </button>
     <ul
     wire:ignore.self
-      class="absolute z-50 right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
+      class="absolute z-100 right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
       aria-labelledby="dropdownMenuButton2"
       data-te-dropdown-menu-ref>
 
@@ -405,7 +405,7 @@ data-te-navbar-ref>
       <li x-data="avaliacaoData()" wire:key="barbeariaavaliacao-{{ $b->id }}">
 
         <img
-    class="rounded-t-lg  object-cover w-[300px] h-[300px] "
+    class="rounded-t-lg  object-cover w-full h-[300px] "
     src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $b->imagem }}"
 
     alt="" />
