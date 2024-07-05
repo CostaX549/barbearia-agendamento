@@ -550,18 +550,19 @@ data-te-navbar-ref>
       <div class="p-6 pl-2 pt-0">
 
           <a
-         id="agendarButton"
-           href="#pills-contact8"
-        wire:click="selecionarTab('pills-contact8')"
-        data-te-toggle="pill"
-        data-te-target="#pills-contact7"
-        role="tab"
-        aria-controls="pills-contact8"
-        aria-selected="false"
-        wire:ignore.self
+          id="agendarButton"
+
+          data-te-toggle="pill"
+          data-te-target="#pills-contact8"
+         
+          role="tab"
+      wire:click="selecionarTab('pills-contact8')"
+          aria-controls="pills-contact8"
+          aria-selected="false"
+          wire:ignore.self
 
             class="flex items-center gap-2 px-4 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
-            type="button">
+          >
          Ver agenda
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
               stroke="currentColor" class="w-4 h-4">
