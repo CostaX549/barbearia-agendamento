@@ -551,10 +551,10 @@ data-te-navbar-ref>
 
           <a
           id="agendarButton"
-
+          href="#pills-contact8"
           data-te-toggle="pill"
           data-te-target="#pills-contact8"
-         
+
           role="tab"
       wire:click="selecionarTab('pills-contact8')"
           aria-controls="pills-contact8"
