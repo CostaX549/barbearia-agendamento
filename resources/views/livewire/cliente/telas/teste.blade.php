@@ -405,7 +405,7 @@ data-te-navbar-ref>
       <li x-data="avaliacaoData()" wire:key="barbeariaavaliacao-{{ $b->id }}">
 
         <img
-    class="rounded-full m-auto   object-cover w-[300px] h-[300px] "
+    class="rounded-full m-auto   object-cover w-[150px] h-[150px] "
     src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $b->imagem }}"
 
     alt="" />
