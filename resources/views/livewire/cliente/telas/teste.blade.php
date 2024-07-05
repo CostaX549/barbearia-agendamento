@@ -522,7 +522,7 @@ data-te-navbar-ref>
 
 
    @forelse($this->notificationsNearEvents as $agendamento)
-    <div class="relative flex flex-col mt-6 text-gray-700 bg-white shadow-md bg-clip-border rounded-xl max-w-30" >
+    <div class="relative flex flex-col mt-6 text-gray-700 bg-white z-100 shadow-md bg-clip-border rounded-xl max-w-30" >
       <div class="p-6">
 
 
