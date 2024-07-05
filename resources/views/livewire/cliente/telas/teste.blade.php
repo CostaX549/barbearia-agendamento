@@ -407,7 +407,7 @@ data-te-navbar-ref>
         <img
     class="rounded-t-lg  object-cover w-full "
     src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $b->imagem }}"
-   style="width: 150px; height: 150px;"
+ 
     alt="" />
 
       <p class="p-2"> {{$b->nome}}</p>
