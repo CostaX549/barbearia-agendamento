@@ -402,7 +402,7 @@ data-te-navbar-ref>
 
       @forelse($this->notifications as $b)
       @if($b)
-      <li>
+      <li x-data="avaliacaoData()" wire:key="barbeariaavaliacao-{{ $b->id }}">
 
         <img
     class="rounded-t-lg  object-cover "
@@ -438,12 +438,7 @@ data-te-navbar-ref>
                 </li>
             </template>
         </ul>
-        <textarea
-            class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white"
-            wire:model="comment"
-            placeholder="Avaliação"
-            required>
-        </textarea>
+
     </div>
     <div class="w-full flex justify-center mb-12 px-3 my-3">
         <button
