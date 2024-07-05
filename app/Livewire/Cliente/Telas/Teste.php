@@ -95,10 +95,11 @@ public $selectedBarbearia;
 #[On('avaliacao-salva')]
  public function notifications() {
     $barbearia = auth()->user()->eventos
-    ->whereNotNull('deleted_at')
+    ->withTrashed()
     ->pluck('colaborador.barbearia')
 
     ->unique();
+
 
     dd($barbearia);
 
