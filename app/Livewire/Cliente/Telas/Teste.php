@@ -96,7 +96,7 @@ public $selectedBarbearia;
  public function notifications() {
     $barbearia = auth()->user()->eventos
     ->whereNotNull('deleted_at')
-    ->pluck('barbeiro.barbearia')
+    ->pluck('colaborador.barbearia')
 
     ->unique();
 
