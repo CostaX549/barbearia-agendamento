@@ -1,6 +1,6 @@
 <div>
 
-  <div class="fixed top-50   w-full bg-[#FBFBFB] shadow-md z-20">
+  <div class="fixed top-50   w-full bg-[#FBFBFB] shadow-md z-1">
     <div class="flex  gap-y-4 justify-between p-3 lg:p-5">
       <div class="text-left">
         <h1 class="mr-6 text-2xl lg:text-4xl font-bold tracking-tight text-gray-900">Barbearias</h1>

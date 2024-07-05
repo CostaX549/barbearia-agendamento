@@ -396,7 +396,7 @@ data-te-navbar-ref>
     </button>
     <ul
     wire:ignore.self
-      class="absolute z-100 right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
+      class="absolute z-50 right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
       aria-labelledby="dropdownMenuButton2"
       data-te-dropdown-menu-ref>
 
@@ -522,7 +522,7 @@ data-te-navbar-ref>
 
 
    @forelse($this->notificationsNearEvents as $agendamento)
-    <div class="relative flex flex-col mt-6 text-gray-700 bg-white z-100 shadow-md bg-clip-border rounded-xl max-w-30" >
+    <div class="relative flex flex-col mt-6 text-gray-700 bg-white z-50 shadow-md bg-clip-border rounded-xl max-w-30" >
       <div class="p-6">
 
 
@@ -551,6 +551,7 @@ data-te-navbar-ref>
 
           <button
          id="agendarButton"
+        wire:click="selecionarTab('pills-contact8')"
             class="flex items-center gap-2 px-4 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
             type="button">
          Ver agenda
