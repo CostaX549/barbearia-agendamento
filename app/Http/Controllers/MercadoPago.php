@@ -339,6 +339,61 @@ public function criar() {
 
 }
 
+public function atualizarPrecos() {
+    $accessToken = 'APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944';
+  $preapprovalID = '2c9380849075726001907b4af1280234'; 
+
+/*  $response1 = Http::withHeaders([
+    'Authorization' => 'Bearer ' . $accessToken,
+    'Content-Type'  => 'application/json',
+])->put("https://api.mercadopago.com/preapproval_plan/$preapprovalID", [
+    'auto_recurring' => [
+        'transaction_amount' => 5.00, // Novo preço
+        'currency_id' => 'BRL' // Moeda (altere se necessário)
+    ]
+]); 
+dd($response1->json()); 
+ */
+/* echo "✅ Preapproval Plan atualizado com sucesso!";
+$preferenceID = '1644143944-27896130-0574-4b9f-a031-653b4a6349ff';
+
+$response2 = Http::withHeaders([
+    'Authorization' => 'Bearer ' . $accessToken,
+    'Content-Type'  => 'application/json',
+])->get("https://api.mercadopago.com/checkout/preferences/$preferenceID", [
+    'items' => [
+        [
+           
+            'title'       => 'Barbearia Veia',
+            'quantity'    => 1,
+            'unit_price'  => 1.00, // Novo preço do produto
+            'currency_id' => 'BRL'
+        ]
+    ]
+]);
+
+$response = Http::withHeaders([
+    'Authorization' => 'Bearer ' . $accessToken,
+    'Content-Type' => 'application/json',
+])->get("https://api.mercadopago.com/checkout/preferences/{$preferenceID}");
+
+
+$preco = $response->json();
+
+
+if($response1->successful() && $response2->successful()) {
+    echo "Preço atualizado";
+}
+else {
+    echo "❌ Erro: " . $response1->body() . 'Erro2' . $response2->body();
+} */
+ $response = Http::withHeaders([
+    'Authorization' => 'Bearer ' . $accessToken,
+    'Accept' => 'application/json',
+])->get("https://api.mercadopago.com/v1/payments/102530924360");
+dd($response->json());
+}
+
 
 
  public function createPreapprovalRequest(): array

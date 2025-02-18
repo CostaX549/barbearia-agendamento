@@ -295,7 +295,7 @@ AWS_ACCESS_KEY_ID=AKIAZLKD2YMLZIMI4CAP
 AWS_SECRET_ACCESS_KEY=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
 AWS_DEFAULT_REGION=sa-east-1
 AWS_BUCKET=barbearia-agendamento-2024
-AWS_URL="https://barbearia-agendamento-2024.s3.amazonaws.com/"
+AWS_URL="http://localhost/"
 AWS_USE_PATH_STYLE_ENDPOIT=true
 
 MERCADOPAGO_ACCESS_TOKEN=

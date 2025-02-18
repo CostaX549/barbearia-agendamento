@@ -258,11 +258,11 @@ class AgendarBarbearia extends Component
                "notification" => [
                    "title" => "Agendamento criado com sucesso.",
                    "body" => "Data: ". $agendamento->start_date->format('d/m/Y H:i'),
-                   "image" => "https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/" . $this->barbeiroSelecionado->barbearia->imagem
+                   "image" => "http://localhost/storage/" . $this->barbeiroSelecionado->barbearia->imagem
                ],
                "webpush" => [
                    "fcm_options" => [
-                       "link" => "https://www.barberconnect.xyz/home?tab=pills-contact8"
+                       "link" => "http://localhost/home?tab=pills-contact8"
                    ]
                ]
            ]
@@ -276,11 +276,11 @@ class AgendarBarbearia extends Component
             "notification" => [
                 "title" => "Um novo agendamento foi criado para você.",
                 "body" => "Data: ". $agendamento->start_date->format('d/m/Y H:i'),
-                "image" => "https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/" . $this->barbeiroSelecionado->barbearia->imagem
+                "image" => "http://localhost/storage/" . $this->barbeiroSelecionado->barbearia->imagem
             ],
             "webpush" => [
                 "fcm_options" => [
-                    "link" => "https://www.barberconnect.xyz/gerenciar/{$this->barbeiroSelecionado->barbearia->slug}/agendamentos"
+                    "link" => "http://localhost/gerenciar/{$this->barbeiroSelecionado->barbearia->slug}/agendamentos"
                 ]
             ]
         ]

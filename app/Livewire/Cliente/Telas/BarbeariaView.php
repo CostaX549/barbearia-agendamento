@@ -238,7 +238,7 @@ public array $cortes = [];
         $galeriasExistente = $this->barbearia->galeria ?? [];
       
         foreach ($this->fotos as $index => $foto) {
-            $caminhoImagem = $foto->store("/", "s3");
+            $caminhoImagem = $foto->store("/", "public");
     
      
             $galeriasExistente[] = [

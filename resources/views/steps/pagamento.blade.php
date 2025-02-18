@@ -59,7 +59,7 @@ foreach($cards as $card) {
 
                         creditCard: "all",
                         debitCard: "all",
-                        ticket: "all",
+                   
                         bankTransfer: "all",
                         atm: "all",
              /*      mercadoPago: "all", */

@@ -111,7 +111,7 @@ public function produtos() {
             $produto->preco = $this->preco;
             $produto->nome = $this->nome;
             $produto->quantidade = $this->quantidade;
-            $produto->imagem = $this->imagem->store('/','s3');
+            $produto->imagem = $this->imagem->store('/', "public");
             $produto->dimensao = $this->dimensao;
             $produto->codigo = $this->codigo;
             $produto->descricao = $this->descricao;

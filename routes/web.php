@@ -65,7 +65,7 @@ Route::get('/criar-plano', [MercadoPago::class, 'criar']);
 
 
 Route::get('/instagram', [InstagramController::class, 'instagram']);
-
+Route::get('/mercadopagoprecos',[MercadoPago::class, 'atualizarPrecos']);
 
 
 Route::post('/nova', [TokenController::class, 'store'])->middleware('auth');
@@ -77,7 +77,8 @@ Route::get('/auth/{provider}/callback', function(string $provider) {
        $providerUser = Socialite::driver($provider)->user();
 
        $user = User::updateOrCreate([
-        'provider_id' => $providerUser->id
+        'provider_id' => $providerUser->id,
+        
        ], [
         'name' => $providerUser->name,
         'email' => $providerUser->email,

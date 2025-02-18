@@ -354,208 +354,19 @@ data-te-navbar-ref>
         >Agenda</a
       >
     </li>
-
+    
 
 
   </ul>
 
   </div>
 
-  <div class="relative"  data-te-dropdown-position="dropstart">
-
-    <button
-      class="hidden lg:flex items-center whitespace-nowrap rounded bg-black px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_#3b71ca] transition duration-150 ease-in-out hover:bg-zinc-950 hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:bg-zinc-950 focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] focus:outline-none focus:ring-0 active:bg-black active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.3),0_4px_18px_0_rgba(59,113,202,0.2)] motion-reduce:transition-none dark:shadow-[0_4px_9px_-4px_rgba(59,113,202,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(59,113,202,0.2),0_4px_18px_0_rgba(59,113,202,0.1)]"
-     @if($contagem > 0)
-      wire:click="contar"
-
-      @endif
-      type="button"
-      wire:ignore.self
-
-      id="dropdownMenuButton2"
-      data-te-dropdown-toggle-ref
-      aria-expanded="false"
-      data-te-ripple-init
-      data-te-ripple-color="light">
-       Notificações
-      <span class="ml-2 w-2">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          fill="currentColor"
-          class="h-5 w-5">
-          <path
-            fill-rule="evenodd"
-            d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z"
-            clip-rule="evenodd" />
-        </svg>
-      </span>
-      @if($contagem > 0)
-      <span class="notification-dot">{{ $contagem }}</span>
-      @endif
-    </button>
-    <ul
-    wire:ignore.self
-
-
-      class="absolute z-100 right-0 float-right m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-[#FBFBFB] bg-clip-padding text-left text-base shadow-lg dark:bg-neutral-700 [&[data-te-dropdown-show]]:block"
-      aria-labelledby="dropdownMenuButton2"
-      data-te-dropdown-menu-ref>
-
-      @forelse($this->notifications as $b)
-      @if($b)
-      <li x-data="avaliacaoData()" wire:key="barbeariaavaliacao-{{ $b->id }}">
-
-        <img
-    class="rounded-full m-auto   object-cover w-[150px] h-[150px] "
-    src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $b->imagem }}"
-
-    alt="" />
-
-      <p class="p-2"> {{$b->nome}}</p>
-
-      <div class=" w-[500px] m-auto px-3 mb-2 mt-6 z-10">
-        <ul id="selected-value-example" class="ratingStar my-1 flex list-none gap-1 p-0">
-            <template x-for="(rating, index) in ratings" :key="index">
-                <li>
-                    <span
-                        class="text-black [&>svg]:h-5 [&>svg]:w-5"
-                        :title="rating.title"
-                        data-te-rating-icon-ref
-                        @click="selectRating(index + 1)"
-                        x-bind:class="{'text-yellow-500': index < selectedRating}"
-                        @onSelect.te.rating="handleSelectRating(index + 1)">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor">
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
-                        </svg>
-                    </span>
-                </li>
-            </template>
-        </ul>
-
-    </div>
-    <div class="w-full flex justify-center mb-12 px-3 my-3">
-        <button
-            id="botaoAvaliar"
-            wire:loading.class="opacity-50"
-            :data-barbearia-id="{{ $b->id }}"
-            @click="submitAvaliacao"
-            class="inline-block rounded-lg w-[450px] bg-neutral-800 px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] transition duration-150 ease-in-out hover:bg-neutral-800 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-neutral-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:outline-none focus:ring-0 active:bg-neutral-900 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] dark:bg-neutral-900 dark:shadow-[0_4px_9px_-4px_#030202] dark:hover:bg-neutral-900 dark:hover:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:focus:bg-neutral-900 dark:focus:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)] dark:active:bg-neutral-900 dark:active:shadow-[0_8px_9px_-4px_rgba(3,2,2,0.3),0_4px_18px_0_rgba(3,2,2,0.2)]">
-            Avalie a Barbearia
-        </button>
-    </div>
-</li>
-    @script
-    <script>
-
-            Alpine.data('avaliacaoData', () => ({
-                ratings: [
-                    { title: 'Bad' },
-                    { title: 'Poor' },
-                    { title: 'Okay' },
-                    { title: 'Good' },
-                    { title: 'Excellent' }
-                ],
-                selectedRating: 0,
-
-                selectRating(value) {
-                    this.selectedRating = value;
-                    // Trigger custom event
-                    this.$dispatch('onSelect.te.rating', { value: this.selectedRating });
-                },
-                handleSelectRating(value) {
-                    this.selectedRating = value;
-                },
-                submitAvaliacao() {
-                    let barbeariaId = document.getElementById('botaoAvaliar').getAttribute('data-barbearia-id');
-                    console.log('Barbearia ID:', barbeariaId);
-                    Livewire.dispatch('avaliar', {
-                        valor: this.selectedRating,
-                        id: barbeariaId,
-
-                    });
-                }
-            }));
-
-    </script>
-    @endscript
-
-
-      @endif
-      @empty
-
-
-    @endforelse
-
-
-   @forelse($this->notificationsNearEvents as $agendamento)
-    <div class="relative flex flex-col mt-6 text-gray-700 bg-white z-50 shadow-md bg-clip-border rounded-xl max-w-30" >
-      <div class="p-6">
-
-
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"   class="w-12 h-12 mb-4 text-gray-900">
-          <path stroke-linecap="round" stroke-linejoin="round" d="m7.848 8.25 1.536.887M7.848 8.25a3 3 0 1 1-5.196-3 3 3 0 0 1 5.196 3Zm1.536.887a2.165 2.165 0 0 1 1.083 1.839c.005.351.054.695.14 1.024M9.384 9.137l2.077 1.199M7.848 15.75l1.536-.887m-1.536.887a3 3 0 1 1-5.196 3 3 3 0 0 1 5.196-3Zm1.536-.887a2.165 2.165 0 0 0 1.083-1.838c.005-.352.054-.695.14-1.025m-1.223 2.863 2.077-1.199m0-3.328a4.323 4.323 0 0 1 2.068-1.379l5.325-1.628a4.5 4.5 0 0 1 2.48-.044l.803.215-7.794 4.5m-2.882-1.664A4.33 4.33 0 0 0 10.607 12m3.736 0 7.794 4.5-.802.215a4.5 4.5 0 0 1-2.48-.043l-5.326-1.629a4.324 4.324 0 0 1-2.068-1.379M14.343 12l-2.882 1.664" />
-        </svg>
-
-        <h5 class="block mb-2 font-sans text-xl antialiased font-semibold leading-snug tracking-normal text-blue-gray-900">
-         {{ $agendamento->owner->name }}
-        </h5>
-        <p class="block font-sans text-base antialiased font-semibold leading-relaxed text-inherit">
-          Cortes: @foreach($agendamento->cortes as $corte)  {{ $corte->nome }}      @endforeach
-        </p>
-
-        <p class="block font-sans text-base antialiased font-semibold leading-relaxed text-inherit">
-          @php
-          $diasDaSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-          $diaSemana = $diasDaSemana[date('w', strtotime($agendamento->start_date))];
-          @endphp
-
-          Dia: {{ \Carbon\Carbon::parse($agendamento->start_date)->format('d/m/Y H:i') }} - {{ $diaSemana }}
-        </p>
-
-      </div>
-      <div class="p-6 pl-2 pt-0">
-
-          <button
-         id="agendarButton"
-
-         x-data
-         x-on:click="document.getElementById('pills-contact-tab8').click()"
-            class="flex items-center gap-2 px-4 py-2 font-sans text-xs font-bold text-center text-gray-900 uppercase align-middle transition-all rounded-lg select-none disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none hover:bg-gray-900/10 active:bg-gray-900/20"
-            type="button">
-         Ver agenda
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-              stroke="currentColor" class="w-4 h-4">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3"></path>
-            </svg>
-        </button>
-
-      </div>
-    </div>
-   @empty
-
-
-    @endforelse
-    </ul>
-
-
-  </div>
-
-
-   <form action="/logout" method="post">
-      @csrf
-      <button type="submit">Sair</button>
+  <form action="/logout" method="post">
+    @csrf
+    <button type="submit">Sair</button>
 </form>
 
-
+  
 
     <!-- Add any additional content or links as needed -->
 
@@ -671,7 +482,7 @@ data-te-navbar-ref>
   <!-- Section: Design Block -->
   <section class="mb-3 mt-5">
     <div
-      class="relative   lg:h-[300px]  w-[85%] max-sm:w-[100%] rounded-lg mx-auto overflow-hidden bg-cover bg-[50%] bg-no-repeat" style="background-image: url('https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/fundopreto.jpg')">
+      class="relative   lg:h-[300px]  w-[85%] max-sm:w-[100%] rounded-lg mx-auto overflow-hidden bg-cover bg-[50%] bg-no-repeat" style="background-image: url('http://localhost/fundopreto.jpg')">
     </div>
 
       <div class="block  m-auto w-[80%] max-sm:w-[100%] rounded-lg bg-[hsla(0,0%,100%,0.7)]  lg:px-6 py-12 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-[hsla(0,0%,5%,0.7)] dark:shadow-black/20 md:py-16 md:px-12 lg:-mt-[100px] mt-[2px] lg:backdrop-blur-md  " >
@@ -713,7 +524,7 @@ data-te-navbar-ref>
           data-te-ripple-color="light">
           <img
             class="rounded-t-lg  object-cover "
-            src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbearia->imagem }}"
+            src="http://localhost/storage/{{ $barbearia->imagem }}"
            style="width: 450px; height: 317px;"
             alt="" />
           <a href="/{{$barbearia->slug}}"

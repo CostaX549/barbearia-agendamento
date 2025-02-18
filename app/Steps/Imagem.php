@@ -40,7 +40,7 @@ class Imagem extends Step
     /*
      * Step Validation
      */
-     public function validate()
+    /*  public function validate()
     {
         return [
             [
@@ -54,7 +54,7 @@ class Imagem extends Step
             ],
         ];
     } 
-
+ */
 
    
     /*

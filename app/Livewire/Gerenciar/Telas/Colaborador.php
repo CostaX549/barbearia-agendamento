@@ -32,7 +32,8 @@ class Colaborador extends Component
     }
   
 
-    public function abrirModal(BarbeariaUser $barbeiro) {
+    public function abrirModal($id) {
+        $barbeiro = BarbeariaUser::withTrashed()->find($id);
         $this->simpleModal = true;
               $this->selectedBarbeiro =  $barbeiro;
     }
@@ -113,7 +114,7 @@ class Colaborador extends Component
     }
 
     public function edit($id) {
-        $barbeiro = BarbeariaUser::where("id",$id)->withTrashed()->first();
+        $barbeiro = BarbeariaUser::withTrashed()->find($id);
             $this->isEditing = $barbeiro;
 
     }
@@ -129,21 +130,31 @@ class Colaborador extends Component
 
   
 
-    public function cancelar(BarbeariaUser $barbeiro) {
-       
-        if($barbeiro->assinatura_id) {
+    public function cancelar($id) {
       
-            $barbeiro->payment_method = null;
+        $barbeiro = BarbeariaUser::withTrashed()->find($id);
+       
+           
+
+           
+        
+            // Token de autenticação
+            $accessToken = "APP_USR-3577992641079180-011721-ff207db72804f196d2066d2931ed850c-1644143944";
+        
+            // Endpoint da API de pagamento
+            $url = "https://api.mercadopago.com/preapproval/{$barbeiro->assinatura_id}";
+        
+            // Envia o PUT para cancelar ou pausar a assinatura
+            Http::withToken($accessToken)->put($url, [
+                'status' => 'cancelled'
+            ]);
+         /*    $barbeiro->payment_method = null;
             $barbeiro->assinatura_id = null;
             
             $barbeiro->save();
-            $barbeiro->delete();
+            $barbeiro->delete(); */
           
-        }  elseif($barbeiro->payment_id) {
-            $barbeiro->payment_method = null;
-            $barbeiro->payment_id = null;
-            $barbeiro->save();
-        }
+       
     }
     public function save($cardFormData) {
         try {

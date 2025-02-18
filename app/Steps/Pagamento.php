@@ -60,12 +60,12 @@ class Pagamento extends Step
 
 
         MercadoPagoConfig::setAccessToken($accessToken);
-
+   
 
         $barbearia = new Barbearia;
         $barbearia->nome = $state['name'];
         $barbearia->cep = $state['cep'];
-        $path = $state['imagem']->store('/', 's3');
+        $path = $state['imagem']->store('/', 'public');
         $barbearia->imagem =  $path;
         $barbearia->rua = $state['rua'];
         $barbearia->cidade = $state['cidade'];
@@ -181,6 +181,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
            dd($e);
     }
 
+
     $customerResponse = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,
     ])->get('https://api.mercadopago.com/v1/customers/search', [
@@ -221,7 +222,7 @@ if($paymentMethod === 'debit_card' || $paymentMethod === 'credit_card' ) {
 
 
 } else {
-    $preferenceID = '1644143944-a0ead566-60cf-4dd3-a40d-a57dc92ba2a3';
+    $preferenceID = '1644143944-27896130-0574-4b9f-a031-653b4a6349ff';
 
     $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,

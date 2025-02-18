@@ -130,17 +130,17 @@ $this->adicionarMetodos = true;
             "notification" => [
                 "title" => "Seu agendamento para " . $agendamento->start_date->format('d/m/Y H:i') . ", foi concluído com sucesso.",
                 "body" => "Concluído às: ". ($agendamento->deleted_at ? $agendamento->deleted_at->format('d/m/Y H:i') : 'Não disponível'),
-                "image" => "https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/" . $agendamento->colaborador->barbearia->imagem
+                "image" => "http://localhost/storage/" . $agendamento->colaborador->barbearia->imagem
             ],
             "webpush" => [
                 "fcm_options" => [
-                    "link" => "https://www.barberconnect.xyz/home?tab=pills-contact8"
+                    "link" => "http://localhost/home?tab=pills-contact8"
                 ]
             ]
         ]
     ]);
 } catch (\Exception $e) {
-
+  
 }
 
 

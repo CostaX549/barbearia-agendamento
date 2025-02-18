@@ -55,30 +55,37 @@ class Webhooks extends Controller
   }
 
   if($request->input("type") === 'payment') {
+    Log::info('Webhook recebido: pagamento detectado', ['data' => $request->all()]);
 
     $response = Http::withHeaders([
         'Authorization' => 'Bearer ' . $accessToken,
         'Accept' => 'application/json',
     ])->get("https://api.mercadopago.com/v1/payments/{$request->input("data.id")}");
-    
+
+    Log::info('Resposta do MercadoPago', ['response' => $response->json()]);
+
     $barbearia = BarbeariaUser::withTrashed()->where('id', $response->json()['external_reference'])->first();
-if($response->json()['status']==='authorized'){
-    $barbearia->plan_ends_at = Carbon::now()->addMonth();
-    $barbearia->restore(); 
+
+    if ($barbearia) {
+        Log::info('Resposta do MercadoPago Status', ['response' => $response->json()['status']]);
+
+        if ($response->json()['status'] === 'approved') {
+            Log::info("Pagamento autorizado para Barbearia ID: {$barbearia->id}");
+            $barbearia->plan_ends_at = Carbon::now()->addMonth();
+            $barbearia->restore(); 
+        }
+
+        if ($response->json()['status'] === 'cancelled') {
+            Log::info("Pagamento cancelado para Barbearia ID: {$barbearia->id}");
+            $barbearia->payment_method = null;  
+            $barbearia->payment_id = null;
+            $barbearia->delete();
+        }
+    } else {
+        Log::warning('Barbearia não encontrada para o pagamento recebido.', ['external_reference' => $response->json()['external_reference']]);
+    }
 }
 
-    if ($response->json()['status'] === 'cancelled') {
-        $barbearia->payment_method = null;  
-        $barbearia->payment_id = null;
-        
-        $barbearia->delete();
-    }
-    
-
-
-
-
-  }
     }
 
     

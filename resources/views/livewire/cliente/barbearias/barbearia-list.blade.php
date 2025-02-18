@@ -1,16 +1,14 @@
 <div>
 
-  <div class="fixed top-50   w-full bg-[#FBFBFB] shadow-lg z-10">
-    <div class="flex  gap-y-4 justify-between p-3 lg:p-5">
+  <div class="fixed top-50 w-full bg-[#FBFBFB] shadow-lg z-40">
+    <div class="flex gap-y-4 justify-between p-3 lg:p-5">
       <div class="text-left">
         <h1 class="mr-6 text-2xl lg:text-4xl font-bold tracking-tight text-gray-900">Barbearias</h1>
       </div>
-
-      <div class="text-right flex  items-center gap-4">
-        <x-input wire:model.live="search"  placeholder="Buscar" />
+      <div class="text-right flex items-center gap-4">
+        <x-input wire:model.live="search" placeholder="Buscar" />
       </div>
     </div>
-
   </div>
   {{--   <div class="mb-3 ml-auto mr-3 mt-10">
         <div class="relative mb-4 flex w-full flex-wrap justify-end  items-stretch">
@@ -95,7 +93,7 @@
       </svg>
     </button>
       <img
-      src="https://barbearia-agendamento-2024.s3.sa-east-1.amazonaws.com/{{ $barbearia->imagem }}"
+      src="http://localhost/storage/{{ $barbearia->imagem }}"
       class=" w-full h-[350px] object-cover"
 
         alt="ui/ux review check" />
